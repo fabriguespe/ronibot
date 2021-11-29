@@ -1,0 +1,87 @@
+/** @format */
+const path = require('path');
+
+const Command = require("../Structures/Command.js");
+const fetch = require( "node-fetch")
+const { MessageEmbed} = require('discord.js');
+const utils = require('../utils.js');
+var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
+
+module.exports = new Command({
+	name: "reporte",
+	description: "Shows the price of the slp!",
+	async run(message, args, client) {
+		try{
+			
+			
+			if(args.length==2){
+				let db = await DbConnection.Get();
+				let lenum=parseInt(args[1])?parseInt(args[1]):args[1]
+				console.log(lenum)
+				let eluser = await db.collection('users').findOne({num:parseInt(args[1])?parseInt(args[1]):args[1]})
+				console.log(eluser)
+				if(!eluser){
+					utils.log('usuario no encontrado')
+					return
+				}
+				url = "https://game-api.axie.technology/api/v1/"+eluser.accountAddress;
+				let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+				utils.log(data)
+				//message.reply('...')
+				url = `https://graphql-gateway.axieinfinity.com/graphql`;
+				query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
+				"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
+				}`
+				
+				let axies=await fetch(url, { credentials: 'include',method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
+				axies={count:axies.data.axies.total,axies:axies.data.axies.results}
+				let axiesdata=[]
+				for(let i in axies.axies){
+					let axie=axies.axies[i]
+					let pushed={}
+					pushed.id=axie.id
+					pushed.url= 'https://marketplace.axieinfinity.com/axie/'+axie.id
+					pushed.hijos=axie.breedCount
+					pushed.image=axie.image
+					pushed.tipo=axie.class=='Aquatic'?"Pez":axie.class=='Beast'?"Bestia":axie.class=='Plant'?"Planta":""
+					let espalda=axie.parts.find(x => x.type == "Back").name
+					let boca=axie.parts.find(x => x.type == "Mouth").name
+					let cuerno=axie.parts.find(x => x.type == "Horn").name
+					let cola=axie.parts.find(x => x.type == "Tail").name
+					pushed.partes={espalda:espalda,boca:boca,cuerno:cuerno,cola:cola}
+					axiesdata.push(pushed)
+				}
+				utils.log(axiesdata)
+				if(axiesdata.length==3){
+
+					const exampleEmbed = new MessageEmbed()
+					.setColor('#0099ff')
+					.setTitle('Jugador #'+args[1])
+					.addFields(
+						//{ name: 'Precio', value: ''+slp+'USD'},
+						{ name: 'SLP Total', value: ''+data.total_slp,inline:true},
+						{ name: 'Copas', value: ''+data.mmr,inline:true},
+						{ name: 'Ultimo reclamo', value: ''+FROM_UNIX_EPOCH(data.last_claim),inline:true},
+						{ name: axiesdata[0].tipo, value: axiesdata[0].partes.cola+'\n'+axiesdata[0].partes.espalda+'\n'+axiesdata[0].partes.cuerno+'\n'+axiesdata[0].partes.boca,inline:true},
+						{ name: axiesdata[1].tipo, value: axiesdata[1].partes.cola+'\n'+axiesdata[1].partes.espalda+'\n'+axiesdata[1].partes.cuerno+'\n'+axiesdata[1].partes.boca,inline:true},
+						{ name: axiesdata[2].tipo, value: axiesdata[2].partes.cola+'\n'+axiesdata[2].partes.espalda+'\n'+axiesdata[2].partes.cuerno+'\n'+axiesdata[2].partes.boca,inline:true},
+						{ name: '\u200B ', value: axiesdata[0].url+'\n'+axiesdata[1].url+'\n'+axiesdata[2].url,inline:true},
+					)
+					message.reply({ embeds: [exampleEmbed] });
+
+
+				}else{
+					message.reply('Esta cuenta tiene una cantidad de Axies incorrecta. Revisar')
+				}
+
+			}
+		}catch(e){
+			console.log(e.message)
+		}
+
+	}
+});
+
+function FROM_UNIX_EPOCH(epoch_in_secs) {
+	return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
+  }
