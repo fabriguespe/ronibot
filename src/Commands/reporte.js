@@ -4,7 +4,8 @@ const path = require('path');
 const Command = require("../Structures/Command.js");
 const fetch = require( "node-fetch")
 const { MessageEmbed} = require('discord.js');
-const utils = require('../utils.js');
+const QuickChart = require('quickchart-js');
+var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
@@ -14,16 +15,15 @@ module.exports = new Command({
 		try{
 			
 			
+			let db = await DbConnection.Get();
+			let eluser = await db.collection('users').findOne({num:parseInt(args[1])?parseInt(args[1]):args[1]})
+			if(!eluser)return
+			if(!eluser){
+				utils.log('usuario no encontrado')
+				return
+			}
+
 			if(args.length==2){
-				let db = await DbConnection.Get();
-				let lenum=parseInt(args[1])?parseInt(args[1]):args[1]
-				console.log(lenum)
-				let eluser = await db.collection('users').findOne({num:parseInt(args[1])?parseInt(args[1]):args[1]})
-				console.log(eluser)
-				if(!eluser){
-					utils.log('usuario no encontrado')
-					return
-				}
 				url = "https://game-api.axie.technology/api/v1/"+eluser.accountAddress;
 				let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
 				utils.log(data)
@@ -74,6 +74,33 @@ module.exports = new Command({
 					message.reply('Esta cuenta tiene una cantidad de Axies incorrecta. Revisar')
 				}
 
+			}else if(args.length==3){
+
+				let stats = await db.collection('stats-test').find({accountAddress:eluser.accountAddress}).toArray();
+				let data={days:[],values:[]}
+
+				let value=''
+				if(args[2]=="slp")value="day_slp"
+				else if(args[2]=="copas")value="mmr"
+				else value=args[2]
+
+				for(let i in stats){
+					let stat=stats[i]
+					if(stat[value]){
+						data.values.push(stat[value])
+						data['days'].push(utils.getDayName(stat.timestamp, "es-ES"))
+					}
+				}
+				
+				let chart = new QuickChart().setConfig({
+					type: 'bar',
+					data: { 
+						labels: data.days,
+						datasets:[{label: args[2], data: data.values}] 
+					},
+				}).setWidth(800).setHeight(400);
+				message.reply(`Grafico: ${await chart.getShortUrl()}`);
+	
 			}
 		}catch(e){
 			console.log(e.message)
