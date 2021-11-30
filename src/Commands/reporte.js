@@ -13,8 +13,6 @@ module.exports = new Command({
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		try{
-			
-			
 			let db = await DbConnection.Get();
 			let eluser = await db.collection('users').findOne({num:parseInt(args[1])?parseInt(args[1]):args[1]})
 			if(!eluser){
