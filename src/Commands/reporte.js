@@ -76,7 +76,7 @@ module.exports = new Command({
 
 			}else if(args.length==3){
 
-				let stats = await db.collection('stats-test').find({accountAddress:eluser.accountAddress}).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress}).toArray();
 				let data={days:[],values:[]}
 
 				let value=''
