@@ -20,20 +20,21 @@ module.exports = new Command({
 				let user=users[i]
 				url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
 				let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-				console.log(data)
+				//console.log(data)
 				data.accountAddress=user.accountAddress
 				data.user_id=user._id
 				data.last_updated=user.last_updated
 				data.timestamp=new Date(Date.now())
 				data.date=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear(); 
 				//utils.log(user.accountAddress+'-'+data.total_slp)
-				let ultimo=await db.collection('stats-test').findOne({accountAddress:user.accountAddress},  { sort: { date_register: -1 } }, undefined)
+				let ultimo=await db.collection('stats').findOne({accountAddress:user.accountAddress},  { sort: { date_register: -1 } }, undefined)
 				if(ultimo && ultimo.total_slp){
-					data.day_slp=(data.total_slp-2)-(ultimo.total_slp-20)
+					data.day_slp=(data.total_slp)-(ultimo.total_slp)
+					console.log(data.day_slp)
 					//utils.log(user.accountAddress+' '+data.day_slp)
 				}
 				new_data.push(data)
-				await db.collection('stats-test').insertOne(data)
+				//await db.collection('stats').insertOne(data)
 			}
 		}catch (e) {
 			utils.log(e)

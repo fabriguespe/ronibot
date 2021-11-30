@@ -23,65 +23,62 @@ module.exports = new Command({
 	name: "retiro",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-        if(args.length==3){
-            const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
+        try{
+            if(args.length==3){
+                const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
 
-            //IDs
-            let from_acc=utils.getWalletById(args[1])
-            let to_acc=utils.getWalletById(args[2])
-            //Data
-            if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.reply(`Una de las wallets esta mal!`);
-            from_acc=from_acc.replace('ronin:','0x')
-            to_acc=to_acc.replace('ronin:','0x')
+                //IDs
+                let from_acc=utils.getWalletById(args[1])
+                let to_acc=utils.getWalletById(args[2])
+                //Data
+                if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.reply(`Una de las wallets esta mal!`);
+                from_acc=from_acc.replace('ronin:','0x')
+                to_acc=to_acc.replace('ronin:','0x')
 
-            
-
-            //private
-            let from_private = secrets[(from_acc.replace('0x','ronin:'))]
-            utils.log(from_private)
-            
-            let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
-        
-            //build
-			let axies=await utils.getAxiesIds(from_acc)
-            utils.log(axies)
-            for(let i in axies){
-                let axie_id=axies[i]
-
-                message.reply("Listo para transferir el Axie: "+axie_id+" \n Aguarde un momento...");
-                let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-                let myData=axie_contract.methods.safeTransferFrom(
-                (web3.utils.toChecksumAddress(from_acc)),
-                (web3.utils.toChecksumAddress(to_acc)),
-                (axie_id)).encodeABI()
                 
-                let trans={
-                        "chainId": 2020,
-                        "gas": 492874,
-                        "from": from_acc,
-                        "gasPrice": 0,
-                        "value": 0,
-                        "to": AXIE_CONTRACT,
-                        "nonce": nonce,
-                        data:myData
-                }
 
-                try{
+                //private
+                let from_private = secrets[(from_acc.replace('0x','ronin:'))]
+                utils.log(from_private)
+                
+                let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
+            
+                //build
+                let axies=await utils.getAxiesIds(from_acc)
+                utils.log(axies.axies)
+                for(let i in axies.axies){
+                    let axie_id=axies.axies[i].id
+
+                    message.reply("Listo para transferir el Axie: "+axie_id+" \n Aguarde un momento...");
+                    let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
+                    let myData=axie_contract.methods.safeTransferFrom(
+                    (web3.utils.toChecksumAddress(from_acc)),
+                    (web3.utils.toChecksumAddress(to_acc)),
+                    (axie_id)).encodeABI()
                     
+                    let trans={
+                            "chainId": 2020,
+                            "gas": 492874,
+                            "from": from_acc,
+                            "gasPrice": 0,
+                            "value": 0,
+                            "to": AXIE_CONTRACT,
+                            "nonce": nonce,
+                            data:myData
+                    }
+
+                        
                     let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
                     let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
                     utils.log(tr_raw)
-
-                    if(tr_raw.status)return message.reply(`Exito!\n Hash: ${tr_raw.transactionHash}`);
+                    if(tr_raw.status)return message.reply(`Exito!\nhttps://explorer.roninchain.com/tx/${tr_raw.transactionHash}`);
                     else message.reply("ERROR Status False");
-                }catch(e){
-                    message.reply("ERROR: "+e.message);
                 }
+            }else{
+                return message.reply(`${args[0]} is not a valid command!`);
             }
-        }else{
-
-            return message.reply(`${args[0]} is not a valid command!`);
+        }catch(e){
+            message.reply("ERROR: "+e.message);
         }
-
 	}
 });

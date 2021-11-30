@@ -22,7 +22,7 @@ module.exports = new Command({
 			let data={days:[],day_slp:[],mmr:[]}
 			for(let i in stats){
 				let stat=stats[i]
-				data['mmr'].push(stat['mmr'])
+				//data['mmr'].push(stat['mmr'])
 				data['day_slp'].push(stat['day_slp'])
 				data['days'].push(utils.getDayName(stat.timestamp, "es-ES"))
 			}

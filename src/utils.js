@@ -33,8 +33,6 @@ module.exports = {
 
         let axies=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
         axies={count:axies.data.axies.total,axies:axies.data.axies.results}
-        if(axies.count!=3)return message.reply(`Cantidad incorrecta de axies!`);
-        axies=[axies.axies[0].id,axies.axies[1].id,axies.axies[2].id]
         return axies
     },
     getWalletById:function(id){
