@@ -101,6 +101,8 @@ module.exports = new Command({
 				}).setWidth(800).setHeight(400);
 				message.reply(`Grafico: ${await chart.getShortUrl()}`);
 	
+			}else{
+				message.reply(`Comando incompleto`);
 			}
 		}catch(e){
 			console.log(e.message)
