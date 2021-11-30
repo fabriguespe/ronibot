@@ -35,7 +35,7 @@ module.exports = new Command({
 					//utils.log(user.accountAddress+' '+data.day_slp)
 				}
 				new_data.push(data)
-				//await db.collection('stats').insertOne(data)
+				await db.collection('stats').insertOne(data)
 			}
 		}catch (e) {
 			utils.log(e)
