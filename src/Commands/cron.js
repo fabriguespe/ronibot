@@ -28,6 +28,7 @@ module.exports = new Command({
 				data.date=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear(); 
 				//utils.log(user.accountAddress+'-'+data.total_slp)
 				let ultimo=await db.collection('stats').findOne({accountAddress:user.accountAddress},  { sort: { date_register: -1 } }, undefined)
+				utils.log(ultimo)
 				if(ultimo && ultimo.total_slp){
 					data.day_slp=(data.total_slp)-(ultimo.total_slp)
 					utils.log(data.day_slp)
