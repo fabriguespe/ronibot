@@ -81,12 +81,13 @@ module.exports = new Command({
 				else if(value=="copas")value="mmr"
 				
 				for(let i in stats){
-					console.log(stats)
 					let stat=stats[i]
-					console.log(stat)
-					let ultimo=stats[i-1]
+					let anteultimo=stats[i-1]
 					if(stat[value]){
-						if(value=='slp')stat[value]=(stat.in_game_slp)-(ultimo.in_game_slp)
+						if(value=='slp'){
+							if(stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
+							else stat[value]=stat.in_game_slp-anteultimo.in_game_slp
+						}
 						data.values.push(stat[value])
 						data['days'].push(utils.getDayName(stat.timestamp, "es-ES"))
 					}
