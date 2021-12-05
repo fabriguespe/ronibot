@@ -5,6 +5,7 @@ const Command = require("../Structures/Command.js");
 const fetch = require( "node-fetch")
 const { MessageEmbed} = require('discord.js');
 const QuickChart = require('quickchart-js');
+const { stat } = require('fs');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
@@ -73,7 +74,7 @@ module.exports = new Command({
 
 			}else if(args.length==3){
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { date_register: -1 } }).toArray();
-			
+				utils.log(JSON.stringify(stats))
 				let data={days:[],values:[]}
 
 				let value=args[2]
@@ -92,9 +93,7 @@ module.exports = new Command({
 					}
 				}
 				
-				message.reply('se encontraron '+JSON.stringify(stats))
-				message.reply('se encontraron '+JSON.stringify(data))
-				
+
 				let chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
