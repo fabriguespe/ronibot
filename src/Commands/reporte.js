@@ -9,7 +9,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "reporte",
+	name: "reportes",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		try{
@@ -72,7 +72,6 @@ module.exports = new Command({
 				}
 
 			}else if(args.length==3){
-
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress}).toArray();
 				let data={days:[],values:[]}
 
@@ -80,7 +79,7 @@ module.exports = new Command({
 				if(args[2]=="slp")value="day_slp"
 				else if(args[2]=="copas")value="mmr"
 				else value=args[2]
-
+				
 				for(let i in stats){
 					let stat=stats[i]
 					if(stat[value]){
@@ -93,7 +92,7 @@ module.exports = new Command({
 					type: 'bar',
 					data: { 
 						labels: data.days,
-						datasets:[{label: args[2], data: data.values}] 
+						datasets:[{label: value, data: data.values}] 
 					},
 				}).setWidth(800).setHeight(400);
 				message.reply(`Grafico: ${await chart.getShortUrl()}`);

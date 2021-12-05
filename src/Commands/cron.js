@@ -30,7 +30,7 @@ module.exports = new Command({
 				let ultimo=await db.collection('stats').findOne({accountAddress:user.accountAddress},  { sort: { date_register: -1 } }, undefined)
 				utils.log(ultimo)
 				if(ultimo && ultimo.total_slp){
-					data.day_slp=(data.total_slp)-(ultimo.total_slp)
+					data.day_slp=(data.in_game_slp)-(ultimo.in_game_slp)
 					utils.log(data.day_slp)
 					//utils.log(user.accountAddress+' '+data.day_slp)
 				}
