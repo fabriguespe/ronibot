@@ -75,6 +75,9 @@ module.exports = new Command({
 			}else if(args.length==3){
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { date_register: -1 } }).limit(7).toArray();
 				utils.log(JSON.stringify(stats))
+				stats=stats.sort(function(a, b) {
+					return a.timestamp - b.timestamp;
+				});
 				let data={days:[],values:[]}
 
 				let value=args[2]
