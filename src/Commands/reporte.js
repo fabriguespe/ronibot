@@ -75,7 +75,7 @@ module.exports = new Command({
 			}else if(args.length==3){
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { date_register: -1 } }).limit(7).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
-			//	console.log(stats)
+				
 				let data={days:[],values:[]}
 
 				
@@ -88,7 +88,7 @@ module.exports = new Command({
 						if(value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
 						else if(value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
 						data.values.push(stat[value])
-						data['days'].push(stat.date)
+						data['days'].push(utils.getDayName(stat.date, "es-ES"))
 					}
 				}
 				
