@@ -48,7 +48,7 @@ module.exports = new Command({
 					pushed.partes={espalda:espalda,boca:boca,cuerno:cuerno,cola:cola}
 					axiesdata.push(pushed)
 				}
-				utils.log(axiesdata)
+				
 				if(axiesdata.length==3){
 
 					const exampleEmbed = new MessageEmbed()
@@ -72,17 +72,20 @@ module.exports = new Command({
 				}
 
 			}else if(args.length==3){
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress}).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { date_register: -1 } }).toArray();
 				let data={days:[],values:[]}
 
-				let value=''
-				if(args[2]=="slp")value="day_slp"
-				else if(args[2]=="copas")value="mmr"
-				else value=args[2]
+				let value=args[2]
+				if(value=="slp")value="day_slp"
+				else if(value=="copas")value="mmr"
 				
 				for(let i in stats){
+					console.log(stats)
 					let stat=stats[i]
+					console.log(stat)
+					let ultimo=stats[i-1]
 					if(stat[value]){
+						if(value=='slp')stat[value]=(stat.in_game_slp)-(ultimo.in_game_slp)
 						data.values.push(stat[value])
 						data['days'].push(utils.getDayName(stat.timestamp, "es-ES"))
 					}
