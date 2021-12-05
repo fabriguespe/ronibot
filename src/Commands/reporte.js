@@ -73,6 +73,7 @@ module.exports = new Command({
 
 			}else if(args.length==3){
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { date_register: -1 } }).toArray();
+				message.replace('se encontraron '+stats.length)
 				let data={days:[],values:[]}
 
 				let value=args[2]
