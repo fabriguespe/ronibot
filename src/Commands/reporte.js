@@ -74,7 +74,6 @@ module.exports = new Command({
 			}else if(args.length==3){
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { date_register: -1 } }).toArray();
 			
-				message.reply('se encontraron '+JSON.stringify(stats))
 				let data={days:[],values:[]}
 
 				let value=args[2]
@@ -92,7 +91,10 @@ module.exports = new Command({
 						data['days'].push(utils.getDayName(stat.timestamp, "es-ES"))
 					}
 				}
+				
+				message.reply('se encontraron '+JSON.stringify(stats))
 				message.reply('se encontraron '+JSON.stringify(data))
+				
 				let chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
