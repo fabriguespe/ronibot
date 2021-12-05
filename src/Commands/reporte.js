@@ -10,7 +10,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "reportes",
+	name: "reporte",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		try{
@@ -74,7 +74,8 @@ module.exports = new Command({
 
 			}else if(args.length==3){
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { date_register: -1 } }).limit(7).toArray();
-				stats=stats.sort(function(a, b) {return a.cacheLastUpdated - b.cacheLastUpdated});
+				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
+			//	console.log(stats)
 				let data={days:[],values:[]}
 
 				
@@ -87,7 +88,7 @@ module.exports = new Command({
 						if(value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
 						else if(value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
 						data.values.push(stat[value])
-						data['days'].push(utils.getDayName(stat.timestamp, "es-ES"))
+						data['days'].push(stat.date)
 					}
 				}
 				
