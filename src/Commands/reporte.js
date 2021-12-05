@@ -77,8 +77,6 @@ module.exports = new Command({
 				let data={days:[],values:[]}
 
 				let value=args[2]
-				if(value=="slp")value="day_slp"
-				else if(value=="copas")value="mmr"
 				
 				for(let i in stats){
 					let stat=stats[i]
