@@ -9,7 +9,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "reporte",
+	name: "reportes",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		try{
@@ -73,10 +73,11 @@ module.exports = new Command({
 
 			}else if(args.length==3){
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { date_register: -1 } }).toArray();
-				message.reply('se encontraron '+stats.length)
+			
 				let data={days:[],values:[]}
 
 				let value=args[2]
+				if(value=="copas")value="mmr"
 				
 				for(let i in stats){
 					let stat=stats[i]
@@ -90,7 +91,7 @@ module.exports = new Command({
 						data['days'].push(utils.getDayName(stat.timestamp, "es-ES"))
 					}
 				}
-				
+				message.reply('se encontraron '+JSON.stringify(data))
 				let chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
