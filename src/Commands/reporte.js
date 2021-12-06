@@ -15,7 +15,7 @@ module.exports = new Command({
 	async run(message, args, client) {
 		try{
 			let db = await DbConnection.Get();
-			let eluser = await db.collection('users').findOne({num:parseInt(args[1])?parseInt(args[1]):args[1]})
+			let eluser = await db.collection('users').findOne({num:(args[1])})
 			if(!eluser){
 				utils.log('usuario no encontrado',message)
 				return
