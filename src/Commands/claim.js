@@ -47,8 +47,7 @@ module.exports = new Command({
             
 			const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
             let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-			utils.log(nonce)
-            
+			
             let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
             
             //build
@@ -70,17 +69,53 @@ module.exports = new Command({
             }
             
             try{
-                
-                message.reply("Listo para transferir el Axie: "+from_acc+"\n Aguarde un momento...");
+                //CLAIM
+                message.reply("Haciendo el claim de tus SLP:\n Aguarde un momento...");
                 let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
                 let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
                 utils.log(tr_raw)
 
-                if(tr_raw.status)return message.reply(`Exito!\n Hash: https://explorer.roninchain.com/tx/${tr_raw.transactionHash}`);
+                if(tr_raw.status)message.reply(`Exito!\nSe reclamaron tus SLP\nHash: https://explorer.roninchain.com/tx/${tr_raw.transactionHash}`);
                 else message.reply("ERROR Status False");
             }catch(e){
                 message.reply("ERROR: "+e.message);
             }
+
+
+
+            let balance=10
+            nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
+			
+            myData=contract.methods.transfer(
+                (web3.utils.toChecksumAddress(from_acc)),
+				balance).encodeABI()
+            
+            trans={
+                    "chainId": 2020,
+                    "gas": 492874,
+                    "from": from_acc,
+                    "gasPrice": 0,
+                    "value": 0,
+                    "to": SLP_CONTRACT,
+                    "nonce": nonce,
+                    data:myData
+            }
+            
+            try{
+                //TRANSFER
+                message.reply("Se te transferiran tus SLP a tu wallet: "+from_acc+"\n Aguarde un momento...");
+                let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
+                let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
+                utils.log(tr_raw)
+
+                if(tr_raw.status)message.reply(`Exito!\n Hash: https://explorer.roninchain.com/tx/${tr_raw.transactionHash}`);
+                else message.reply("ERROR Status False");
+            }catch(e){
+                message.reply("ERROR: "+e.message);
+            }
+
+            
+
         }else{
 
             return message.reply(`${args[0]} is not a valid command!`);
