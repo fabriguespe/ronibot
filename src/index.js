@@ -23,11 +23,11 @@ fs.readdirSync(__dirname+"/Commands")
 client.on("ready", message => {
 	utils.log('Listo!')
 })
-
+/*
 client.on('interactionCreate', interaction => {
 	if (!interaction.isButton()) return;
 	interaction.message.channel.delete()
-});
+});*/
 
 client.on("messageCreate", message => {
 	if (message.author.bot) return;
@@ -42,5 +42,7 @@ client.on("messageCreate", message => {
 
 	command.run(message, args, client);
 });
+//
 
-client.login(config.token);
+TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
+client.login(TEST);

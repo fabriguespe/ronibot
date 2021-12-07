@@ -26,7 +26,7 @@ module.exports = new Command({
         if(args.length==2){
 			
             //IDs
-            let from_acc=utils.getWalletById(args[1])
+            let from_acc=await utils.getWalletByNum(args[1])
             if(!utils.isSafe(from_acc))return message.reply(`Una de las wallets esta mal!`);
 
 			let data= await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1", { method: "Get" }).then(res => res.json()).then((json) => { return json});

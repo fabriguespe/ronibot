@@ -1,6 +1,5 @@
 const QuickChart = require('quickchart-js');
 const path = require('path');
-var ids = require(path.resolve(__dirname, "./Data/ids"));
 var secrets = require(path.resolve(__dirname, "./Data/secrets"));
 const fetch = require( "node-fetch")
 const Web3 = require('web3');
@@ -73,8 +72,10 @@ module.exports = {
         axies={count:axies.data.axies.total,axies:axies.data.axies.results}
         return axies
     },
-    getWalletById:function(id){
-        return ids[id]
+    getWalletByNum:async function(num){
+		let user = await db.collection('users').findOne({num:num})
+        if(user)return user.accountAddress
+        else return null
     },
     isSafe:function(wallet){
         return wallet in secrets

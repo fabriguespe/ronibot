@@ -28,8 +28,8 @@ module.exports = new Command({
                 const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
 
                 //IDs
-                let from_acc=utils.getWalletById(args[1])
-                let to_acc=utils.getWalletById(args[2])
+                let from_acc=await utils.getWalletByNum(args[1])
+                let to_acc=await utils.getWalletByNum(args[2])
                 //Data
                 if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.reply(`Una de las wallets esta mal!`);
                 from_acc=from_acc.replace('ronin:','0x')
