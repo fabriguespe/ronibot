@@ -56,25 +56,26 @@ module.exports = new Command({
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		
+		if (message.author.bot) return false; 
+
 		try {
 			client.on('interactionCreate', async (interaction) => {
-				if (!interaction.isButton()) return;
-				if(interaction.customId=='primary'){
-					let existe=message.guild.channels.cache.find(c => c.id === interaction.message.channel.id)
-					
-					
-					if(existe){
-						console.log(interaction.message.channel)
-						//interaction.message.channel.delete()
+				try {
+					if (!interaction.isButton()) return;
+					console.log(interaction.customId)
+					if( interaction.customId=='primary'){
+							try {
+								await interaction.message.channel.delete({ timeout: 1000 });
+							} catch (e) {
+								console.error(e);
+							}
 					}
-					else console.log('no existe el canal')
+				} catch (e) {
+					console.error(e);
 				}
 			});
-			if (message.author.bot) return false; 
 			let db = await DbConnection.Get();
-
 			let rCategoria = message.guild.channels.cache.find(c => c.name == NUEVOS_CATE && c.type == "GUILD_CATEGORY");
-
 			let chan=await message.guild.channels.create('validacion-'+message.author.username, { 
 				type: 'GUILD_TEXT',
 				parent:rCategoria.id,
@@ -96,11 +97,10 @@ module.exports = new Command({
 			
 			
 			chan.send({content:'Acciones:',components: [row] });
-
 			utils.log('Channel creado: '+chan.id)
-
 			chan.awaitMessages({ filter: (m) => m.author.id === message.author.id, max: 1 })
 			.then(async (collected) => {
+				console.log(collected)
 				if(collected.size==0)return
 				let comando=collected.first().content
 				if(comando=='remover')remover(message,chan)
@@ -109,7 +109,7 @@ module.exports = new Command({
 			});
 			
 		} catch (e) {
-			return e;
+			console.log(e)
 		}
 	}
 });

@@ -37,13 +37,12 @@ client.on("messageCreate", message => {
 	const args = message.content.substring(config.prefix.length).split(/ +/);
 
 	const command = client.commands.find(cmd => cmd.name == args[0]);
-	console.log(message.channel.name)
-	if(!message.channel.name.includes('comandos') && !message.channel.name.includes('aplicar'))return
+	if(!(message.channel.name.includes('comandos') || message.channel.name.includes('aplicar')))return
 	if (!command) return message.reply(`${args[0]} is not a valid command!`);
 
 	command.run(message, args, client);
 });
 //
 
-TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
-client.login(TEST);
+//TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
+client.login(config.token);
