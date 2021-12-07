@@ -2,6 +2,7 @@ const QuickChart = require('quickchart-js');
 const path = require('path');
 var secrets = require(path.resolve(__dirname, "./Data/secrets"));
 const fetch = require( "node-fetch")
+var DbConnection = require(path.resolve(__dirname, "./Data/db.js"));
 const Web3 = require('web3');
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36"
@@ -73,6 +74,7 @@ module.exports = {
         return axies
     },
     getWalletByNum:async function(num){
+        let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({num:num})
         if(user)return user.accountAddress
         else return null

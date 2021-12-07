@@ -6,7 +6,7 @@ const Command = require("../Structures/Command.js");
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
-const NUEVOS_CATE="NUEVOS"
+const NUEVOS_CATE="INGRESOS"
 
 const ID_ROL_JUGADOR="909513474563014717"
 
@@ -59,7 +59,16 @@ module.exports = new Command({
 		try {
 			client.on('interactionCreate', async (interaction) => {
 				if (!interaction.isButton()) return;
-				if(interaction.customId=='primary')interaction.message.channel.delete()
+				if(interaction.customId=='primary'){
+					let existe=message.guild.channels.cache.find(c => c.id === interaction.message.channel.id)
+					
+					
+					if(existe){
+						console.log(interaction.message.channel)
+						//interaction.message.channel.delete()
+					}
+					else console.log('no existe el canal')
+				}
 			});
 			if (message.author.bot) return false; 
 			let db = await DbConnection.Get();

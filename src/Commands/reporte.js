@@ -15,7 +15,8 @@ module.exports = new Command({
 	async run(message, args, client) {
 		try{
 			let db = await DbConnection.Get();
-			let eluser = await db.collection('users').findOne({num:(args[1])})
+			let eluser = await db.collection('users').findOne({num:args[1]})
+			console.log(eluser)
 			if(!eluser){
 				utils.log('usuario no encontrado',message)
 				return
@@ -25,7 +26,6 @@ module.exports = new Command({
 				url = "https://game-api.axie.technology/api/v1/"+eluser.accountAddress;
 				let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
 				utils.log(data)
-				//message.reply('...')
 				url = `https://graphql-gateway.axieinfinity.com/graphql`;
 				query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
 				"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
