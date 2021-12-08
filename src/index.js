@@ -23,26 +23,18 @@ fs.readdirSync(__dirname+"/Commands")
 client.on("ready", message => {
 	utils.log('Listo!')
 })
-/*
-client.on('interactionCreate', interaction => {
-	if (!interaction.isButton()) return;
-	interaction.message.channel.delete()
-});*/
+
 
 client.on("messageCreate", message => {
 	if (message.author.bot) return;
-
 	if (!message.content.startsWith(config.prefix)) return;
-
 	const args = message.content.substring(config.prefix.length).split(/ +/);
-
 	const command = client.commands.find(cmd => cmd.name == args[0]);
-	if(!(message.channel.name.includes('comandos') || message.channel.name.includes('aplicar')))return
+	if(!(message.channel.name.includes('comandos') || message.channel.name.includes('soporte')|| message.channel.name.includes('roni')))return
 	if (!command) return message.reply(`${args[0]} is not a valid command!`);
-
 	command.run(message, args, client);
 });
 //
 
-//TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
-client.login(config.token);
+TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
+client.login(TEST);

@@ -17,6 +17,13 @@ var logger = log4js.getLogger();
 logger.level = "debug";
 
 module.exports = {
+    esJugador:function(message){
+        let r1=message.guild.roles.cache.find(r => r.name === "Manager")
+        if(r1 && message.member.roles.cache.has(r1.id))return true
+        r1=message.guild.roles.cache.find(r => r.name === "Jugador")
+        if(r1 && message.member.roles.cache.has(r1.id))return true
+        return false
+    },
     log:function (log,message=null){
         logger.debug(log)
         console.log(log)
