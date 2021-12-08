@@ -10,7 +10,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "genersal",
+	name: "general",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		try{
