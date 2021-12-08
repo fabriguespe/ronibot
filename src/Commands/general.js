@@ -62,16 +62,17 @@ module.exports = new Command({
 					type: 'bar',
 					data: { 
 						labels: chart_data.days,
-						datasets:[{label: value, data: chart_data.values}] 
+						datasets:[{label: value, data: chart_data.proms}] 
 					},
 				}).setWidth(800).setHeight(400);
 				message.reply(`Grafico: ${await chart.getShortUrl()}`);
 				
+				if(value=='mmr')return
 				chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
 						labels: chart_data.days,
-						datasets:[{label: value, data: chart_data.proms}] 
+						datasets:[{label: value, data: chart_data.values}] 
 					},
 				}).setWidth(800).setHeight(400);
 				message.reply(`Grafico: ${await chart.getShortUrl()}`);
