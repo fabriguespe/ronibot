@@ -16,7 +16,6 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let eluser = await db.collection('users').findOne({num:args[1]})
-			console.log(eluser)
 			if(!eluser){
 				utils.log('usuario no encontrado',message)
 				return
@@ -73,7 +72,7 @@ module.exports = new Command({
 				}
 
 			}else if(args.length==3){
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { date_register: -1 } }).limit(7).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(10).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				
 				let data={days:[],values:[]}
@@ -88,6 +87,7 @@ module.exports = new Command({
 						if(value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
 						else if(value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
 						data.values.push(stat[value])
+						console.log(stat.date)
 						data['days'].push(utils.getDayName(stat.date, "es-ES"))
 					}
 				}
