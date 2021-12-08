@@ -3,6 +3,7 @@
 console.clear();
 const path = require('path');
 
+const ID_ROL_JUGADOR="Jugador"
 var utils = require(path.resolve(__dirname, "./utils.js"));
 const Client = require(path.resolve(__dirname, "./Structures/Client.js"));
 const config = require(path.resolve(__dirname, "./Data/config.json"));
@@ -42,32 +43,28 @@ client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isButton()) return;
 	console.log(interaction.customId)
 	if( interaction.customId=='ticket_soporte'){
-
-		let tr=await crearThread(interaction,`Hola ${interaction.message.author}, soy Roni. \nCon que deseas que te ayude?`)
-		
+		let tr=await crearChannel(interaction,`Hola ${interaction.message.author}, soy Roni. \nCon que deseas que te ayude?`)
 	}else if( interaction.customId=='validar'){
-		//const chan = await message.channel.threads.create({name:'ticket-'+message.author.username,autoArchiveDuration: 60}) 
-		//await chan.setLocked(true)
 		let tr=await crearThread(interaction,`Hola ${interaction.message.author}, soy Roni. \nVoy a validar que eres un jugador Ronimate.\nPor favor ingresa tu contraseña. \nCuidado, no la compartas con nadie mas.`)
 		tr.awaitMessages({ filter: (m) => m.author.id === interaction.message.author.id, max: 1 })
 		.then(async (collected) => {
+			console.log('ja1')
 			if(collected.size==0)return
 			let comando=collected.first().content
 			if(comando.length>10)asociar(interaction.message,tr,comando)
 		});
 	}else if( interaction.customId=='desvalidarme'){
-		//const chan = await message.channel.threads.create({name:'ticket-'+message.author.username,autoArchiveDuration: 60}) 
-		//await chan.setLocked(true)
 		let tr=await crearThread(interaction,`Hola ${interaction.message.author}, soy Roni. \nVoy a validar que eres un jugador Ronimate.\nPor favor ingresa tu contraseña. \nCuidado, no la compartas con nadie mas.`)
+		
 		tr.awaitMessages({ filter: (m) => m.author.id === interaction.message.author.id, max: 1 })
 		.then(async (collected) => {
+			console.log('ja2')
 			if(collected.size==0)return
 			let comando=collected.first().content
+			console.log(collected,comando)
 			if(comando.length>10)remover(interaction.message,tr,comando)
 		});
-		
 	}else if( interaction.customId=='cobros'){
-		//const chan = await message.channel.threads.create({name:'ticket-'+message.author.username,autoArchiveDuration: 60}) 
 	}else if( interaction.customId=='cerrar_ticket'){
 		const thread = interaction.channel
 		thread.delete();
@@ -114,7 +111,6 @@ async function asociar(message,chan,psw,client){
 }
 
 async function crearThread(interaction,msg){
-	console.log('jaja')
 	const thread = await interaction.channel.threads.create({
 		name: `${interaction.user.tag}`,
 		autoArchiveDuration: 1440, // this is 24hrs 60 will make it 1 hr
@@ -126,10 +122,9 @@ async function crearThread(interaction,msg){
 	.setAuthor(interaction.guild.name, interaction.guild.iconURL({dynamic: true}));
 
 
-	console.log('jaja')
 	const del = new MessageActionRow().addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
-	thread.send({
-		content: `Welcome <@${interaction.user.id}>`,
+	await thread.send({
+		content: `Hola! <@${interaction.user.id}>`,
 		embeds: [embed],
 		components: [del]
 	}).then(interaction.followUp({
@@ -137,9 +132,40 @@ async function crearThread(interaction,msg){
 		ephemeral: true
 	}))
 	console.log(`Created thread: ${thread.name}`);
-	setTimeout(() => {
-		interaction.channel.bulkDelete(1)
-	}, 5000)
+	setTimeout(() => { interaction.channel.bulkDelete(1)}, 5000)
+	return thread
+}
+
+async function crearChannel(interaction,msg){
+	
+	let rCategoria = interaction.message.guild.channels.cache.find(c => c.name == 'INGRESOS' && c.type == "GUILD_CATEGORY");
+	let thread=await interaction.message.guild.channels.create('validacion-'+interaction.message.author.username, { 
+		type: 'GUILD_TEXT',
+		parent:rCategoria.id,
+		permissionOverwrites: [
+			{id: interaction.message.author.id,allow: ['VIEW_CHANNEL']},
+			{id: interaction.message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
+		]})
+	.then(chan=>{return chan})
+	.catch(console.error);
+	
+	const embed = new MessageEmbed().setTitle('Ticket')
+	.setDescription(msg).setColor('GREEN').setTimestamp()
+	.setAuthor(interaction.guild.name, interaction.guild.iconURL({dynamic: true}));
+
+
+	const del = new MessageActionRow().addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
+	await thread.send({
+		content: `Hola! <@${interaction.user.id}>`,
+		embeds: [embed],
+		components: [del]
+	}).then(interaction.followUp({
+		content: 'Created Ticket!',
+		ephemeral: true
+	}))
+	console.log(`Created thread: ${thread.name}`);
+	setTimeout(() => { interaction.channel.bulkDelete(1)}, 5000)
+	
 	return thread
 }
 
