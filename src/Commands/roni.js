@@ -55,7 +55,7 @@ module.exports = new Command({
 			let customId=interaction.customId
 			console.log(interaction.customId)
 			lascomnd=interaction.customId
-			let jsid=interaction.user.id
+			let jsid=877625345996632095
 			if( customId=='ticket_soporte'){
 				interaction.channel.send(`Hola! <@${jsid}>`)
 			}else if( customId=='asociar' || customId=='desasociar'){
