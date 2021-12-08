@@ -21,11 +21,12 @@ module.exports = new Command({
 		} 
 		
         let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
-        let rCategoria = message.guild.channels.cache.find(c => c.name == 'INGRESOS' && c.type == "GUILD_CATEGORY");////parent:rCategoria.id,
+        let rCategoria = message.guild.channels.cache.find(c => c.name == utils.esJugador(message)?'COMUNIDAD':'INGRESOS' && c.type == "GUILD_CATEGORY");////
 		
         let thread=await message.guild.channels.create('ticket-'+message.author.username, { 
             type: 'GUILD_TEXT',
 			time:10000,
+			parent:rCategoria.id,
             permissionOverwrites: [
                 {id: message.author.id,allow: ['VIEW_CHANNEL']},
                 {id: rSoporte.id,allow: ['VIEW_CHANNEL']},
