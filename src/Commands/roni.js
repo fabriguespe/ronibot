@@ -26,8 +26,21 @@ module.exports = new Command({
 			row.addComponents(new MessageButton().setCustomId('validar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 			//row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 		} 
-		message.channel.send({content:`Hola ${message.author}, soy Roni. \nQue deseas hacer?`,components: [row]})
 
+		const embed = new MessageEmbed()
+            .setColor('BLUE')
+				.setAuthor(message.guild.name, message.guild.iconURL({
+					dynamic: true
+				}))
+				.setDescription(`Hola ${message.author}, soy Roni. \nQue deseas hacer?`)
+				.setTitle('Tickets')
+
+
+
+			message.channel.send({
+				embeds: [embed],
+				components: [row]
+			});
 		
 	}
 });
