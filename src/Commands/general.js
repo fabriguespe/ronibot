@@ -69,6 +69,7 @@ module.exports = new Command({
 				message.reply(`Grafico: ${await chart.getShortUrl()}`);
 				console.log(message.author.id)
 
+				/*
 				if(message.author.id==533994454391062529){
 					chart = new QuickChart().setConfig({
 						type: 'bar',
@@ -78,7 +79,7 @@ module.exports = new Command({
 						},
 					}).setWidth(800).setHeight(400);
 					message.reply(`Grafico: ${await chart.getShortUrl()}`);
-				}
+				}*/
 				
 				if(value=='mmr')return
 				chart = new QuickChart().setConfig({

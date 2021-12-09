@@ -34,7 +34,6 @@ module.exports = {
         console.log('jaja',msg)
         let db = await DbConnection.Get();
         let resultpw = await db.collection('users').findOne({pass:msg})
-        console.log('jaja')
         if(resultpw && resultpw.nota=='Entrevista')return message.reply('Estas en entrevista aún, no puedes ingresar')
         else if(resultpw){
             var myquery = { pass: msg };
