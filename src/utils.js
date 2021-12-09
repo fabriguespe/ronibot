@@ -51,6 +51,8 @@ module.exports = {
             message.member.roles.add(rJugador);
             message.reply('Fuiste validado con exito!.\nEste canal se cerrara en 3 segundos.')
             setTimeout(() => { message.channel.delete()}, 3000)
+        }else{
+            return message.reply('Ese código es invalido')
         }
     },
     esJugador:function(message){

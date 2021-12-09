@@ -6,7 +6,7 @@ const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "roni",
+	name: "ronis",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		//message.channel.bulkDelete(1);
