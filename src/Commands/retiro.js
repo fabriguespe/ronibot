@@ -6,6 +6,7 @@ var secrets = require(path.resolve(__dirname, "../Data/secrets"));
 var axie_abi = require(path.resolve(__dirname, "../Data/axie_abi.json"));
 var utils = require(path.resolve(__dirname, "../utils.js"));
 
+const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 const Web3 = require('web3');
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36"
@@ -73,9 +74,13 @@ module.exports = new Command({
                     let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
                     utils.log(tr_raw.status)
                     
-                    if(tr_raw.status)utils.log(`Exito!\nhttps://explorer.roninchain.com/tx/${tr_raw.transactionHash}`,message);
-                    else utils.log("ERROR Status False");
+                    if(tr_raw.status){            
+                        let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
+                        return message.reply({content: ` `,embeds: [embed]})
+                    }        
+                    else message.reply("ERROR Status False");
                 }
+                
                 utils.log("Listo!",message);
             }else{
                 utils.log(`${args[0]} is not a valid command!`);

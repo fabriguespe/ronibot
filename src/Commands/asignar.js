@@ -1,6 +1,7 @@
 
 const Command = require("../Structures/Command.js");
 
+const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 const path = require('path');
 var secrets = require(path.resolve(__dirname, "../Data/secrets"));
 var axie_abi = require(path.resolve(__dirname, "../Data/axie_abi.json"));
@@ -72,8 +73,11 @@ module.exports = new Command({
                         let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
                         utils.log(tr_raw.status)
                         
-                        if(tr_raw.status)utils.log(`Exito!\nhttps://explorer.roninchain.com/tx/${tr_raw.transactionHash}`,message);
-                        else utils.log("ERROR Status False");
+                        if(tr_raw.status){            
+                            let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
+                            return message.reply({content: ` `,embeds: [embed]})
+                        }        
+                        else message.reply("ERROR Status False");
 
                     }catch(e){
                         utils.log("Fallo la transfer");
