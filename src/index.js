@@ -10,7 +10,6 @@ const config = require(path.resolve(__dirname, "./Data/config.json"));
 const fetch = require( "node-fetch")
 const client = new Client();
 const Command = require(path.resolve(__dirname, "./Structures/Command.js"));
-var DbConnection = require(path.resolve(__dirname, "./Data/db.js"));
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 const fs = require("fs");
 fs.readdirSync(__dirname+"/Commands")
