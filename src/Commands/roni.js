@@ -9,7 +9,7 @@ module.exports = new Command({
 	name: "roni",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		message.channel.bulkDelete(2);
+		//message.channel.bulkDelete(1);
 		let row=new MessageActionRow()
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
 		//row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
@@ -20,10 +20,11 @@ module.exports = new Command({
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 		} 
 		
+        let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+message.author.username);
+		if(eliminar)eliminar.delete()
         let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
         let rCategoria = message.guild.channels.cache.find(c => c.name == utils.esJugador(message)?'COMUNIDAD':'INGRESOS' && c.type == "GUILD_CATEGORY");////
-		
-        let thread=await message.guild.channels.create('ticket-'+message.author.username, { 
+		let thread=await message.guild.channels.create('ticket-'+message.author.username, { 
             type: 'GUILD_TEXT',
 			time:10000,
 			parent:rCategoria.id,
@@ -34,7 +35,16 @@ module.exports = new Command({
             ]})
         .then(chan=>{return chan})
         .catch(console.error);
-        const embed = new MessageEmbed().setTitle('Ticket')
+
+        let embed = new MessageEmbed().setTitle('Ticket')
+        .setDescription(`Podes continuar en el siguiente canal <#${thread.id}>`).setColor('GREEN').setTimestamp()
+
+        await message.reply({
+            content: ` `,
+            embeds: [embed]
+        })
+
+        embed = new MessageEmbed().setTitle('Ticket')
         .setDescription(`Hola ${message.author}, soy Roni. \nCon que deseas que te ayude?`).setColor('GREEN').setTimestamp()
 
         await thread.send({
