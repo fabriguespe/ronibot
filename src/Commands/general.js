@@ -51,10 +51,11 @@ module.exports = new Command({
 						data_final[ja.date]+=ja.slp
 					}
 				}
-				let chart_data={days:[],values:[],proms:[]}
+				let chart_data={days:[],values:[],proms:[],usd:[]}
 				for(let i in Object.keys(data_final)){
 					chart_data.days.push(Object.keys(data_final)[i])
 					chart_data.values.push(Object.values(data_final)[i])
+					chart_data.usd.push(Object.values(data_final)[i]*0.045)
 					chart_data.proms.push(Object.values(data_final)[i]/count_users)
 				}
 
@@ -66,6 +67,18 @@ module.exports = new Command({
 					},
 				}).setWidth(800).setHeight(400);
 				message.reply(`Grafico: ${await chart.getShortUrl()}`);
+				console.log(message.author.id)
+
+				if(message.author.id==533994454391062529){
+					chart = new QuickChart().setConfig({
+						type: 'bar',
+						data: { 
+							labels: chart_data.days,
+							datasets:[{label: value, data: chart_data.usd}] 
+						},
+					}).setWidth(800).setHeight(400);
+					message.reply(`Grafico: ${await chart.getShortUrl()}`);
+				}
 				
 				if(value=='mmr')return
 				chart = new QuickChart().setConfig({
