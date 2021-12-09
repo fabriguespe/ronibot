@@ -52,13 +52,13 @@ module.exports = new Command({
             components: [row]
         })
 		let lascomnd=''
-		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1,time:60000})
+		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1,time:600000})
 		mcollector.on('collect', async message => {
 			if(lascomnd=='desasociar')return utils.desasociar(message)
 			else if(lascomnd=='asociar')return utils.asociar(message)
 		});
 
-		const collector = thread.createMessageComponentCollector({ componentType: 'BUTTON', time: 30000 });
+		const collector = thread.createMessageComponentCollector({ componentType: 'BUTTON', time: 600000 });
 		collector.on('collect',  async interaction => {
 			await interaction.deferUpdate();
 			let customId=interaction.customId

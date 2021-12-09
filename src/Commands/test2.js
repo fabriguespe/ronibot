@@ -25,7 +25,7 @@ module.exports = new Command({
 				//type:'private_thread'
 			}) 
 				
-			collector = chan.createMessageCollector({filter,max:1,time:10000})
+			collector = chan.createMessageCollector({filter,max:1,time:600000})
 			
 			
 		})
