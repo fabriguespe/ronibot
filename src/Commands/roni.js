@@ -36,7 +36,7 @@ module.exports = new Command({
         .then(chan=>{return chan})
         .catch(console.error);
 
-        let embed = new MessageEmbed().setTitle('Ticket')
+        let embed = new MessageEmbed().setTitle('Nuevo Ticket')
         .setDescription(`Podes continuar en el siguiente canal <#${thread.id}>`).setColor('GREEN').setTimestamp()
 
         await message.reply({
@@ -53,7 +53,7 @@ module.exports = new Command({
             components: [row]
         })
 		let lascomnd=''
-		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1,time:30000})
+		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1,time:60000})
 		mcollector.on('collect', async message => {
 			if(lascomnd=='desasociar')return utils.desasociar(message)
 			else if(lascomnd=='asociar')return utils.asociar(message)
