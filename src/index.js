@@ -33,4 +33,4 @@ client.on("messageCreate", message => {
 });
 
 TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
-client.login(TEST);
+client.login(config.token);
