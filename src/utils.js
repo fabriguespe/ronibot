@@ -34,8 +34,10 @@ module.exports = {
         let db = await DbConnection.Get();
         let resultpw = await db.collection('users').findOne({pass:msg})
         //if(resultpw && (resultpw.num.includes('2_') || parseInt(resultpw.num)>=20))return message.reply('Todavia no le toca a tu lote. Por favor espera a ser llamado')
-        if(resultpw && resultpw.nota=='Entrevista')return message.reply('Estas en entrevista aún, no puedes ingresar')
-        else if(resultpw){
+        if(resultpw && resultpw.nota=='Entrevista'){
+            message.reply('Tu estatus está en entrevista por tal motivo no podemos validarte aún cuando sea aprobado podrás validarte\nEste canal se cerrara en 3 segundos.')
+            setTimeout(() => { message.channel.delete()}, 3000)
+        }else if(resultpw){
             var myquery = { pass: msg };
             var newvalues = { $set: {
                 discord: message.author.id,
