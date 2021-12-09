@@ -109,10 +109,11 @@ module.exports = {
         return thread
     },
     esJugador:function(message){
-        let r1=message.guild.roles.cache.find(r => r.name === "Manager")
+        let r1=message.guild.roles.cache.find(r => r.name === "Jugador")
         if(r1 && message.member.roles.cache.has(r1.id))return true
-        r1=message.guild.roles.cache.find(r => r.name === "Jugador")
-        if(r1 && message.member.roles.cache.has(r1.id))return true
+        //let r1=message.guild.roles.cache.find(r => r.name === "Manager")
+        //if(r1 && message.member.roles.cache.has(r1.id))return true
+        
         return false
     },
     log:function (log,message=null){
