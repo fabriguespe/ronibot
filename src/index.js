@@ -52,4 +52,4 @@ client.on('interactionCsreate', async (interaction) => {
 
 
 TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
-client.login(config.token);
+client.login(TEST);
