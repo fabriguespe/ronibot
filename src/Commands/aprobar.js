@@ -11,7 +11,7 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(args.length==2){
 			let db = await DbConnection.Get();
-			await db.collection("users").updateOne({ num:args[1]}, { $set: {entrevista: null} })
+			await db.collection("users").updateOne({ num:args[1]}, { $set: {nota: null} })
 			message.reply('El jugador fue aprobado con exito')
 		}
 

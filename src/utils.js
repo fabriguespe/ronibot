@@ -121,7 +121,7 @@ module.exports = {
     },
     getWalletByNum:async function(num){
         let db = await DbConnection.Get();
-		let user = await db.collection('users').findOne({num:num})
+		let user = await db.collection('users').findOne({num:num+""})
         if(user)return user.accountAddress
         else return null
     },
