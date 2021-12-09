@@ -21,7 +21,7 @@ RONIN_PROVIDER = "https://api.roninchain.com/rpc"
 
 
 module.exports = new Command({
-	name: "retiros",
+	name: "retiro",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
         try{
