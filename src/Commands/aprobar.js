@@ -11,11 +11,7 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(args.length==2){
 			let db = await DbConnection.Get();
-			var myquery = { num:args[0]};
-			let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");
-			message.member.roles.remove(rJugador);
-			await db.collection("users").updateOne(myquery, { $set: {entrevista: null} })
-			
+			await db.collection("users").updateOne({ num:args[1]}, { $set: {entrevista: null} })
 			message.reply('El jugador fue aprobado con exito')
 		}
 
