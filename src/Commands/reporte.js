@@ -62,10 +62,10 @@ module.exports = new Command({
 						{ name: 'Nombre', value: ''+data.name,inline:true},
 						{ name: 'Estado', value: ''+data.nota==undefined || data.nota==null?'Aceptado':data.nota,inline:true},
 						{ name: 'Vacio', value: 'Vacio',inline:true},
-						{ name: axiesdata[0].tipo, value: axiesdata[0].partes.cola+'\n'+axiesdata[0].partes.espalda+'\n'+axiesdata[0].partes.cuerno+'\n'+axiesdata[0].partes.boca,inline:true},
-						{ name: axiesdata[1].tipo, value: axiesdata[1].partes.cola+'\n'+axiesdata[1].partes.espalda+'\n'+axiesdata[1].partes.cuerno+'\n'+axiesdata[1].partes.boca,inline:true},
-						{ name: axiesdata[2].tipo, value: axiesdata[2].partes.cola+'\n'+axiesdata[2].partes.espalda+'\n'+axiesdata[2].partes.cuerno+'\n'+axiesdata[2].partes.boca,inline:true},
-						{ name: '\u200B ', value: axiesdata[0].url+'\n'+axiesdata[1].url+'\n'+axiesdata[2].url,inline:true},
+						{ name: axiesdata[0].tipo, value: axiesdata[0].partes.cola+'\n'+axiesdata[0].partes.espalda+'\n'+axiesdata[0].partes.cuerno+'\n'+axiesdata[0].partes.boca+'\n'+'[Link]('+axiesdata[0].url+")",inline:true},
+						{ name: axiesdata[1].tipo, value: axiesdata[1].partes.cola+'\n'+axiesdata[1].partes.espalda+'\n'+axiesdata[1].partes.cuerno+'\n'+axiesdata[1].partes.boca+'\n'+'[Link]('+axiesdata[1].url+")",inline:true},
+						{ name: axiesdata[2].tipo, value: axiesdata[2].partes.cola+'\n'+axiesdata[2].partes.espalda+'\n'+axiesdata[2].partes.cuerno+'\n'+axiesdata[2].partes.boca+'\n'+'[Link]('+axiesdata[2].url+")",inline:true},
+						
 					)
 					message.reply({ embeds: [exampleEmbed] });
 
