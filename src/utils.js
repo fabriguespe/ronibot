@@ -26,14 +26,13 @@ module.exports = {
         let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");
         message.member.roles.remove(rJugador);
         await db.collection("users").updateOne(myquery, newvalues)
-        message.reply('Fuiste removido con exito.')
+        message.reply('Fuiste desasociado con exito.')
     },
     asociar:async function(message){
         let msg=message.content
-        
-        console.log('jaja',msg)
         let db = await DbConnection.Get();
         let resultpw = await db.collection('users').findOne({pass:msg})
+        if(resultpw.num.includes('2_') && parseInt(resultpw.num)>=20)return message.reply('Todavia no le toca a tu lote. Por favor espera a ser llamado')
         if(resultpw && resultpw.nota=='Entrevista')return message.reply('Estas en entrevista aún, no puedes ingresar')
         else if(resultpw){
             var myquery = { pass: msg };

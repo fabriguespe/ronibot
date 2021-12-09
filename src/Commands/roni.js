@@ -69,7 +69,7 @@ module.exports = new Command({
 			if( customId=='ticket_soporte'){
 				interaction.channel.send(`Hola! <@${jsid}>`)
 			}else if( customId=='asociar' || customId=='desasociar'){
-				interaction.channel.send('Por favor ingresa tu contraseña')
+				interaction.channel.send('Por favor ingresa tu contraseña. Tenes 60 segundos.')
 			}else if( customId=='cobros'){
 			}else if( customId=='cerrar_ticket'){
 				const thread = interaction.channel
