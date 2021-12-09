@@ -6,7 +6,7 @@ const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "roni",
+	name: "ronis",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		//message.channel.bulkDelete(1);
@@ -26,7 +26,6 @@ module.exports = new Command({
         let rCategoria = message.guild.channels.cache.find(c => c.name == utils.esJugador(message)?'COMUNIDAD':'INGRESOS' && c.type == "GUILD_CATEGORY");////
 		let thread=await message.guild.channels.create('ticket-'+message.author.username, { 
             type: 'GUILD_TEXT',
-			time:10000,
 			parent:rCategoria.id,
             permissionOverwrites: [
                 {id: message.author.id,allow: ['VIEW_CHANNEL']},
