@@ -32,7 +32,11 @@ module.exports = new Command({
                 let from_acc=await utils.getWalletByNum(args[1])
                 let to_acc=await utils.getWalletByNum(args[2])
                 //Data
-                if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.reply(`Una de las wallets esta mal!`);
+                if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc)){
+                    console.log(to_acc,from_acc)
+                    return message.reply(`Una de las wallets esta mal!`);
+
+                }
                 from_acc=from_acc.replace('ronin:','0x')
                 to_acc=to_acc.replace('ronin:','0x')
 
