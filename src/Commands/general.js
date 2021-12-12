@@ -24,7 +24,7 @@ module.exports = new Command({
 				let count_users=0
 				for(let ii in users){
 					let eluser=users[ii]
-					let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(17).toArray();
+					let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 					//console.log(eluser.accountAddress,stats.length)
 					stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 					let data=[]
@@ -34,12 +34,12 @@ module.exports = new Command({
 						let stat=stats[i]
 						let anteultimo=stats[i-1]
 						if((stat[value] || value=='slp') && anteultimo){
-							if(value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
-							else if(value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
+							if(stat && anteultimo  && value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
+							else if(stat && anteultimo  &&  value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
 							data.push({date:utils.getDayName(stat.date, "es-ES"),slp:stat[value]})
 						}
 					}
-					if(stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
+					if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
 					data_users.push(data)
 				}
 				let data_final={}

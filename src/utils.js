@@ -144,6 +144,6 @@ module.exports = {
         let final=[ initial[1], initial[0], initial[2] ].join('/'); 
         var date = new Date(final);
         //console.log(dateStr,final)
-        return date.toLocaleDateString(locale, { weekday: 'long' });        
+        return initial[0]+'-'+date.toLocaleDateString(locale, { weekday: 'long' });        
     }
 }
