@@ -67,8 +67,8 @@ module.exports = new Command({
 				{ name: 'Axies', value: ''+(count_users*3),inline:true},
 				{ name: 'Copas Promedio', value: ''+Math.round((utils.getArrSum(chart_data.prom_mmr)/chart_data.prom_mmr.length)),inline:true},
 				{ name: 'SLP Promedio', value: ''+Math.round((utils.getArrSum(chart_data.prom_slp)/chart_data.prom_slp.length)),inline:true},
-				{ name: 'SLP dia', value: ''+Math.round((utils.getArrSum(chart_data.prom_slp))),inline:true},
-				{ name: 'USD por dia', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)),inline:true},
+				{ name: 'SLP dia', value: ''+Math.round((utils.getArrSum(chart_data.slp))),inline:true},
+				{ name: 'USD por dia', value: ''+Math.round((utils.getArrSum(chart_data.usd))),inline:true},
 				{ name: 'USD semana', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*7),inline:true},
 				{ name: 'USD mes', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*30),inline:true},
 			)
