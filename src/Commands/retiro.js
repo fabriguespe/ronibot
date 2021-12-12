@@ -25,6 +25,7 @@ module.exports = new Command({
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
         try{
+            if(message.author.id!=533994454391062529)return message.reply('No tienes permisos para correr este comando')
             if(args.length==3){
                 const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
 
