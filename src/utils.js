@@ -19,7 +19,6 @@ logger.level = "debug";
 module.exports = {
     desasociar:async function(message){
         let msg=message.content
-        console.log('entra',msg)
         let db = await DbConnection.Get();
         var myquery = { discord:message.author.id,pass:msg };
         var newvalues = { $set: {discord: null} };
@@ -59,6 +58,7 @@ module.exports = {
     },
     esJugador:function(message){
         let r1=message.guild.roles.cache.find(r => r.name === "Jugador")
+        console.log('es jugador:' +r1 && message.member.roles.cache.has(r1.id))
         if(r1 && message.member.roles.cache.has(r1.id))return true
         //let r1=message.guild.roles.cache.find(r => r.name === "Manager")
         //if(r1 && message.member.roles.cache.has(r1.id))return true

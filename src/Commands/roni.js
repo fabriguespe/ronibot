@@ -19,11 +19,11 @@ module.exports = new Command({
 		}else{
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 		} 
-		
         let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+message.author.username);
 		if(eliminar)eliminar.delete()
         let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
-        let rCategoria = message.guild.channels.cache.find(c => c.name == utils.esJugador(message)?'COMUNIDAD':'INGRESOS' && c.type == "GUILD_CATEGORY");////
+        let rCategoria = message.guild.channels.cache.find(c => c.name == (utils.esJugador(message)?'COMUNIDAD':'INGRESOS') && c.type=='GUILD_CATEGORY');
+		console.log(rSoporte.id,rCategoria.id)
 		let thread=await message.guild.channels.create('ticket-'+message.author.username, { 
             type: 'GUILD_TEXT',
 			parent:rCategoria.id,
@@ -33,8 +33,6 @@ module.exports = new Command({
                 {id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
             ]})
         .then(chan=>{return chan})
-        .catch(console.error);
-
         let embed = new MessageEmbed().setTitle('Nuevo Ticket')
         .setDescription(`Podes continuar en el siguiente canal <#${thread.id}>`).setColor('GREEN').setTimestamp()
 

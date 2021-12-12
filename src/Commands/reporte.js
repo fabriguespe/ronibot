@@ -85,7 +85,7 @@ module.exports = new Command({
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
-					if(stat[value] || value=='slp' && anteultimo){
+					if((stat[value] || value=='slp') && anteultimo){
 						if(value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
 						else if(value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
 						data.values.push(stat[value])
