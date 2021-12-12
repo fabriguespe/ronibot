@@ -76,7 +76,7 @@ module.exports = new Command({
                         
                         if(tr_raw.status){            
                             let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
-                            return message.reply({content: ` `,embeds: [embed]})
+                            message.reply({content: ` `,embeds: [embed]})
                         }        
                         else message.reply("ERROR Status False");
 
