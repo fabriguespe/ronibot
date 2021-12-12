@@ -14,8 +14,8 @@ module.exports = new Command({
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
 		if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
+			row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
-			//row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 		}else{
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 		} 
@@ -57,7 +57,6 @@ module.exports = new Command({
 
 		const collector = thread.createMessageComponentCollector({ componentType: 'BUTTON'/*, time: 600000*/ });
 		collector.on('collect',  async interaction => {
-			console.log(interaction)
 			await interaction.deferUpdate();
 			let customId=interaction.customId
 			lascomnd=interaction.customId
@@ -66,7 +65,34 @@ module.exports = new Command({
 				interaction.channel.send(`Hola! <@${jsid}>, necesito de tu ayuda`)
 			}else if( customId=='asociar' || customId=='desasociar'){
 				interaction.channel.send('Por favor ingresa tu contraseña. Tenes 60 segundos.')
+				
 			}else if( customId=='cobros'){
+				interaction.channel.send('Aguarde un momento...') 
+				await utils.claim(93,interaction.message)
+				
+				/*let last_claim=await utils.get_balance()
+				let hours = Math.abs(new Date() - last_claim) / 36e5;
+				let days=hours/24
+				let prom=balance/days
+				let porcetage=prom<=50?10:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
+				console.log(last_claim,hours,days,prom,porcetage)*/
+				/*
+				interaction.channel.send('Tenes '+balance+' para reclamar\nTu promedio de SLP es de '+(balance/days)+'\nreclamar? SI / NO').then(function (message) {
+					const filter = m => m.author.id === message.author.id;
+					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
+					collector.on('collect', m => {
+						console.log(m)
+						if(m.content=='incorrecto' || m.content=='cool' || m.content=='not cool')return
+						if (m.content.toLowerCase() == "si") {
+							message.channel.send("cool")
+						} else if (m.content.toLowerCase() == "no") {
+							message.channel.send("not cool")
+						} else {
+							message.channel.send("incorrecto")
+						} 
+					})
+				})*/
+
 			}else if( customId=='cerrar_ticket'){
 				const thread = interaction.channel
 				thread.delete();

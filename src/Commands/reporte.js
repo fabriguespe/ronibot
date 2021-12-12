@@ -59,7 +59,7 @@ module.exports = new Command({
 						//{ name: 'Precio', value: ''+slp+'USD'},
 						{ name: 'SLP Total', value: ''+data.total_slp,inline:true},
 						{ name: 'Copas', value: ''+data.mmr,inline:true},
-						{ name: 'Ultimo reclamo', value: ''+FROM_UNIX_EPOCH(data.last_claim),inline:true},
+						{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(data.last_claim),inline:true},
 						{ name: 'Nombre', value: ''+data.name,inline:true},
 						{ name: 'Estado', value: ''+data.nota==undefined || data.nota==null?'Aceptado':data.nota,inline:true},
 						{ name: 'Vacio', value: 'Vacio',inline:true},
@@ -114,7 +114,3 @@ module.exports = new Command({
 
 	}
 });
-
-function FROM_UNIX_EPOCH(epoch_in_secs) {
-	return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
-  }

@@ -161,7 +161,3 @@ module.exports = new Command({
 
 	}
 });
-
-function FROM_UNIX_EPOCH(epoch_in_secs) {
-	return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
-  }
