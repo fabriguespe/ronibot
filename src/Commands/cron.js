@@ -10,6 +10,7 @@ module.exports = new Command({
 	name: "cron",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
+		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
 		
 		utils.log('Timezone!')
 		let db = await DbConnection.Get();

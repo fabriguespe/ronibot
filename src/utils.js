@@ -56,13 +56,17 @@ module.exports = {
             return message.reply('Ese código es invalido')
         }
     },
+    esFabri:function(message){
+        return message.author.id==533994454391062529
+    },
+    esManager:function(message){
+        let r1=message.guild.roles.cache.find(r => r.name === "Manager")
+        if(r1 && message.member.roles.cache.has(r1.id))return true
+        return false
+    },
     esJugador:function(message){
         let r1=message.guild.roles.cache.find(r => r.name === "Jugador")
-        console.log('es jugador:' +r1 && message.member.roles.cache.has(r1.id))
         if(r1 && message.member.roles.cache.has(r1.id))return true
-        //let r1=message.guild.roles.cache.find(r => r.name === "Manager")
-        //if(r1 && message.member.roles.cache.has(r1.id))return true
-        
         return false
     },
     log:function (log,message=null){
@@ -133,6 +137,13 @@ module.exports = {
     },
     isSafe:function(wallet){
         return wallet in secrets
+    },
+    getArrSum(array){
+        let sum=0
+        for(let i in array){
+            sum+=array[i]
+        }
+        return sum
     },
     parseDate:function(dateStr, locale){
         var initial =dateStr.split(/\//);

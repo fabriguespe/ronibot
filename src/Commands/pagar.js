@@ -24,6 +24,7 @@ module.exports = new Command({
 	name: "pagar",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
+		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
         if(args.length==4){
 			
             //IDs

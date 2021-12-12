@@ -10,11 +10,10 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "general",
+	name: "negocio",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
-		
+		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
@@ -69,6 +68,9 @@ module.exports = new Command({
 				{ name: 'Copas Promedio', value: ''+Math.round((utils.getArrSum(chart_data.prom_mmr)/chart_data.prom_mmr.length)),inline:true},
 				{ name: 'SLP Promedio', value: ''+Math.round((utils.getArrSum(chart_data.prom_slp)/chart_data.prom_slp.length)),inline:true},
 				{ name: 'SLP dia', value: ''+Math.round((utils.getArrSum(chart_data.prom_slp))),inline:true},
+				{ name: 'USD por dia', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)),inline:true},
+				{ name: 'USD semana', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*7),inline:true},
+				{ name: 'USD mes', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*30),inline:true},
 			)
 			message.reply({ embeds: [exampleEmbed] });
 			let chart = new QuickChart().setConfig({
@@ -80,7 +82,15 @@ module.exports = new Command({
 			}).setWidth(800).setHeight(400);
 			message.reply(`Grafico: ${await chart.getShortUrl()}`);
 
-			
+			chart = new QuickChart().setConfig({
+				type: 'bar',
+				data: { 
+					labels: chart_data.days,
+					datasets:[{label: 'usd-day', data: chart_data.usd}] 
+				},
+			}).setWidth(800).setHeight(400);
+			message.reply(`Grafico: ${await chart.getShortUrl()}`);
+	
 			
 			chart = new QuickChart().setConfig({
 				type: 'bar',
@@ -99,7 +109,8 @@ module.exports = new Command({
 				},
 			}).setWidth(800).setHeight(400);
 			message.reply(`Grafico: ${await chart.getShortUrl()}`);
-			
+	
+
 		}catch(e){
 			console.log(e.message)
 		}

@@ -12,8 +12,8 @@ module.exports = new Command({
 		//message.channel.bulkDelete(1);
 		let row=new MessageActionRow()
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
-		//row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 		if(utils.esJugador(message)){
+			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
 			//row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 		}else{
@@ -23,7 +23,6 @@ module.exports = new Command({
 		if(eliminar)eliminar.delete()
         let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
         let rCategoria = message.guild.channels.cache.find(c => c.name == (utils.esJugador(message)?'COMUNIDAD':'INGRESOS') && c.type=='GUILD_CATEGORY');
-		console.log(rSoporte.id,rCategoria.id)
 		let thread=await message.guild.channels.create('ticket-'+message.author.username, { 
             type: 'GUILD_TEXT',
 			parent:rCategoria.id,
@@ -50,21 +49,21 @@ module.exports = new Command({
             components: [row]
         })
 		let lascomnd=''
-		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1,time:600000})
+		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1/*,time:600000*/})
 		mcollector.on('collect', async message => {
 			if(lascomnd=='desasociar')return utils.desasociar(message)
 			else if(lascomnd=='asociar')return utils.asociar(message)
 		});
 
-		const collector = thread.createMessageComponentCollector({ componentType: 'BUTTON', time: 600000 });
+		const collector = thread.createMessageComponentCollector({ componentType: 'BUTTON'/*, time: 600000*/ });
 		collector.on('collect',  async interaction => {
+			console.log(interaction)
 			await interaction.deferUpdate();
 			let customId=interaction.customId
-			console.log(interaction.customId)
 			lascomnd=interaction.customId
 			let jsid=877625345996632095//jeisson
 			if( customId=='ticket_soporte'){
-				interaction.channel.send(`Hola! <@${jsid}>`)
+				interaction.channel.send(`Hola! <@${jsid}>, necesito de tu ayuda`)
 			}else if( customId=='asociar' || customId=='desasociar'){
 				interaction.channel.send('Por favor ingresa tu contraseña. Tenes 60 segundos.')
 			}else if( customId=='cobros'){

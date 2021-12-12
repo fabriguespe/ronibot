@@ -13,6 +13,7 @@ module.exports = new Command({
 	name: "reporte",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
+		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
 			let eluser = await db.collection('users').findOne({num:args[1]})
