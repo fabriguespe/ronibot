@@ -13,9 +13,6 @@ module.exports = new Command({
 	name: "ayuda",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		
-		
-		
 		let help=""
 		help+="!roni para poder validarte y realizar cobros\n\n"
 		if(utils.esManager(message))help+="!reporte XX para ver info del jugador\n\n"
