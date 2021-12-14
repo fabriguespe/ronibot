@@ -150,7 +150,7 @@ module.exports = new Command({
 	
 
 		}catch(e){
-			console.log(e.message)
+			utils.log(e.message,message)
 		}
 
 	}
