@@ -19,7 +19,7 @@ module.exports = new Command({
 			await db.collection("users").updateOne({ accountAddress:quien},{ $set: {'name':name,'nota':'aprobada'}} )
 			message.reply('El jugador fue aprobado con exito')
 			let rCanal = message.guild.channels.cache.find(c => c.id == 917380557099380816);//canal ingresos
-			rCanal.send('Felicitaciones a '+name+' bienvenido a ronimate!. Ya puedes escribir !roni para validarte.')
+			rCanal.send('Felicitaciones a '+args[1]+':'+name+' bienvenido a ronimate!. Ya puedes escribir !roni para validarte.')
 
 		}
 	}
