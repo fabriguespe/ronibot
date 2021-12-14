@@ -15,7 +15,6 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
 		try{
-			console.log('entra')
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
 			let data_users=[]
@@ -30,7 +29,7 @@ module.exports = new Command({
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
-					if(stat && anteultimo){
+					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined){
 						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
 						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
 						data.push({date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
@@ -70,7 +69,7 @@ module.exports = new Command({
 			utils.log(JSON.stringify(chart_data.prom_mmr),message)
 			utils.log(JSON.stringify(chart_data.prom_slp),message)
 			utils.log(JSON.stringify(chart_data.slp),message)
-			
+
 			let exampleEmbed = new MessageEmbed().setColor('#0099ff')
 			exampleEmbed = exampleEmbed.addFields(
 				{ name: 'Precio SLP', value: ''+slp_price,inline:true},
