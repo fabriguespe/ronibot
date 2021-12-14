@@ -67,7 +67,10 @@ module.exports = new Command({
 				chart_data.prom_slp.push(Object.values(data_por_dia)[i].slp/count_users)
 				chart_data.prom_mmr.push(Object.values(data_por_dia)[i].mmr/count_users)
 			}
-			console.log(Math.round((utils.getArrSum(chart_data.prom_mmr)/chart_data.prom_mmr.length)))
+			utils.log(chart_data.prom_mmr.length,message)
+			utils.log(chart_data.prom_mmr.length,message)
+			utils.log(chart_data.prom_mmr.length,message)
+			
 			let exampleEmbed = new MessageEmbed().setColor('#0099ff')
 			exampleEmbed = exampleEmbed.addFields(
 				{ name: 'Precio SLP', value: ''+slp_price,inline:true},
@@ -77,7 +80,7 @@ module.exports = new Command({
 				{ name: 'SLP Promedio', value: ''+Math.round((utils.getArrSum(chart_data.prom_slp)/chart_data.prom_slp.length)),inline:true},
 				{ name: 'SLP día', value: ''+Math.round((utils.getArrSum(chart_data.slp)/chart_data.slp.length)),inline:true},
 			)
-			if(utils.esFabri(message) && message.channel.id==917380557099380816){
+			if(utils.esFabri(message) ){
 				exampleEmbed = exampleEmbed.addFields(
 					{ name: 'USD por dia', value: ''+Math.round((utils.getArrSum(chart_data.usd))),inline:true},
 					{ name: 'USD semana', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*7),inline:true},
@@ -118,7 +121,7 @@ module.exports = new Command({
 			message.reply(`Grafico: ${await chart.getShortUrl()}`);
 			
 			
-			if(utils.esFabri(message) && message.channel.id==917380557099380816){
+			if(utils.esFabri(message)){
 				chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 

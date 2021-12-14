@@ -166,8 +166,7 @@ module.exports = {
         return 10
     },
     esFabri:function(message){
-        console.log(message.author.id)
-        return message.author.id==533994454391062529
+        return message.author.id==533994454391062529 && message.channel.id==917380557099380816
     },
     esManager:function(message){
         let r1=message.guild.roles.cache.find(r => r.name === "Manager")
