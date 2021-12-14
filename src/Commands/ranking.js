@@ -51,7 +51,7 @@ module.exports = new Command({
 			let help=""
 			for(let ii in users){
 				let user=users[ii]
-				help+='#'+user.num+" "+user.name+' SLP:'+user.slp_prom+' COPAS:'+user.mmr_prom+'\n'
+				help+='#'+user.num+" "+user.name+' SLP:'+user.slp_prom+' COPAS:'+user.mmr_prom+'\n\n'
 			}	
 			
 			let embed = new MessageEmbed().setTitle('Ranking').setDescription(help).setColor('GREEN').setTimestamp()
