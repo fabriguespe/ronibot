@@ -66,9 +66,6 @@ module.exports = new Command({
 				chart_data.prom_slp.push(Object.values(data_por_dia)[i].slp/count_users)
 				chart_data.prom_mmr.push(Object.values(data_por_dia)[i].mmr/count_users)
 			}
-			utils.log(JSON.stringify(chart_data.prom_mmr),message)
-			utils.log(JSON.stringify(chart_data.prom_slp),message)
-			utils.log(JSON.stringify(chart_data.slp),message)
 
 			let exampleEmbed = new MessageEmbed().setColor('#0099ff')
 			exampleEmbed = exampleEmbed.addFields(
