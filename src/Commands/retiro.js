@@ -80,7 +80,7 @@ module.exports = new Command({
                     utils.log(tr_raw.status)
                     
                     if(tr_raw.status){            
-                        let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
+                        let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\nRecurda actualizar !update "+args[1]+" nota retirar").setColor('GREEN').setTimestamp()
                         message.reply({content: ` `,embeds: [embed]})
                     }        
                     else message.reply("ERROR Status False");
