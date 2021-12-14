@@ -36,7 +36,7 @@ module.exports = new Command({
 						data.push({date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 					}
 				}
-				if(stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
+				if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
 				data_users.push(data)
 			}
 			let data_por_dia={}
