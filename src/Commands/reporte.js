@@ -90,7 +90,6 @@ module.exports = new Command({
 						if(value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
 						else if(value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
 						data.values.push(stat[value])
-						console.log(stat.date)
 						data['days'].push(utils.getDayName(stat.date, "es-ES"))
 					}
 				}

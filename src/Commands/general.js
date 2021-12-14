@@ -22,7 +22,7 @@ module.exports = new Command({
 			for(let ii in users){
 				let eluser=users[ii]
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
-				//console.log(eluser.accountAddress,stats.length)
+
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				let data=[]
 				
@@ -66,6 +66,7 @@ module.exports = new Command({
 				chart_data.prom_slp.push(Object.values(data_por_dia)[i].slp/count_users)
 				chart_data.prom_mmr.push(Object.values(data_por_dia)[i].mmr/count_users)
 			}
+			console.log(Math.round((utils.getArrSum(chart_data.prom_mmr)/chart_data.prom_mmr.length)))
 			let exampleEmbed = new MessageEmbed().setColor('#0099ff')
 			exampleEmbed = exampleEmbed.addFields(
 				{ name: 'Precio SLP', value: ''+slp_price,inline:true},

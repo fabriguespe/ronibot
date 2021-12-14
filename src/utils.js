@@ -79,7 +79,6 @@ module.exports = {
             message.channel.send("Haciendo el claim de tus SLP:\n Aguarde un momento...");
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
-            //console.log(tr_raw)
 
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
@@ -114,7 +113,7 @@ module.exports = {
             message.channel.send("Se te transferiran tus SLP a tu wallet: "+from_acc+"\n Aguarde un momento...");
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
-            //console.log(tr_raw)
+       
 
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
@@ -154,7 +153,6 @@ module.exports = {
                 date:new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
                 
             }};
-            console.log('jaja')
             await db.collection("users").updateOne(myquery, newvalues)
             let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");
             message.member.roles.add(rJugador);
@@ -263,7 +261,6 @@ module.exports = {
         var initial =dateStr.split(/\//);
         let final=[ initial[1], initial[0], initial[2] ].join('/'); 
         var date = new Date(final);
-        //console.log(dateStr,final)
         return initial[0]+'-'+date.toLocaleDateString(locale, { weekday: 'long' });        
     }
 }

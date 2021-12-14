@@ -21,7 +21,7 @@ module.exports = new Command({
 				let user=users[i]
 				url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
 				let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-				//console.log(data)
+			
 				data.accountAddress=user.accountAddress
 				data.user_id=user._id
 				data.last_updated=user.last_updated

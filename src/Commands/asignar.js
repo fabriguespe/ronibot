@@ -46,7 +46,6 @@ module.exports = new Command({
             
                 //build
                 let axies_ids=args[1].split(",");
-                console.log(axies_ids)
                 for(let i in axies_ids){
                     let axie_id=axies_ids[i]
                     console.log('Transfer:'+axie_id)

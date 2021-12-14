@@ -31,7 +31,6 @@ module.exports = new Command({
             let balance=args[1]
             let from_acc=await utils.getWalletByNum(args[2])
             let to_acc=await utils.getWalletByNum(args[3])
-            console.log(balance,from_acc,to_acc)
             //Data
             if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.reply(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')
