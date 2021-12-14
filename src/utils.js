@@ -237,11 +237,9 @@ module.exports = {
         return axies
     },
     getWalletByNum:async function(num){
-
-        if(num=='BREED')return 'ronin:858984a23b440e765f35ff06e896794dc3261c62'
-        if(num=='VENTA')return 'ronin:33cd85881e79cc7c21d92218711821c7c919f330'
+        if(num=='BREED' || num=='breed')return 'ronin:858984a23b440e765f35ff06e896794dc3261c62'
+        if(num=='VENTA' || num=='venta')return 'ronin:33cd85881e79cc7c21d92218711821c7c919f330'
         let db = await DbConnection.Get();
-        console.log(num)
 		let user = await db.collection('users').findOne({num:num.toString()})
         if(user)return user.accountAddress
         else return null
