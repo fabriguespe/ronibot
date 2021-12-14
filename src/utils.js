@@ -166,6 +166,7 @@ module.exports = {
         return 10
     },
     esFabri:function(message){
+        console.log(message.author.id)
         return message.author.id==533994454391062529
     },
     esManager:function(message){

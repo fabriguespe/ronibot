@@ -15,6 +15,7 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
 		try{
+			console.log('entra')
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
 			let data_users=[]
@@ -76,7 +77,7 @@ module.exports = new Command({
 				{ name: 'SLP Promedio', value: ''+Math.round((utils.getArrSum(chart_data.prom_slp)/chart_data.prom_slp.length)),inline:true},
 				{ name: 'SLP día', value: ''+Math.round((utils.getArrSum(chart_data.slp)/chart_data.slp.length)),inline:true},
 			)
-			if(utils.esFabri(message) && message.channel.name=='comandos-test'){
+			if(utils.esFabri(message) && message.channel.id==917380557099380816){
 				exampleEmbed = exampleEmbed.addFields(
 					{ name: 'USD por dia', value: ''+Math.round((utils.getArrSum(chart_data.usd))),inline:true},
 					{ name: 'USD semana', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*7),inline:true},
@@ -109,14 +110,6 @@ module.exports = new Command({
 						  "display": true,
 						  "position": "left",
 						  "stacked": true
-						},
-						{
-						  "id": "y2",
-						  "display": true,
-						  "position": "right",
-						  "gridLines": {
-							"drawOnChartArea": false
-						  }
 						}
 					  ]
 					}
@@ -125,7 +118,7 @@ module.exports = new Command({
 			message.reply(`Grafico: ${await chart.getShortUrl()}`);
 			
 			
-			if(utils.esFabri(message) && message.channel.name=='comandos-test'){
+			if(utils.esFabri(message) && message.channel.id==917380557099380816){
 				chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
