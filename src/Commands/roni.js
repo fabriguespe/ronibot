@@ -33,7 +33,7 @@ module.exports = new Command({
             ]})
         .then(chan=>{return chan})
         let embed = new MessageEmbed().setTitle('Nuevo Ticket')
-        .setDescription(`Podes continuar en el siguiente canal <#${thread.id}>`).setColor('GREEN').setTimestamp()
+        .setDescription(`CLICK AQUI PARA CONTINUAR ----->>> <#${thread.id}>`).setColor('GREEN').setTimestamp()
 
         await message.reply({
             content: ` `,
