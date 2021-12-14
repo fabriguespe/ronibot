@@ -13,6 +13,9 @@ module.exports = new Command({
 	name: "ayuda",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
+		
+		
+		
 		let help=""
 		help+="!roni para poder validarte y realizar cobros\n\n"
 		if(utils.esManager(message))help+="!reporte XX para ver info del jugador\n\n"
@@ -23,6 +26,6 @@ module.exports = new Command({
 		if(utils.esFabri(message))help+="!update XX FIELD VALUE para actualizar (nota,ScholarPayoutAddress)\n\n"
 		let embed = new MessageEmbed().setTitle('Comandos').setDescription(help).setColor('GREEN').setTimestamp()
 		return message.reply({content: ` `,embeds: [embed]})
-
+		
 	}
 });
