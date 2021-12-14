@@ -78,7 +78,7 @@ module.exports = new Command({
 			)
 			if(utils.esFabri(message) ){
 				exampleEmbed = exampleEmbed.addFields(
-					{ name: 'USD por dia', value: ''+Math.round((utils.getArrSum(chart_data.usd))),inline:true},
+					{ name: 'USD por dia', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)),inline:true},
 					{ name: 'USD semana', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*7),inline:true},
 					{ name: 'USD mes', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*30),inline:true},
 				)
