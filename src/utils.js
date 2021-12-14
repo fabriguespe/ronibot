@@ -141,8 +141,8 @@ module.exports = {
         let resultpw = await db.collection('users').findOne({pass:msg})
         //if(resultpw && (resultpw.num.includes('2_') || parseInt(resultpw.num)>=20))return message.reply('Todavia no le toca a tu lote. Por favor espera a ser llamado')
         if(resultpw && resultpw.nota=='Entrevista'){
-            message.reply('Tu estatus está en entrevista por tal motivo no podemos validarte aún cuando sea aprobado podrás validarte\nEste canal se cerrara en 3 segundos.')
-            setTimeout(() => { message.channel.delete()}, 3000)
+            message.reply('Estas en estado de Entrevista, por tal motivo no podemos validarte aún cuando sea aprobado podrás validarte\nEste canal se cerrara en 5 segundos.')
+            setTimeout(() => { message.channel.delete()}, 5000)
         }else if(resultpw){
             var myquery = { pass: msg };
             var newvalues = { $set: {

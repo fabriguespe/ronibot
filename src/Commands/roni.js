@@ -35,9 +35,7 @@ module.exports = new Command({
         let embed = new MessageEmbed().setTitle('Nuevo Ticket')
         .setDescription(`CLICK AQUI PARA CONTINUAR ----->>> <#${thread.id}>`).setColor('GREEN').setTimestamp()
 
-        await message.reply({
-            content: ` `,
-            embeds: [embed]
+        await message.reply({content: ` `, embeds: [embed]
         })
 
         embed = new MessageEmbed().setTitle('Ticket')
