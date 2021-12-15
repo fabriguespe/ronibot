@@ -30,6 +30,7 @@ module.exports = new Command({
 				data.timestamp.setDate(data.timestamp.getDate() - 1)
 				data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
 				new_data.push(data)
+				
 				await db.collection('stats').insertOne(data)
 			}
 		}catch (e) {
