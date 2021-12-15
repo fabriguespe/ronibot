@@ -13,36 +13,30 @@ module.exports = new Command({
 		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
 		
 		utils.log('Timezone!')
-		let db = await DbConnection.Get();
-		let new_data=[]
-		let users=await db.collection('users').find({}).toArray()
-		try{
-			for(let i in users){
-				let user=users[i]
-				url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
-				let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+	let db = await DbConnection.Get();
+	let new_data=[]
+	let users=await db.collection('users').find({}).toArray()
+	try{
+		for(let i in users){
+			let user=users[i]
+			url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
+			let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+			data.accountAddress=user.accountAddress
+			data.user_id=user._id
+			data.last_updated=user.last_updated
 			
-				data.accountAddress=user.accountAddress
-				data.user_id=user._id
-				data.last_updated=user.last_updated
-				data.timestamp=new Date(Date.now())
-				data.date=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear(); 
-				//utils.log(user.accountAddress+'-'+data.total_slp)
-				let ultimo=await db.collection('stats').findOne({accountAddress:user.accountAddress},  { sort: { date_register: -1 } }, undefined)
-				utils.log(ultimo)
-				if(ultimo && ultimo.total_slp){
-					data.day_slp=(data.in_game_slp)-(ultimo.in_game_slp)
-					utils.log(data.day_slp)
-					//utils.log(user.accountAddress+' '+data.day_slp)
-				}
-				new_data.push(data)
-				await db.collection('stats').insertOne(data)
-			}
-		}catch (e) {
-			utils.log(e)
+			data.timestamp = new Date();
+			data.timestamp.setDate(data.timestamp.getDate() - 1)
+
+			data.date=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear(); 
+			new_data.push(data)
+			await db.collection('stats').insertOne(data)
 		}
-		
-		utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+	}catch (e) {
+		utils.log(e)
+	}
 	
+	utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+
 	}
 });
