@@ -7,7 +7,7 @@ var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 var utils = require(path.resolve(__dirname, "../utils.js"));
 
 module.exports = new Command({
-	name: "crons",
+	name: "cron",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
