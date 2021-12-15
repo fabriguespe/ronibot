@@ -27,9 +27,7 @@ module.exports = new Command({
 				
 				data.timestamp = new Date();
 				data.timestamp.setDate(data.timestamp.getDate() - 1)
-
 				data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
-				console.log(data.date)
 				new_data.push(data)
 				await db.collection('stats-test').insertOne(data)
 			}
