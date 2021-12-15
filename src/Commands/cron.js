@@ -17,6 +17,7 @@ module.exports = new Command({
 		let new_data=[]
 		let users=await db.collection('users').find({}).toArray()
 		try{
+			message.reply('Se empezara a procesar')
 			for(let i in users){
 				let user=users[i]
 				url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
