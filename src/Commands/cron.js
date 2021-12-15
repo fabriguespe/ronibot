@@ -25,7 +25,7 @@ module.exports = new Command({
 				data.accountAddress=user.accountAddress
 				data.user_id=user._id
 				data.last_updated=user.last_updated
-				user.in_game_slp=user.in_game_slp/2
+				data.in_game_slp=data.in_game_slp/2
 				data.timestamp = new Date();
 				data.timestamp.setDate(data.timestamp.getDate() - 1)
 				data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
