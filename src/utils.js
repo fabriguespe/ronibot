@@ -89,7 +89,7 @@ module.exports = {
 				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.recibe,num:data.num,from_acc:from_acc})
             }
         }catch(e){
-            utils.log("ERROR: "+e.message,message)
+            this.log("ERROR: "+e.message,message)
         }
         
     },
@@ -132,7 +132,7 @@ module.exports = {
             if(tr_raw.status)return tr_raw.transactionHash
             else return false          
         }catch(e){
-            utils.log("ERROR: "+e.message,message)
+            this.log("ERROR: "+e.message,message)
         }
     },
     claimData:async function(currentUser,message){
@@ -175,7 +175,7 @@ module.exports = {
             return {num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
 
         }catch(e){
-            utils.log("ERROR: "+e.message,message)
+            this.log("ERROR: "+e.message,message)
         }
     },
     desasociar:async function(message){
