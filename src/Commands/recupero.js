@@ -10,7 +10,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "ranking",
+	name: "recupero",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
@@ -46,15 +46,15 @@ module.exports = new Command({
 				
 
 			}
-			users=users.filter(u => u.slp_prom>0)
-			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(0, 10);
-			help="PEORES"
-			for(let ii in top){
-				let user=top[ii]
+			users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
+			let bottom=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(users.length-1-10, users.length);
+			let help=''
+			for(let ii in bottom){
+				let user=bottom[ii]
 				help+='#'+user.num+" "+user.name+' SLP:'+user.slp_prom+' COPAS:'+user.mmr_prom+'\n\n'
 			}	
 			
-			let embed = new MessageEmbed().setTitle('Ranking').setDescription(help).setColor('GREEN').setTimestamp()
+			let embed = new MessageEmbed().setTitle('Recupero').setDescription(help).setColor('GREEN').setTimestamp()
 			return message.reply({content: ` `,embeds: [embed]})
 
 		}catch(e){
