@@ -11,6 +11,10 @@ module.exports = new Command({
 	async run(message, args, client) {
 		//message.channel.bulkDelete(1);
 		let row=new MessageActionRow()
+		let currentUser=message.author.id
+
+
+		
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
 		if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
@@ -19,13 +23,21 @@ module.exports = new Command({
 		}else{
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 		} 
-        let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+message.author.username);
-		if(eliminar)eliminar.delete()
-        let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
-        let rCategoria = message.guild.channels.cache.find(c => c.name == (utils.esJugador(message)?'COMUNIDAD':'INGRESOS') && c.type=='GUILD_CATEGORY');
+		try{
+
+			let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+message.author.username);
+			if(eliminar)await eliminar.delete()
+		}catch(e){
+			console.log("ERROR",e.message)
+		}
+		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
+		//909634641030426674 INGRESOS
+		//866879155350143006 COMNIDAD
+        let rCategoria = message.guild.channels.cache.find(c => c.id == (utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
+	
 		let thread=await message.guild.channels.create('ticket-'+message.author.username, { 
             type: 'GUILD_TEXT',
-			parent:rCategoria.id,
+			parent:rCategoria?rCategoria.id:null,
             permissionOverwrites: [
                 {id: message.author.id,allow: ['VIEW_CHANNEL']},
                 {id: rSoporte.id,allow: ['VIEW_CHANNEL']},
@@ -35,8 +47,7 @@ module.exports = new Command({
         let embed = new MessageEmbed().setTitle('Nuevo Ticket')
         .setDescription(`CLICK AQUI PARA CONTINUAR ----->>> <#${thread.id}>`).setColor('GREEN').setTimestamp()
 
-        await message.reply({content: ` `, embeds: [embed]
-        })
+        await message.reply({content: ` `, embeds: [embed]})
 
         embed = new MessageEmbed().setTitle('Ticket')
         .setDescription(`Hola ${message.author}, soy Roni. \nCon que deseas que te ayude?`).setColor('GREEN').setTimestamp()
@@ -66,16 +77,13 @@ module.exports = new Command({
 				
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
-				await utils.claim(93,interaction.message)
+				let yo=await utils.getUserByDiscord(currentUser)
+				if(!yo)return interaction.channel.send('Usuario invalido')
+				let data=await utils.claimData(yo,interaction.message)
 				
-				/*let last_claim=await utils.get_balance()
-				let hours = Math.abs(new Date() - last_claim) / 36e5;
-				let days=hours/24
-				let prom=balance/days
-				let porcetage=prom<=50?10:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
-				console.log(last_claim,hours,days,prom,porcetage)*/
-				/*
-				interaction.channel.send('Tenes '+balance+' para reclamar\nTu promedio de SLP es de '+(balance/days)+'\nreclamar? SI / NO').then(function (message) {
+				if(data.unclaimed==0)return message.channel.send('Tu cuenta no tiene SLP para reclamar') 
+				
+				interaction.channel.send('\nReclamar? SI / NO').then(function (message) {
 					const filter = m => m.author.id === message.author.id;
 					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
 					collector.on('collect', m => {
@@ -89,7 +97,7 @@ module.exports = new Command({
 							message.channel.send("incorrecto")
 						} 
 					})
-				})*/
+				})
 
 			}else if( customId=='cerrar_ticket'){
 				const thread = interaction.channel

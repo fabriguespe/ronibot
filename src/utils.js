@@ -6,6 +6,7 @@ var slp_abi = require(path.resolve(__dirname, "./Data/slp_abi.json"));
 var DbConnection = require(path.resolve(__dirname, "./Data/db.js"));
 const Web3 = require('web3');
 
+const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36"
 RONIN_PROVIDER_FREE = "https://proxy.roninchain.com/free-gas-rpc"
 
@@ -21,27 +22,8 @@ module.exports = {
     FROM_UNIX_EPOCH:function(epoch_in_secs){
         return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
-    claim:async function(db,message){
-        let from_acc=await this.getWalletByNum(db)
-        if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
-
-        let data= await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1", { method: "Get" }).then(res => res.json()).then((json) => { return json});
-        let unclaimed=data.total
-
-        data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-        unclaimed=data.in_game_slp
-        let last_claim=data.last_claim
-        let hours = Math.round(Math.abs(new Date() - new Date(last_claim)));
-        let days=Math.round(hours/24)
-        let prom=Math.round(unclaimed/days)
-        let porcetage=prom<=50?10:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
-        
-        console.log(unclaimed,last_claim,'hours: '+hours,'days: '+days,'prom: '+prom,porcetage)
-
-        return
-        
-        if(unclaimed==0)return message.channel.send('Tu cuenta no tiene SLP para reclamar') 
-        
+    claim:async function(data,message){
+        let from_acc=data.from_acc
         from_acc=from_acc.replace('ronin:','0x')
         let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
 
@@ -51,8 +33,10 @@ module.exports = {
         data=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
         let signature=data.blockchain_related.signature
         
+        
         const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
         let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
+        console.log(nonce)
         
         let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
         
@@ -123,6 +107,44 @@ module.exports = {
         }catch(e){
             message.channel.send("ERROR: "+e.message);
         }
+    },
+    claimData:async function(currentUser,message){
+        let from_acc=currentUser.accountAddress
+        if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
+
+        let data= await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1", { method: "Get" }).then(res => res.json()).then((json) => { return json});
+        let unclaimed=data.total
+
+        data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+        unclaimed=data.in_game_slp
+       
+		let ahora=new Date().getTime()
+		let date_ahora=this.FROM_UNIX_EPOCH(ahora/1000)
+		let date_last_claim=this.FROM_UNIX_EPOCH(data.last_claim)
+		let date_next_claim=this.FROM_UNIX_EPOCH(1639659803)
+        let diffInMilliSeconds=(ahora/1000)-data.last_claim
+		let days = Math.floor(diffInMilliSeconds / 3600) /24
+        let prom=Math.round(unclaimed/days)
+        let porcetage=prom<=50?10:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
+        let recibe=Math.round(unclaimed/(100/porcetage))
+
+        let embed = new MessageEmbed().setTitle('Calculo').addFields(
+            //{ name: 'Precio', value: ''+slp+'USD'},
+            { name: 'Address', value: ''+currentUser.scholarPayoutAddress},
+            { name: 'Fecha actual', value: ''+date_ahora,inline:true},
+            { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
+            { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
+            { name: 'ID', value: ''+currentUser.num,inline:true},
+            { name: 'SLP Unclaimed', value: ''+unclaimed,inline:true},
+            { name: 'Tu promedio', value: ''+prom,inline:true},
+            { name: 'Dias', value: ''+days,inline:true},
+            { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
+            { name: 'A recibir', value: ''+recibe,inline:true}
+        ).setColor('GREEN').setTimestamp()
+        message.channel.send({content: ` `,embeds: [embed]})
+
+        return {ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe}
+
     },
     desasociar:async function(message){
         let msg=message.content
@@ -233,6 +255,12 @@ module.exports = {
         let axies=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
         axies={count:axies.data.axies.total,axies:axies.data.axies.results}
         return axies
+    },
+    getUserByDiscord:async function(ID){
+        let db = await DbConnection.Get();
+		let user = await db.collection('users').findOne({discord:""+ID.toString()})
+        if(user)return user
+        else return null
     },
     getWalletByNum:async function(num){
         if(num=='BREED' || num=='breed')return 'ronin:858984a23b440e765f35ff06e896794dc3261c62'
