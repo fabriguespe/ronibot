@@ -16,10 +16,6 @@ SLP_CONTRACT = "0xa8754b9fa15fc18bb59458815510e40a12cd2014"
 WETH_CONTRACT = "0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5"
 RONIN_PROVIDER_FREE = "https://proxy.roninchain.com/free-gas-rpc"
 RONIN_PROVIDER = "https://api.roninchain.com/rpc"
-
-
-
-
 module.exports = new Command({
 	name: "claim",
 	description: "Shows the price of the slp!",

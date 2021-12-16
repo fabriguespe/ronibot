@@ -12,9 +12,6 @@ module.exports = new Command({
 		//message.channel.bulkDelete(1);
 		let row=new MessageActionRow()
 		let currentUser=message.author.id
-
-
-		
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
 		if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
@@ -23,8 +20,8 @@ module.exports = new Command({
 		}else{
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 		} 
-		try{
 
+		try{
 			let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+message.author.username);
 			if(eliminar)await eliminar.delete()
 		}catch(e){
@@ -82,19 +79,21 @@ module.exports = new Command({
 				let data=await utils.claimData(yo,interaction.message)
 				
 				if(data.unclaimed==0)return message.channel.send('Tu cuenta no tiene SLP para reclamar') 
+				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined)return message.channel.send('Tu cuenta no tiene wallet para depositar') 
 				
 				interaction.channel.send('\nReclamar? SI / NO').then(function (message) {
 					const filter = m => m.author.id === message.author.id;
 					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
-					collector.on('collect', m => {
-						console.log(m)
-						if(m.content=='incorrecto' || m.content=='cool' || m.content=='not cool')return
+					collector.on('collect',async m => {
+						if(m.author.id==908739379059626094)return //ronibot
 						if (m.content.toLowerCase() == "si") {
-							message.channel.send("cool")
+							await utils.claim(data,message)
 						} else if (m.content.toLowerCase() == "no") {
-							message.channel.send("not cool")
-						} else {
-							message.channel.send("incorrecto")
+							
+							message.reply('Este canal se cerrara en 3 segundos.')
+							setTimeout(() => { message.channel.delete()}, 3000)
+						} else{
+							message.channel.send("error...")
 						} 
 					})
 				})

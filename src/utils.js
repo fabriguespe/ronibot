@@ -11,6 +11,7 @@ USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 
 RONIN_PROVIDER_FREE = "https://proxy.roninchain.com/free-gas-rpc"
 
 var log4js = require("log4js");
+const { sign } = require('crypto');
 log4js.configure({
 	appenders: { cheese: { type: "file", filename: "log.log" } },
 	categories: { default: { appenders: ["cheese"], level: "error" } }
@@ -25,20 +26,19 @@ module.exports = {
     claim:async function(data,message){
         let from_acc=data.from_acc
         from_acc=from_acc.replace('ronin:','0x')
+        data.scholarPayoutAddress=data.scholarPayoutAddress.replace('ronin:','0x')
+
         let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
 
         //random message
         let random_msg=await this.create_random_msg()
         let jwt=await this.get_jwt(from_acc,random_msg,from_private)
-        data=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
-        let signature=data.blockchain_related.signature
-        
+        let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
+        let signature=jdata.blockchain_related.signature
         
         const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
-        let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-        console.log(nonce)
-        
         let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
+        let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
         
         //build
         let myData=contract.methods.checkpoint(
@@ -60,41 +60,57 @@ module.exports = {
         
         try{
             //CLAIM
-            message.channel.send("Haciendo el claim de tus SLP:\n Aguarde un momento...");
-            let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
+            message.channel.send("Realizando el claim de "+data.unclaimed+" SLP");
+            console.log(trans)
+            /*let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 return message.channel.send({content: ` `,embeds: [embed]})
-            }        
-            else message.channel.send("ERROR Status False");
+            }  
+            else message.channel.send("ERROR Status False");*/
+
+            await this.transfer(from_acc,data.scholarPayoutAddress,data.recibe,message)
+            await this.transfer(from_acc,'0x858984a23b440e765f35ff06e896794dc3261c62',data.unclaimed-data.recibe,message)
         }catch(e){
             message.channel.send("ERROR: "+e.message);
         }
-
-
-
-        nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
         
-        myData=contract.methods.transfer(
-            (web3.utils.toChecksumAddress(from_acc)),
-            unclaimed).encodeABI()
         
-        trans={
-                "chainId": 2020,
-                "gas": 492874,
-                "from": from_acc,
-                "gasPrice": 0,
-                "value": 0,
-                "to": SLP_CONTRACT,
-                "nonce": nonce,
-                data:myData
+    },
+    transfer:async function(from_acc,to_acc,balance,message){
+        from_acc=from_acc.replace('ronin:','0x')
+        to_acc=to_acc.replace('ronin:','0x')
+
+
+        const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
+        let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
+        
+        let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
+        
+        let myData=contract.methods.transfer(
+            (web3.utils.toChecksumAddress(to_acc)),
+            balance).encodeABI()
+        
+        let trans={
+            "chainId": 2020,
+            "gas": 492874,
+            "from": from_acc,
+            "gasPrice": 0,
+            "value": 0,
+            "to": SLP_CONTRACT,
+            "nonce": nonce,
+            data:myData
         }
+    
         
         try{
             //TRANSFER
-            message.channel.send("Se te transferiran tus SLP a tu wallet: "+from_acc+"\n Aguarde un momento...");
+            message.channel.send("Enviando "+balance+" SLP a la cuenta de"+(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'?'Ronimate':'el jugador'));
+            console.log(trans)
+            /*
+            let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
        
@@ -103,9 +119,9 @@ module.exports = {
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 return message.channel.send({content: ` `,embeds: [embed]})
             }        
-            else message.channel.send("ERROR Status False");
+            else message.channel.send("ERROR Status False");*/
         }catch(e){
-            message.channel.send("ERROR: "+e.message);
+            message.channel.send("ERROR, vuelve a llamar a roni para volver  intentar: "+e.message);
         }
     },
     claimData:async function(currentUser,message){
@@ -116,8 +132,8 @@ module.exports = {
         let unclaimed=data.total
 
         data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-        unclaimed=data.in_game_slp
-       
+        unclaimed=data.total>=0?data.total:data.in_game_slp
+
 		let ahora=new Date().getTime()
 		let date_ahora=this.FROM_UNIX_EPOCH(ahora/1000)
 		let date_last_claim=this.FROM_UNIX_EPOCH(data.last_claim)
@@ -143,7 +159,7 @@ module.exports = {
         ).setColor('GREEN').setTimestamp()
         message.channel.send({content: ` `,embeds: [embed]})
 
-        return {ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe}
+        return {scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
 
     },
     desasociar:async function(message){
@@ -228,7 +244,7 @@ module.exports = {
         let axies=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json', 'User-Agent': USER_AGENT},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
         return axies.data.createAccessTokenWithSignature.accessToken
     },
-    create_random_msg:async function (wallet){
+    create_random_msg:async function (){
         let url = `https://graphql-gateway.axieinfinity.com/graphql`;
         let query = `
         {
