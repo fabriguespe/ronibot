@@ -30,13 +30,13 @@ module.exports = new Command({
 		} 
 
 		
-		if(!esPagos){
-			try{
-				let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+currentUser.num);
-				if(eliminar)await eliminar.delete()
-			}catch(e){
-				console.log("ERROR",e.message)
-			}
+		if(!esPagos)
+
+		try{
+			let eliminar = message.guild.channels.cache.find(c => c.name == (esPagos?'ticket-':'pagos-')+currentUser.num);
+			if(eliminar)await eliminar.delete()
+		}catch(e){
+			console.log("ERROR",e.message)
 		}
 		
 		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
@@ -45,7 +45,7 @@ module.exports = new Command({
 		//921106145811263499 PAGOS
         let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 	
-		let thread=await message.guild.channels.create('ticket-'+currentUser.num, { 
+		let thread=await message.guild.channels.create((esPagos?'ticket-':'pagos-')+currentUser.num, { 
 		type: 'GUILD_TEXT',
 		parent:rCategoria?rCategoria.id:null,
 		permissionOverwrites: [
@@ -61,11 +61,7 @@ module.exports = new Command({
         embed = new MessageEmbed().setTitle('Ticket')
         .setDescription(`Hola ${message.author}, soy Roni. \nCon que deseas que te ayude?`).setColor('GREEN').setTimestamp()
 
-        await thread.send({
-            content: ` `,
-            embeds: [embed],
-            components: [row]
-        })
+        await thread.send({content: ` `,embeds: [embed],components: [row] })
 		let lascomnd=''
 		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1/*,time:600000*/})
 		mcollector.on('collect', async message => {
