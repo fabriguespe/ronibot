@@ -10,9 +10,10 @@ module.exports = new Command({
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		//message.channel.bulkDelete(1);
+		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
+		if(!currentUser)return message.channel.send('Usuario invalido')
+
 		let row=new MessageActionRow()
-		let currentUser=args[1]?utils.getUserByNum(args[1]):utils.getUserByDiscord(message.author.id)
-		if(!currentUser)return interaction.channel.send('Usuario invalido')
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
 		if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
@@ -23,17 +24,18 @@ module.exports = new Command({
 		} 
 
 		try{
-			let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+message.author.username);
+			let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+currentUser.num);
 			if(eliminar)await eliminar.delete()
 		}catch(e){
 			console.log("ERROR",e.message)
 		}
 		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
 		//909634641030426674 INGRESOS
-		//866879155350143006 COMNIDAD
-        let rCategoria = message.guild.channels.cache.find(c => c.id == (utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
+		//866879155350143006 COMUNIDAD
+		//921106145811263499 PAGOS
+        let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 	
-		let thread=await message.guild.channels.create('ticket-'+message.author.username, { 
+		let thread=await message.guild.channels.create('ticket-'+currentUser.num, { 
             type: 'GUILD_TEXT',
 			parent:rCategoria?rCategoria.id:null,
             permissionOverwrites: [
@@ -76,7 +78,6 @@ module.exports = new Command({
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
-				
 				if(data.unclaimed==0)return thread.send('Tu cuenta no tiene SLP para reclamar') 
 				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined)return thread.send('Tu cuenta no tiene wallet para depositar') 
 				
@@ -96,7 +97,6 @@ module.exports = new Command({
 						} 
 					})
 				})
-
 			}else if( customId=='cerrar_ticket'){
 				const thread = interaction.channel
 				thread.delete();
