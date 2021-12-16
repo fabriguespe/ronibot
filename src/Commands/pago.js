@@ -9,14 +9,15 @@ module.exports = new Command({
 	name: "pago",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.reply('No tienes permisos para correr este comando')
+		let esPagos=utils.esJeissonPagos(message) || utils.esFabri(message)
+		if(!(esPagos))return message.reply('No tienes permisos para correr este comando')
 
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		if(!currentUser)return message.channel.send('Usuario invalido')
 
 		let row=new MessageActionRow()
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
-		if(utils.esJeissonPagos(message)){
+		if(esPagos){
 			row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 		}else if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
