@@ -6,7 +6,7 @@ const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "pagos",
+	name: "pago",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.reply('No tienes permisos para correr este comando')
