@@ -62,7 +62,7 @@ module.exports = new Command({
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
 				if(!(data.unclaimed>=0))return thread.send('Tu cuenta no tiene SLP para reclamar') 
-				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined)return thread.send('Tu cuenta no tiene wallet para depositar') 
+				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined) || data.scholarPayoutAddress.length<=20)return thread.send('Tu cuenta no tiene wallet para depositar') 
 				
 				interaction.channel.send('\nReclamar? SI / NO').then(function (message) {
 					const filter = m => m.author.id === message.author.id;
