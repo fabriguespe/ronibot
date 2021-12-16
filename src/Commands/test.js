@@ -6,12 +6,15 @@ const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "test",
+	name: "pago",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		//message.channel.bulkDelete(1);
+		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
+		if(!currentUser)return message.channel.send('Usuario invalido')
+		console.log(currentUser)
+
 		let row=new MessageActionRow()
-		let currentUser=message.author.id
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
 		if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
@@ -22,7 +25,7 @@ module.exports = new Command({
 		} 
 
 		try{
-			let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+message.author.username);
+			let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+currentUser.num);
 			if(eliminar)await eliminar.delete()
 		}catch(e){
 			console.log("ERROR",e.message)
@@ -32,7 +35,7 @@ module.exports = new Command({
 		//866879155350143006 COMNIDAD
         let rCategoria = message.guild.channels.cache.find(c => c.id == (utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 	
-		let thread=await message.guild.channels.create('ticket-'+message.author.username, { 
+		let thread=await message.guild.channels.create('ticket-'+currentUser.num, { 
             type: 'GUILD_TEXT',
 			parent:rCategoria?rCategoria.id:null,
             permissionOverwrites: [
@@ -74,16 +77,13 @@ module.exports = new Command({
 				
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
-				let yo=await utils.getUserByDiscord(currentUser)
-				if(!yo)return interaction.channel.send('Usuario invalido')
-				let data=await utils.claimData(yo,interaction.message)
+				let data=await utils.claimData(currentUser,interaction.message)
 				
 				if(data.unclaimed==0)return thread.send('Tu cuenta no tiene SLP para reclamar') 
 				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined)return thread.send('Tu cuenta no tiene wallet para depositar') 
 				
 				interaction.channel.send('\nReclamar? SI / NO').then(function (message) {
-					const filter = m => m.author.id === message.author.id;
-					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
+					const collector = message.channel.createMessageCollector({filter:(m) => m.author.id === message.author.id, max: 1, time: 15000, errors: ['time'] })
 					collector.on('collect',async m => {
 						if(m.author.id==908739379059626094)return //ronibot
 						if (m.content.toLowerCase() == "si") {

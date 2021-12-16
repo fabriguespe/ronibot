@@ -11,7 +11,8 @@ module.exports = new Command({
 	async run(message, args, client) {
 		//message.channel.bulkDelete(1);
 		let row=new MessageActionRow()
-		let currentUser=message.author.id
+		let currentUser=args[1]?utils.getUserByNum(args[1]):utils.getUserByDiscord(message.author.id)
+		if(!currentUser)return interaction.channel.send('Usuario invalido')
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
 		if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
@@ -74,9 +75,7 @@ module.exports = new Command({
 				
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
-				let yo=await utils.getUserByDiscord(currentUser)
-				if(!yo)return interaction.channel.send('Usuario invalido')
-				let data=await utils.claimData(yo,interaction.message)
+				let data=await utils.claimData(currentUser,interaction.message)
 				
 				if(data.unclaimed==0)return thread.send('Tu cuenta no tiene SLP para reclamar') 
 				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined)return thread.send('Tu cuenta no tiene wallet para depositar') 

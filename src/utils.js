@@ -65,21 +65,27 @@ module.exports = {
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
+            let timestamp_log=new Date(Date.now())
+            let date_log=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
+
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
+				await db.collection('log').insertOne({type:'slp_claim',date:timestamp_log,date:date_log, slp:data.unclaimed,num:data.num,from_acc:from_acc})
             }  
             
             let t1=await this.transfer(from_acc,'0x858984a23b440e765f35ff06e896794dc3261c62',data.unclaimed-data.recibe,message)
             if(t1){
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
+				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.unclaimed-data.recibe,num:data.num,from_acc:from_acc})
             }
              
             let t2=await this.transfer(from_acc,data.scholarPayoutAddress,data.recibe,message)
             if(t2){
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t2+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
+				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.recibe,num:data.num,from_acc:from_acc})
             }
         }catch(e){
             message.channel.send("ERROR: "+e.message);
@@ -150,7 +156,7 @@ module.exports = {
 
         let embed = new MessageEmbed().setTitle('Calculo').addFields(
             //{ name: 'Precio', value: ''+slp+'USD'},
-            { name: 'Address', value: ''+currentUser.scholarPayoutAddress},
+            { name: 'Wallet', value: ''+currentUser.scholarPayoutAddress},
             { name: 'Fecha actual', value: ''+date_ahora,inline:true},
             { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
             { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
@@ -163,7 +169,7 @@ module.exports = {
         ).setColor('GREEN').setTimestamp()
         message.channel.send({content: ` `,embeds: [embed]})
 
-        return {scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
+        return {num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
 
     },
     desasociar:async function(message){
@@ -279,6 +285,14 @@ module.exports = {
     getUserByDiscord:async function(ID){
         let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({discord:""+ID.toString()})
+        if(user)return user
+        else return null
+    },
+    getUserByNum:async function(num){
+        if(num=='BREED' || num=='breed')return 'ronin:858984a23b440e765f35ff06e896794dc3261c62'
+        if(num=='VENTA' || num=='venta')return 'ronin:33cd85881e79cc7c21d92218711821c7c919f330'
+        let db = await DbConnection.Get();
+		let user = await db.collection('users').findOne({num:num.toString()})
         if(user)return user
         else return null
     },
