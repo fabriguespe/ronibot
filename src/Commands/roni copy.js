@@ -9,37 +9,41 @@ module.exports = new Command({
 	name: "roni",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		//if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.reply('No tienes permisos para correr este comando')
-
+		//message.channel.bulkDelete(1);
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		if(!currentUser)return message.channel.send('Usuario invalido')
 
 		let row=new MessageActionRow()
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
-		if(utils.esJeissonPagos(message)){
-			row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
-		}else if(utils.esJugador(message)){
+		if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
+			//row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
 		}else{
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 		} 
 
-		
+		try{
+			let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+currentUser.num);
+			if(eliminar)await eliminar.delete()
+		}catch(e){
+			console.log("ERROR",e.message)
+		}
 		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
 		//909634641030426674 INGRESOS
 		//866879155350143006 COMUNIDAD
 		//921106145811263499 PAGOS
         let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 	
-		let thread=await message.guild.channels.create('pago-'+currentUser.num, { 
-		type: 'GUILD_TEXT',
-		parent:rCategoria?rCategoria.id:null,
-		permissionOverwrites: [
-			{id: message.author.id,allow: ['VIEW_CHANNEL']},
-			{id: rSoporte.id,allow: ['VIEW_CHANNEL']},
-			{id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
-		]}).then(chan=>{return chan})
+		let thread=await message.guild.channels.create('ticket-'+currentUser.num, { 
+            type: 'GUILD_TEXT',
+			parent:rCategoria?rCategoria.id:null,
+            permissionOverwrites: [
+                {id: message.author.id,allow: ['VIEW_CHANNEL']},
+                {id: rSoporte.id,allow: ['VIEW_CHANNEL']},
+                {id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
+            ]})
+        .then(chan=>{return chan})
         let embed = new MessageEmbed().setTitle('Nuevo Ticket')
         .setDescription(`CLICK AQUI PARA CONTINUAR ----->>> <#${thread.id}>`).setColor('GREEN').setTimestamp()
 
@@ -70,11 +74,12 @@ module.exports = new Command({
 				interaction.channel.send(`Hola! <@${jsid}>, necesito de tu ayuda`)
 			}else if( customId=='asociar' || customId=='desasociar'){
 				interaction.channel.send('Por favor ingresa tu contraseña. Tenes 60 segundos.')
+				
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
-				if(!(data.unclaimed>=0))return thread.send('Tu cuenta no tiene SLP para reclamar') 
-				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
+				if(data.unclaimed==0)return thread.send('Tu cuenta no tiene SLP para reclamar') 
+				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined)return thread.send('Tu cuenta no tiene wallet para depositar') 
 				
 				interaction.channel.send('\nReclamar? SI / NO').then(function (message) {
 					const filter = m => m.author.id === message.author.id;
@@ -84,9 +89,12 @@ module.exports = new Command({
 						if (m.content.toLowerCase() == "si") {
 							await utils.claim(data,message)
 						} else if (m.content.toLowerCase() == "no") {
+							
 							message.reply('Este canal se cerrara en 3 segundos.')
 							setTimeout(() => { message.channel.delete()}, 3000)
-						}
+						} else{
+							message.channel.send("error...")
+						} 
 					})
 				})
 			}else if( customId=='cerrar_ticket'){

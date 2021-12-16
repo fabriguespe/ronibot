@@ -15,9 +15,21 @@ module.exports = new Command({
 		if(!currentUser)return message.channel.send('Usuario invalido')
 
 		let row=new MessageActionRow()
-		row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar').setStyle('SUCCESS'));
+		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
+		if(utils.esJeissonPagos(message)){
+			row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
+		}else if(utils.esJugador(message)){
+			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
+			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
+		}else{
+			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
+		} 
+
 		
 		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
+		//909634641030426674 INGRESOS
+		//866879155350143006 COMUNIDAD
+		//921106145811263499 PAGOS
         let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 	
 		let thread=await message.guild.channels.create('pago-'+currentUser.num, { 
