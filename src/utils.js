@@ -221,7 +221,7 @@ module.exports = {
         return 10
     },
     esJeissonPagos:function(message){
-        return message.author.id==877625345996632095 && message.channel.name.includes('comandos') 
+        return message.author.id==877625345996632095 && message.channel.name.includes('comandos-admin') 
     },
     esFabri:function(message){
         return message.author.id==533994454391062529 && message.channel.id==917380557099380816
