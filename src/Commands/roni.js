@@ -22,6 +22,7 @@ module.exports = new Command({
 			row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar}').setStyle('SUCCESS'));
 		}else if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
+			row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar}').setStyle('SUCCESS'));
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
 		}else{
