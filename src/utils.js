@@ -26,6 +26,7 @@ module.exports = {
     claim:async function(data,message){
 
         try{
+            let db = await DbConnection.Get();
             let from_acc=data.from_acc
             from_acc=from_acc.replace('ronin:','0x')
             data.scholarPayoutAddress=data.scholarPayoutAddress.replace('ronin:','0x')
