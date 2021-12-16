@@ -77,7 +77,6 @@ module.exports = {
             message.channel.send("ERROR: "+e.message);
         }
         
-        
     },
     transfer:async function(from_acc,to_acc,balance,message){
         from_acc=from_acc.replace('ronin:','0x')
