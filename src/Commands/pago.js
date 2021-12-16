@@ -28,13 +28,22 @@ module.exports = new Command({
 		} 
 
 		
+		if(!esPagos){
+			try{
+				let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+currentUser.num);
+				if(eliminar)await eliminar.delete()
+			}catch(e){
+				console.log("ERROR",e.message)
+			}
+		}
+		
 		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
 		//909634641030426674 INGRESOS
 		//866879155350143006 COMUNIDAD
 		//921106145811263499 PAGOS
         let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 	
-		let thread=await message.guild.channels.create('pago-'+currentUser.num, { 
+		let thread=await message.guild.channels.create('ticket-'+currentUser.num, { 
 		type: 'GUILD_TEXT',
 		parent:rCategoria?rCategoria.id:null,
 		permissionOverwrites: [

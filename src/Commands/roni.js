@@ -9,22 +9,33 @@ module.exports = new Command({
 	name: "roni",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		//if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.reply('No tienes permisos para correr este comando')
+		let esPagos=utils.esJeissonPagos(message) || utils.esFabri(message)
+		if(!(esPagos))return message.reply('No tienes permisos para correr este comando')
 
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		if(!currentUser)return message.channel.send('Usuario invalido')
 
 		let row=new MessageActionRow()
-		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
-		if(utils.esJeissonPagos(message)){
+		if(esPagos){
 			row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 		}else if(utils.esJugador(message)){
+			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
 		}else{
+			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 		} 
 
+		
+		if(!esPagos){
+			try{
+				let eliminar = message.guild.channels.cache.find(c => c.name == 'ticket-'+currentUser.num);
+				if(eliminar)await eliminar.delete()
+			}catch(e){
+				console.log("ERROR",e.message)
+			}
+		}
 		
 		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
 		//909634641030426674 INGRESOS
@@ -32,7 +43,7 @@ module.exports = new Command({
 		//921106145811263499 PAGOS
         let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 	
-		let thread=await message.guild.channels.create('pago-'+currentUser.num, { 
+		let thread=await message.guild.channels.create('ticket-'+currentUser.num, { 
 		type: 'GUILD_TEXT',
 		parent:rCategoria?rCategoria.id:null,
 		permissionOverwrites: [

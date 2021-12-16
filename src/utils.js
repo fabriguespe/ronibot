@@ -173,7 +173,7 @@ module.exports = {
             ).setColor('GREEN').setTimestamp()
             message.channel.send({content: ` `,embeds: [embed]})
 
-            return {num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
+            return {next_claim:data.next_claim,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
 
         }catch(e){
             this.log("ERROR: "+e.message,message)
