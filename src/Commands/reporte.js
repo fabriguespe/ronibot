@@ -17,10 +17,8 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let eluser = await db.collection('users').findOne({num:args[1]})
-			if(!eluser){
-				utils.log('usuario no encontrado',message)
-				return
-			}
+			if(!eluser)return utils.log('usuario no encontrado',message)
+			
 
 			if(args.length==2){
 				url = "https://game-api.axie.technology/api/v1/"+eluser.accountAddress;
@@ -74,15 +72,13 @@ module.exports = new Command({
 					message.reply('Esta cuenta tiene una cantidad de Axies incorrecta. Revisar')
 				}
 
-			}else if(args.length==3){
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				
 				let data={days:[],values:[]}
 
 				
-				let value=args[2]
-				if(value=="copas")value="mmr"
+				let value="mmr"
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
@@ -96,6 +92,31 @@ module.exports = new Command({
 				
 
 				let chart = new QuickChart().setConfig({
+					type: 'bar',
+					data: { 
+						labels: data.days,
+						datasets:[{label: value, data: data.values}] 
+					},
+				}).setWidth(800).setHeight(400);
+				message.reply(`Grafico: ${await chart.getShortUrl()}`);
+
+
+				
+				
+				value="slp"
+				for(let i in stats){
+					let stat=stats[i]
+					let anteultimo=stats[i-1]
+					if((stat[value] || value=='slp') && anteultimo){
+						if(value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
+						else if(value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
+						data.values.push(stat[value])
+						data['days'].push(utils.getDayName(stat.date, "es-ES"))
+					}
+				}
+				
+
+				chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
 						labels: data.days,

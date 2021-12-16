@@ -63,7 +63,6 @@ module.exports = {
         
             //CLAIM
             message.channel.send("Realizando el claim de "+data.unclaimed+" SLP...");
-            console.log(trans)
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
