@@ -138,7 +138,7 @@ module.exports = {
 		let date_last_claim=this.FROM_UNIX_EPOCH(data.last_claim)
 		let date_next_claim=this.FROM_UNIX_EPOCH(1639659803)
         let diffInMilliSeconds=(ahora/1000)-data.last_claim
-		let days = Math.floor(diffInMilliSeconds / 3600) /24
+		let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
         let prom=Math.round(unclaimed/days)
         let porcetage=prom<=50?10:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
         let recibe=Math.round(unclaimed/(100/porcetage))
