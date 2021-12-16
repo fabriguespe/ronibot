@@ -6,13 +6,12 @@ const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "pago",
+	name: "pagos",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		//message.channel.bulkDelete(1);
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		if(!currentUser)return message.channel.send('Usuario invalido')
-		console.log(currentUser)
 
 		let row=new MessageActionRow()
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'),);
@@ -78,12 +77,12 @@ module.exports = new Command({
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
-				
 				if(data.unclaimed==0)return thread.send('Tu cuenta no tiene SLP para reclamar') 
 				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined)return thread.send('Tu cuenta no tiene wallet para depositar') 
 				
 				interaction.channel.send('\nReclamar? SI / NO').then(function (message) {
-					const collector = message.channel.createMessageCollector({filter:(m) => m.author.id === message.author.id, max: 1, time: 15000, errors: ['time'] })
+					const filter = m => m.author.id === message.author.id;
+					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
 					collector.on('collect',async m => {
 						if(m.author.id==908739379059626094)return //ronibot
 						if (m.content.toLowerCase() == "si") {
@@ -97,7 +96,6 @@ module.exports = new Command({
 						} 
 					})
 				})
-
 			}else if( customId=='cerrar_ticket'){
 				const thread = interaction.channel
 				thread.delete();

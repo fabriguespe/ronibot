@@ -122,7 +122,7 @@ module.exports = {
     
         
             //TRANSFER
-            message.channel.send("Enviando "+balance+" SLP a la cuenta de"+(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'?'Ronimate':'el jugador'));
+            message.channel.send("Enviando "+balance+" SLP a la cuenta de "+(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'?'Ronimate':'el jugador'));
             console.log(trans)
             
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
