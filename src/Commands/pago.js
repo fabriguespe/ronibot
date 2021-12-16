@@ -59,7 +59,6 @@ module.exports = new Command({
 				interaction.channel.send(`Hola! <@${jsid}>, necesito de tu ayuda`)
 			}else if( customId=='asociar' || customId=='desasociar'){
 				interaction.channel.send('Por favor ingresa tu contraseña. Tenes 60 segundos.')
-				
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
@@ -74,7 +73,6 @@ module.exports = new Command({
 						if (m.content.toLowerCase() == "si") {
 							await utils.claim(data,message)
 						} else if (m.content.toLowerCase() == "no") {
-							
 							message.reply('Este canal se cerrara en 3 segundos.')
 							setTimeout(() => { message.channel.delete()}, 3000)
 						} else{
