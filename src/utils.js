@@ -62,7 +62,7 @@ module.exports = {
             }
         
             //CLAIM
-            message.channel.send("Realizando el claim de "+data.unclaimed+" SLP");
+            message.channel.send("Realizando el claim de "+data.unclaimed+" SLP...");
             console.log(trans)
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
@@ -80,14 +80,14 @@ module.exports = {
             if(t1){
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.unclaimed-data.recibe,num:data.num,from_acc:from_acc})
+				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.unclaimed-data.recibe,num:data.num,from_acc:from_acc,scholarPayoutAddress:data.scholarPayoutAddress})
             }
              
             let t2=await this.transfer(from_acc,data.scholarPayoutAddress,data.recibe,message)
             if(t2){
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t2+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.recibe,num:data.num,from_acc:from_acc})
+				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.recibe,num:data.num,from_acc:from_acc,scholarPayoutAddress:data.scholarPayoutAddress})
             }
         }catch(e){
             this.log("ERROR: "+e.message,message)
