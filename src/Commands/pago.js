@@ -6,7 +6,7 @@ const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "pago",
+	name: "pagos",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.reply('No tienes permisos para correr este comando')
@@ -21,14 +21,13 @@ module.exports = new Command({
         let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 	
 		let thread=await message.guild.channels.create('pago-'+currentUser.num, { 
-            type: 'GUILD_TEXT',
-			parent:rCategoria?rCategoria.id:null,
-            permissionOverwrites: [
-                {id: message.author.id,allow: ['VIEW_CHANNEL']},
-                {id: rSoporte.id,allow: ['VIEW_CHANNEL']},
-                {id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
-            ]})
-        .then(chan=>{return chan})
+		type: 'GUILD_TEXT',
+		parent:rCategoria?rCategoria.id:null,
+		permissionOverwrites: [
+			{id: message.author.id,allow: ['VIEW_CHANNEL']},
+			{id: rSoporte.id,allow: ['VIEW_CHANNEL']},
+			{id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
+		]}).then(chan=>{return chan})
         let embed = new MessageEmbed().setTitle('Nuevo Ticket')
         .setDescription(`CLICK AQUI PARA CONTINUAR ----->>> <#${thread.id}>`).setColor('GREEN').setTimestamp()
 
@@ -62,7 +61,7 @@ module.exports = new Command({
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
-				if(data.unclaimed==0)return thread.send('Tu cuenta no tiene SLP para reclamar') 
+				if(data.unclaimed==0 || data.unclaimed==undefined || data.unclaimed==null)return thread.send('Tu cuenta no tiene SLP para reclamar') 
 				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined)return thread.send('Tu cuenta no tiene wallet para depositar') 
 				
 				interaction.channel.send('\nReclamar? SI / NO').then(function (message) {
