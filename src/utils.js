@@ -62,17 +62,25 @@ module.exports = {
             //CLAIM
             message.channel.send("Realizando el claim de "+data.unclaimed+" SLP");
             console.log(trans)
-            /*let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
+            let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
-                return message.channel.send({content: ` `,embeds: [embed]})
+                message.channel.send({content: ` `,embeds: [embed]})
             }  
-            else message.channel.send("ERROR Status False");*/
-
-            await this.transfer(from_acc,data.scholarPayoutAddress,data.recibe,message)
-            await this.transfer(from_acc,'0x858984a23b440e765f35ff06e896794dc3261c62',data.unclaimed-data.recibe,message)
+            
+            let t1=await this.transfer(from_acc,'0x858984a23b440e765f35ff06e896794dc3261c62',data.unclaimed-data.recibe,message)
+            if(t1){
+                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
+                message.channel.send({content: ` `,embeds: [embed]})
+            }
+             
+            let t2=await this.transfer(from_acc,data.scholarPayoutAddress,data.recibe,message)
+            if(t2){
+                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t2+")").setColor('GREEN').setTimestamp()
+                message.channel.send({content: ` `,embeds: [embed]})
+            }
         }catch(e){
             message.channel.send("ERROR: "+e.message);
         }
@@ -108,17 +116,14 @@ module.exports = {
             //TRANSFER
             message.channel.send("Enviando "+balance+" SLP a la cuenta de"+(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'?'Ronimate':'el jugador'));
             console.log(trans)
-            /*
+            
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
        
 
-            if(tr_raw.status){            
-                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
-                return message.channel.send({content: ` `,embeds: [embed]})
-            }        
-            else message.channel.send("ERROR Status False");*/
+            if(tr_raw.status)return tr_raw.transactionHash
+            else return false          
         }catch(e){
             message.channel.send("ERROR, vuelve a llamar a roni para volver  intentar: "+e.message);
         }
