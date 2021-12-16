@@ -15,7 +15,7 @@ module.exports = new Command({
 		if(!currentUser)return message.channel.send('Usuario invalido')
 
 		let row=new MessageActionRow()
-		row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
+		row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar').setStyle('SUCCESS'));
 		
 		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
         let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
@@ -74,9 +74,7 @@ module.exports = new Command({
 						} else if (m.content.toLowerCase() == "no") {
 							message.reply('Este canal se cerrara en 3 segundos.')
 							setTimeout(() => { message.channel.delete()}, 3000)
-						} else{
-							message.channel.send("error...")
-						} 
+						}
 					})
 				})
 			}else if( customId=='cerrar_ticket'){
