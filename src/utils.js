@@ -24,41 +24,42 @@ module.exports = {
         return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
     claim:async function(data,message){
-        let from_acc=data.from_acc
-        from_acc=from_acc.replace('ronin:','0x')
-        data.scholarPayoutAddress=data.scholarPayoutAddress.replace('ronin:','0x')
 
-        let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
-
-        //random message
-        let random_msg=await this.create_random_msg()
-        let jwt=await this.get_jwt(from_acc,random_msg,from_private)
-        let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
-        let signature=jdata.blockchain_related.signature
-        
-        const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
-        let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
-        let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-        
-        //build
-        let myData=contract.methods.checkpoint(
-            (web3.utils.toChecksumAddress(from_acc)),
-            signature['amount'],
-            signature['timestamp'],
-            signature['signature']).encodeABI()
-        
-        let trans={
-                "chainId": 2020,
-                "gas": 492874,
-                "from": from_acc,
-                "gasPrice": 0,
-                "value": 0,
-                "to": SLP_CONTRACT,
-                "nonce": nonce,
-                data:myData
-        }
-        
         try{
+            let from_acc=data.from_acc
+            from_acc=from_acc.replace('ronin:','0x')
+            data.scholarPayoutAddress=data.scholarPayoutAddress.replace('ronin:','0x')
+
+            let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
+
+            //random message
+            let random_msg=await this.create_random_msg()
+            let jwt=await this.get_jwt(from_acc,random_msg,from_private)
+            let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
+            let signature=jdata.blockchain_related.signature
+            
+            const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
+            let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
+            let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
+            
+            //build
+            let myData=contract.methods.checkpoint(
+                (web3.utils.toChecksumAddress(from_acc)),
+                signature['amount'],
+                signature['timestamp'],
+                signature['signature']).encodeABI()
+            
+            let trans={
+                    "chainId": 2020,
+                    "gas": 492874,
+                    "from": from_acc,
+                    "gasPrice": 0,
+                    "value": 0,
+                    "to": SLP_CONTRACT,
+                    "nonce": nonce,
+                    data:myData
+            }
+        
             //CLAIM
             message.channel.send("Realizando el claim de "+data.unclaimed+" SLP");
             console.log(trans)
@@ -88,37 +89,37 @@ module.exports = {
 				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.recibe,num:data.num,from_acc:from_acc})
             }
         }catch(e){
-            message.channel.send("ERROR: "+e.message);
+            utils.log("ERROR: "+e.message,message)
         }
         
     },
     transfer:async function(from_acc,to_acc,balance,message){
-        from_acc=from_acc.replace('ronin:','0x')
-        to_acc=to_acc.replace('ronin:','0x')
+        try{
+            from_acc=from_acc.replace('ronin:','0x')
+            to_acc=to_acc.replace('ronin:','0x')
 
 
-        const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
-        let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-        
-        let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
-        
-        let myData=contract.methods.transfer(
-            (web3.utils.toChecksumAddress(to_acc)),
-            balance).encodeABI()
-        
-        let trans={
-            "chainId": 2020,
-            "gas": 492874,
-            "from": from_acc,
-            "gasPrice": 0,
-            "value": 0,
-            "to": SLP_CONTRACT,
-            "nonce": nonce,
-            data:myData
-        }
+            const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
+            let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
+            
+            let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
+            
+            let myData=contract.methods.transfer(
+                (web3.utils.toChecksumAddress(to_acc)),
+                balance).encodeABI()
+            
+            let trans={
+                "chainId": 2020,
+                "gas": 492874,
+                "from": from_acc,
+                "gasPrice": 0,
+                "value": 0,
+                "to": SLP_CONTRACT,
+                "nonce": nonce,
+                data:myData
+            }
     
         
-        try{
             //TRANSFER
             message.channel.send("Enviando "+balance+" SLP a la cuenta de"+(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'?'Ronimate':'el jugador'));
             console.log(trans)
@@ -131,46 +132,51 @@ module.exports = {
             if(tr_raw.status)return tr_raw.transactionHash
             else return false          
         }catch(e){
-            message.channel.send("ERROR, vuelve a llamar a roni para volver  intentar: "+e.message);
+            utils.log("ERROR: "+e.message,message)
         }
     },
     claimData:async function(currentUser,message){
-        let from_acc=currentUser.accountAddress
-        if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
+        try{
 
-        let data= await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1", { method: "Get" }).then(res => res.json()).then((json) => { return json});
-        let unclaimed=data.total
+            let from_acc=currentUser.accountAddress
+            if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
 
-        data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-        unclaimed=data.total>=0?data.total:data.in_game_slp
+            let data= await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1", { method: "Get" }).then(res => res.json()).then((json) => { return json});
+            let unclaimed=data.total
 
-		let ahora=new Date().getTime()
-		let date_ahora=this.FROM_UNIX_EPOCH(ahora/1000)
-		let date_last_claim=this.FROM_UNIX_EPOCH(data.last_claim)
-		let date_next_claim=this.FROM_UNIX_EPOCH(1639659803)
-        let diffInMilliSeconds=(ahora/1000)-data.last_claim
-		let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
-        let prom=Math.round(unclaimed/days)
-        let porcetage=prom<=50?10:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
-        let recibe=Math.round(unclaimed/(100/porcetage))
+            data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+            unclaimed=data.total>=0?data.total:data.in_game_slp
 
-        let embed = new MessageEmbed().setTitle('Calculo').addFields(
-            //{ name: 'Precio', value: ''+slp+'USD'},
-            { name: 'Wallet', value: ''+currentUser.scholarPayoutAddress},
-            { name: 'Fecha actual', value: ''+date_ahora,inline:true},
-            { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
-            { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
-            { name: 'ID', value: ''+currentUser.num,inline:true},
-            { name: 'SLP Unclaimed', value: ''+unclaimed,inline:true},
-            { name: 'Tu promedio', value: ''+prom,inline:true},
-            { name: 'Dias', value: ''+days,inline:true},
-            { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
-            { name: 'A recibir', value: ''+recibe,inline:true}
-        ).setColor('GREEN').setTimestamp()
-        message.channel.send({content: ` `,embeds: [embed]})
+            let ahora=new Date().getTime()
+            let date_ahora=this.FROM_UNIX_EPOCH(ahora/1000)
+            let date_last_claim=this.FROM_UNIX_EPOCH(data.last_claim)
+            let date_next_claim=this.FROM_UNIX_EPOCH(1639659803)
+            let diffInMilliSeconds=(ahora/1000)-data.last_claim
+            let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
+            let prom=Math.round(unclaimed/days)
+            let porcetage=prom<=50?10:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
+            let recibe=Math.round(unclaimed/(100/porcetage))
 
-        return {num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
+            let embed = new MessageEmbed().setTitle('Calculo').addFields(
+                //{ name: 'Precio', value: ''+slp+'USD'},
+                { name: 'Wallet', value: ''+currentUser.scholarPayoutAddress},
+                { name: 'Fecha actual', value: ''+date_ahora,inline:true},
+                { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
+                { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
+                { name: 'ID', value: ''+currentUser.num,inline:true},
+                { name: 'SLP Unclaimed', value: ''+unclaimed,inline:true},
+                { name: 'Tu promedio', value: ''+prom,inline:true},
+                { name: 'Dias', value: ''+days,inline:true},
+                { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
+                { name: 'A recibir', value: ''+recibe,inline:true}
+            ).setColor('GREEN').setTimestamp()
+            message.channel.send({content: ` `,embeds: [embed]})
 
+            return {num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
+
+        }catch(e){
+            utils.log("ERROR: "+e.message,message)
+        }
     },
     desasociar:async function(message){
         let msg=message.content
