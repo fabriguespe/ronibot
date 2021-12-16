@@ -10,7 +10,7 @@ module.exports = new Command({
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		let esPagos=utils.esJeissonPagos(message) || utils.esFabri(message)
-		if(!(esPagos))return message.reply('No tienes permisos para correr este comando')
+		//if(!(esPagos))return message.reply('No tienes permisos para correr este comando')
 
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		if(!currentUser)return message.channel.send('Usuario invalido')
