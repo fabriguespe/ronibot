@@ -169,7 +169,7 @@ module.exports = {
                 { name: 'Dias', value: ''+days,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
                 { name: 'A recibir', value: ''+recibe,inline:true},
-                { name: 'Información', value: 'Revisa que tu wallet sea correca y tu promedio de SLP se baso en el calculo de los dias y el total acumulado. SI estas de acuerdo escribe "si" para poder cobrar, de lo contrario, "no"'},
+                { name: 'Información', value: 'Revisa que tu wallet sea correcta\nTu promedio de SLP se baso en el calculo de los dias y el total acumulado. Si estas de acuerdo escribe "si" para poder cobrar, de lo contrario, "no"'},
             ).setColor('GREEN').setTimestamp()
             message.channel.send({content: ` `,embeds: [embed]})
 
