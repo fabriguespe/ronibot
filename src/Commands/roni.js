@@ -30,9 +30,9 @@ module.exports = new Command({
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 		} 
 
-
+		let ticket_name=(!esPagos?'ticket':'pagos')+(currentUser?"-"+currentUser.num:"")+"-"+message.author.username
 		try{
-			let eliminar = message.guild.channels.cache.find(c => c.name == (!esPagos?'ticket-':'pagos-')+currentUser.num);
+			let eliminar = message.guild.channels.cache.find(c => c.name == ticket_name)
 			if(eliminar)await eliminar.delete()
 		}catch(e){
 			console.log("ERROR",e.message)
@@ -44,7 +44,7 @@ module.exports = new Command({
 		//921106145811263499 PAGOS
         let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 	
-		let thread=await message.guild.channels.create((!esPagos?'ticket-':'pagos-')+currentUser.num, { 
+		let thread=await message.guild.channels.create(ticket_name, { 
 		type: 'GUILD_TEXT',
 		parent:rCategoria?rCategoria.id:null,
 		permissionOverwrites: [
