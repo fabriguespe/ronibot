@@ -101,7 +101,7 @@ module.exports = {
 
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
             let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-            nonce+=nonceplus
+            //nonce+=nonceplus
             let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
             
             let myData=contract.methods.transfer(
