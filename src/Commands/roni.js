@@ -84,7 +84,7 @@ module.exports = new Command({
 				if(!(data.unclaimed>=0))return thread.send('Tu cuenta no tiene SLP para reclamar') 
 				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
 				
-				interaction.channel.send('\nReclamar? SI / NO').then(function (message) {
+				interaction.channel.send('\n').then(function (message) {
 					const filter = m => m.author.id === message.author.id;
 					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
 					collector.on('collect',async m => {

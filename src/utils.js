@@ -168,7 +168,8 @@ module.exports = {
                 { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Dias', value: ''+days,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
-                { name: 'A recibir', value: ''+recibe,inline:true}
+                { name: 'A recibir', value: ''+recibe,inline:true},
+                { name: 'Información', value: 'Revisa que tu wallet sea correca y tu promedio de SLP se baso en el calculo de los dias y el total acumulado. SI estas de acuerdo escribe "si" para poder cobrar, de lo contrario, "no"'},
             ).setColor('GREEN').setTimestamp()
             message.channel.send({content: ` `,embeds: [embed]})
 
