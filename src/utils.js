@@ -75,14 +75,14 @@ module.exports = {
 				await db.collection('log').insertOne({type:'slp_claim',date:timestamp_log,date:date_log, slp:data.unclaimed,num:data.num,from_acc:from_acc})
             }  
             
-            let t1=await this.transfer(from_acc,'0x858984a23b440e765f35ff06e896794dc3261c62',data.unclaimed-data.recibe,message)
+            let t1=await this.transfer(from_acc,'0x858984a23b440e765f35ff06e896794dc3261c62',data.unclaimed-data.recibe,message,1)
             if(t1){
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
 				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.unclaimed-data.recibe,num:data.num,from_acc:from_acc,scholarPayoutAddress:data.scholarPayoutAddress})
             }
              
-            let t2=await this.transfer(from_acc,data.scholarPayoutAddress,data.recibe,message)
+            let t2=await this.transfer(from_acc,data.scholarPayoutAddress,data.recibe,message,2)
             if(t2){
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t2+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
@@ -93,7 +93,7 @@ module.exports = {
         }
         
     },
-    transfer:async function(from_acc,to_acc,balance,message){
+    transfer:async function(from_acc,to_acc,balance,message,nonceplus){
         try{
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
@@ -101,7 +101,7 @@ module.exports = {
 
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
             let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-            
+            nonce+=nonceplus
             let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
             
             let myData=contract.methods.transfer(
