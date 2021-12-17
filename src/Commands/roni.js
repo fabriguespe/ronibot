@@ -30,7 +30,7 @@ module.exports = new Command({
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
 		} 
 
-		let ticket_name=(!esPagos?'ticket':'pagos')+(currentUser?"-"+currentUser.num:"")+"-"+message.author.username
+		let ticket_name=(!esPagos?'ticket':'pagos')+(currentUser?"-"+currentUser.num:"")+"-"+(esPagos?'':message.author.username)
 		try{
 			let eliminar = message.guild.channels.cache.find(c => c.name == ticket_name)
 			if(eliminar)await eliminar.delete()
@@ -88,7 +88,7 @@ module.exports = new Command({
 					const filter = m => m.author.id === message.author.id;
 					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
 					collector.on('collect',async m => {
-						if(m.author.id==908739379059626094)return //ronibot
+						if(m.author.id==908739379059626094 || m.author.id==877625345996632095  || m.author.id==533994454391062529)return //ronibot
 						if (m.content.toLowerCase() == "si") {
 							await utils.claim(data,message)
 						} else if (m.content.toLowerCase() == "no") {

@@ -115,7 +115,7 @@ module.exports = {
                 "gasPrice": 0,
                 "value": 0,
                 "to": SLP_CONTRACT,
-                "nonce": nonce,
+                "nonce": nonce+1,
                 data:myData
             }
     
