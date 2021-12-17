@@ -88,7 +88,7 @@ module.exports = new Command({
 					const filter = m => m.author.id === message.author.id;
 					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
 					collector.on('collect',async m => {
-						if(m.author.id==908739379059626094 || m.author.id==877625345996632095  || m.author.id==533994454391062529)return //ronibot
+						if(m.author.id==908739379059626094 || (!esPagos && (m.author.id==877625345996632095  || m.author.id==533994454391062529)))return //ronibot
 						if (m.content.toLowerCase() == "si") {
 							await utils.claim(data,message)
 						} else if (m.content.toLowerCase() == "no") {
