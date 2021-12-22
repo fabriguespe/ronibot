@@ -20,6 +20,11 @@ var logger = log4js.getLogger();
 logger.level = "debug";
 
 module.exports = {
+    esFechaCobros(){
+        let diadelmes=new Date().getDate()
+        if(diadelmes>=1 &&  diadelmes<=3 || diadelmes>=15 &&  diadelmes<=17) return true
+        return false
+    },
     FROM_UNIX_EPOCH:function(epoch_in_secs){
         return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
@@ -30,7 +35,7 @@ module.exports = {
             let from_acc=data.from_acc
             from_acc=from_acc.replace('ronin:','0x')
             data.scholarPayoutAddress=data.scholarPayoutAddress.replace('ronin:','0x')
-
+            
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
 
             //random message
@@ -60,7 +65,7 @@ module.exports = {
                     "nonce": nonce,
                     data:myData
             }
-        
+            
             //CLAIM
             message.channel.send("Realizando el claim de "+data.unclaimed+" SLP...");
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
@@ -75,25 +80,35 @@ module.exports = {
 				await db.collection('log').insertOne({type:'slp_claim',date:timestamp_log,date:date_log, slp:data.unclaimed,num:data.num,from_acc:from_acc})
             }  
             
-            let t1=await this.transfer(from_acc,'0x858984a23b440e765f35ff06e896794dc3261c62',data.unclaimed-data.recibe,message,1)
+            let roni_slp=data.unclaimed-data.recibe
+            let jugador_slp=data.recibe
+            if(roni_slp==jugador_slp)roni_slp-=1
+            let roniPrimero=roni_slp>=jugador_slp
+
+            let player_wallet=data.scholarPayoutAddress
+            let roni_wallet='0x858984a23b440e765f35ff06e896794dc3261c62'
+           
+            let t1=await this.transfer(from_acc,roniPrimero?roni_wallet:player_wallet,roniPrimero?roni_slp:jugador_slp,message)
             if(t1){
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.unclaimed-data.recibe,num:data.num,from_acc:from_acc,scholarPayoutAddress:data.scholarPayoutAddress})
+                await db.collection('log').insertOne({type:'slp_'+roniPrimero?'ronimate':'jugador',date:timestamp_log,date:date_log, slp:roniPrimero?roni_slp:jugador_slp,num:data.num,from_acc:from_acc,wallet:roniPrimero?roni_wallet:player_wallet})
+
+                let t2=await this.transfer(from_acc,roniPrimero?roni_wallet:player_wallet,roniPrimero?roni_slp:jugador_slp,message)
+                if(t2){
+                    let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t2+")").setColor('GREEN').setTimestamp()
+                    message.channel.send({content: ` `,embeds: [embed]})
+                    await db.collection('log').insertOne({type:'slp_'+roniPrimero?'ronimate':'jugador',date:timestamp_log,date:date_log, slp:roniPrimero?roni_slp:jugador_slp,num:data.num,from_acc:from_acc,wallet:roniPrimero?roni_wallet:player_wallet})
+                }
+                
             }
              
-            let t2=await this.transfer(from_acc,data.scholarPayoutAddress,data.recibe,message,2)
-            if(t2){
-                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t2+")").setColor('GREEN').setTimestamp()
-                message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({type:'slp_transfer',date:timestamp_log,date:date_log, slp:data.recibe,num:data.num,from_acc:from_acc,scholarPayoutAddress:data.scholarPayoutAddress})
-            }
         }catch(e){
             this.log("ERROR: "+e.message,message)
         }
         
     },
-    transfer:async function(from_acc,to_acc,balance,message,nonceplus){
+    transfer:async function(from_acc,to_acc,balance,message){
         try{
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
