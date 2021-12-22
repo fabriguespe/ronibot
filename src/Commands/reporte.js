@@ -10,7 +10,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "report",
+	name: "reporte",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
@@ -53,7 +53,8 @@ module.exports = new Command({
 					const exampleEmbed = new MessageEmbed()
 					.setColor('#0099ff')
 					.setTitle('Jugador #'+args[1])
-					.addFields(
+					
+					exampleEmbed.addFields(
 						//{ name: 'Precio', value: ''+slp+'USD'},
 						{ name: 'SLP Total', value: ''+data.total_slp,inline:true},
 						{ name: 'Copas', value: ''+data.mmr,inline:true},
@@ -65,6 +66,13 @@ module.exports = new Command({
 						{ name: axiesdata[1].tipo, value: axiesdata[1].partes.cola+'\n'+axiesdata[1].partes.espalda+'\n'+axiesdata[1].partes.cuerno+'\n'+axiesdata[1].partes.boca+'\n'+'[Link]('+axiesdata[1].url+")",inline:true},
 						{ name: axiesdata[2].tipo, value: axiesdata[2].partes.cola+'\n'+axiesdata[2].partes.espalda+'\n'+axiesdata[2].partes.cuerno+'\n'+axiesdata[2].partes.boca+'\n'+'[Link]('+axiesdata[2].url+")",inline:true},
 					)
+					//if(utils.esFabri(message) ){
+					exampleEmbed.addFields(
+						{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
+						{ name: 'JSON', value: '[Link](https://game-api.axie.technology/api/v1/'+eluser.accountAddress+")",inline:true},
+						{ name: 'Axies', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
+					)
+					//}
 					message.reply({ embeds: [exampleEmbed] });
 
 
@@ -82,6 +90,7 @@ module.exports = new Command({
 					if(stat && anteultimo){
 						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
 						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
+						if(stat.date=='16/12/2021')stat['slp']=stat['slp']/3
 						data.slp.push(stat['slp'])
 						data.mmr.push(stat['mmr'])
 						data['days'].push(utils.getDayName(stat.date, "es-ES"))
