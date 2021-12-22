@@ -34,10 +34,10 @@ module.exports = new Command({
 						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
 						if(stat.date=='16/12/2021'){
 							stat['slp']=stat['slp']/3
-							data['days'].push(utils.getDayName("14/12/2021", "es-ES"))
+							data.push({date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 							data.slp.push(stat['slp'])
 							data.mmr.push(stat['mmr'])
-							data['days'].push(utils.getDayName("15/12/2021", "es-ES"))
+							data.push({date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 							data.slp.push(stat['slp'])
 							data.mmr.push(stat['mmr'])
 						}
