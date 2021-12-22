@@ -48,13 +48,12 @@ module.exports = new Command({
 			}
 			users=users.filter(u => u.slp_prom>0)
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(0, 10);
-			help="PEORES"
 			for(let ii in top){
 				let user=top[ii]
 				help+='#'+user.num+" "+user.name+' SLP:'+user.slp_prom+' COPAS:'+user.mmr_prom+'\n\n'
 			}	
 			
-			let embed = new MessageEmbed().setTitle('Ranking').setDescription(help).setColor('GREEN').setTimestamp()
+			let embed = new MessageEmbed().setTitle('Mejores').setDescription(help).setColor('GREEN').setTimestamp()
 			return message.reply({content: ` `,embeds: [embed]})
 
 		}catch(e){
