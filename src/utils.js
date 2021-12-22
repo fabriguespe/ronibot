@@ -99,9 +99,11 @@ module.exports = {
                     let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t2+")").setColor('GREEN').setTimestamp()
                     message.channel.send({content: ` `,embeds: [embed]})
                     await db.collection('log').insertOne({type:'slp_'+roniPrimero?'ronimate':'jugador',date:timestamp_log,date:date_log, slp:roniPrimero?roni_slp:jugador_slp,num:data.num,from_acc:from_acc,wallet:roniPrimero?roni_wallet:player_wallet})
+                    return true
                 }
                 
             }
+            return false
              
         }catch(e){
             this.log("ERROR: "+e.message,message)
