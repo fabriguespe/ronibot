@@ -10,7 +10,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "reporte",
+	name: "report",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
@@ -75,50 +75,34 @@ module.exports = new Command({
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				
-				data={days:[],values:[]}
-				let value="mmr"
+				data={days:[],slp:[],mmr:[]}
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
-					if((stat[value] || value=='slp') && anteultimo){
-						if(value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
-						else if(value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
-						data.values.push(stat[value])
+					if(stat && anteultimo){
+						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
+						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
+						data.slp.push(stat['slp'])
+						data.mmr.push(stat['mmr'])
 						data['days'].push(utils.getDayName(stat.date, "es-ES"))
 					}
 				}
-				
+
 
 				let chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
 						labels: data.days,
-						datasets:[{label: value, data: data.values}] 
+						datasets:[{label: 'SLP', data: data.slp}] 
 					},
 				}).setWidth(800).setHeight(400);
 				message.reply(`Grafico: ${await chart.getShortUrl()}`);
-
-
-				
-				
-				value="slp"
-				for(let i in stats){
-					let stat=stats[i]
-					let anteultimo=stats[i-1]
-					if((stat[value] || value=='slp') && anteultimo){
-						if(value=='slp' && stat.in_game_slp<anteultimo.in_game_slp)stat[value]=stat.in_game_slp
-						else if(value=='slp')stat[value]=stat.in_game_slp-anteultimo.in_game_slp
-						data.values.push(stat[value])
-						data['days'].push(utils.getDayName(stat.date, "es-ES"))
-					}
-				}
-				
 
 				chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
 						labels: data.days,
-						datasets:[{label: value, data: data.values}] 
+						datasets:[{label: 'MMR', data: data.mmr}] 
 					},
 				}).setWidth(800).setHeight(400);
 				message.reply(`Grafico: ${await chart.getShortUrl()}`);
