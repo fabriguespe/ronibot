@@ -32,7 +32,7 @@ module.exports = new Command({
 					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined){
 						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
 						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
-						if(stat['mmr']<>1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue
+						if(stat['mmr']!=1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue
 						if(stat.date=='16/12/2021'){
 							stat['slp']=stat['slp']/3
 							data.push({date:utils.getDayName("14/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
