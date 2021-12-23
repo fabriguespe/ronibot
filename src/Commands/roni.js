@@ -21,10 +21,10 @@ module.exports = new Command({
 		let row=new MessageActionRow()
 		if(esPagos){
 			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
-			if(!temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar').setStyle('SUCCESS'));
+			if(temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar').setStyle('SUCCESS'));
 		}else if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
-			if(!temporal && utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
+			if(temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
 		}else{
