@@ -94,8 +94,8 @@ module.exports = new Command({
 						if (m.content.toLowerCase() == "si") {
 							let exito=await utils.claim(data,message)
 							if(exito){
-								message.reply('Exito!\nEste canal se cerrara en 3 segundos.')
-								setTimeout(() => { message.channel.delete()}, 3000)
+								//message.reply('Exito!\nEste canal se cerrara en 3 segundos.')
+								//setTimeout(() => { message.channel.delete()}, 3000)
 							}
 						} else if (m.content.toLowerCase() == "no") {
 							message.reply('Este canal se cerrara en 3 segundos.')
