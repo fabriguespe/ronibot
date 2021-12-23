@@ -89,17 +89,17 @@ module.exports = {
             let player_wallet=data.scholarPayoutAddress
             let roni_wallet='0x858984a23b440e765f35ff06e896794dc3261c62'
            
-            let t1=await this.transfer(from_acc,roniPrimero?roni_wallet:player_wallet,roniPrimero?roni_slp:jugador_slp,message)
+            let t1=await this.transfer(from_acc,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp,message))
             if(t1){
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-                await db.collection('log').insertOne({type:'slp_'+roniPrimero?'ronimate':'jugador',date:timestamp_log,date:date_log, slp:roniPrimero?roni_slp:jugador_slp,num:data.num,from_acc:from_acc,wallet:roniPrimero?roni_wallet:player_wallet})
+                await db.collection('log').insertOne({type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:timestamp_log,date:date_log, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
 
-                let t2=await this.transfer(from_acc,roniPrimero?roni_wallet:player_wallet,!roniPrimero?roni_slp:jugador_slp,message)
+                let t2=await this.transfer(from_acc,(!roniPrimero?roni_wallet:player_wallet),(!roniPrimero?roni_slp:jugador_slp,message))
                 if(t2){
                     let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t2+")").setColor('GREEN').setTimestamp()
                     message.channel.send({content: ` `,embeds: [embed]})
-                    await db.collection('log').insertOne({type:'slp_'+roniPrimero?'ronimate':'jugador',date:timestamp_log,date:date_log, slp:!roniPrimero?roni_slp:jugador_slp,num:data.num,from_acc:from_acc,wallet:roniPrimero?roni_wallet:player_wallet})
+                    await db.collection('log').insertOne({type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:timestamp_log,date:date_log, slp:(!roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(!roniPrimero?roni_wallet:player_wallet)})
                     return true
                 }
                 
@@ -109,13 +109,11 @@ module.exports = {
         }catch(e){
             this.log("ERROR: "+e.message,message)
         }
-        
     },
     transfer:async function(from_acc,to_acc,balance,message){
         try{
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
-
 
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
             let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
@@ -140,7 +138,6 @@ module.exports = {
         
             //TRANSFER
             message.channel.send("Enviando "+balance+" SLP a la cuenta de "+(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'?'Ronimate':'el jugador'));
-            console.log(trans)
             
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
