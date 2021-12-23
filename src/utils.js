@@ -240,6 +240,9 @@ module.exports = {
     esJeissonPagos:function(message){
         return message.author.id==877625345996632095 && message.channel.name.includes('comandos') 
     },
+    esIngresos:function(message){
+        return message.channel.id==917380557099380816
+    },
     esFabri:function(message){
         return message.author.id==533994454391062529 && message.channel.id==917380557099380816
     },

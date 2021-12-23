@@ -13,8 +13,8 @@ module.exports = new Command({
 		if(args[1] && !esPagos)return message.reply('No tienes permisos para correr este comando')
 
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
-		if(!currentUser)return message.channel.send('Usuario invalido')
-		if(!currentUser.discord)return message.channel.send('Usuario no validado')
+		if(!utils.esIngresos() && !currentUser)return message.channel.send('Usuario invalido')
+		if(!utils.esIngresos() && !currentUser.discord)return message.channel.send('Usuario no validado')
 		
 		let row=new MessageActionRow()
 		if(esPagos){
