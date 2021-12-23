@@ -17,6 +17,7 @@ module.exports = new Command({
 		if(temporal || (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
 		if(temporal || (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario no validado')
 		
+		
 		let row=new MessageActionRow()
 		if(esPagos){
 			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
