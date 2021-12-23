@@ -14,17 +14,17 @@ module.exports = new Command({
 		let esPagos=utils.esJeissonPagos(message) || utils.esFabri(message)
 		if(args[1] && !esPagos)return message.reply('No tienes permisos para correr este comando')
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
-		if(temporal || (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
-		if(temporal || (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario no validado')
+		if(!temporal || (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
+		if(!temporal || (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario no validado')
 		
-		
+
 		let row=new MessageActionRow()
 		if(esPagos){
 			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
-			if(temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar').setStyle('SUCCESS'));
+			if(!temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar').setStyle('SUCCESS'));
 		}else if(utils.esJugador(message)){
 			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
-			if(temporal && utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
+			if(!temporal && utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
 		}else{
