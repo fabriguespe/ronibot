@@ -21,6 +21,7 @@ logger.level = "debug";
 
 module.exports = {
     esFechaCobros(){
+        return true
         let diadelmes=new Date().getDate()
         if(diadelmes>=1 &&  diadelmes<=3 || diadelmes>=15 &&  diadelmes<=17) return true
         return false
@@ -31,6 +32,7 @@ module.exports = {
     claim:async function(data,message){
 
         try{
+            
             let db = await DbConnection.Get();
             let from_acc=data.from_acc
             from_acc=from_acc.replace('ronin:','0x')
@@ -148,6 +150,23 @@ module.exports = {
 
             if(tr_raw.status)return tr_raw.transactionHash
             else return false          
+        }catch(e){
+            this.log("ERROR: "+e.message,message)
+        }
+    },
+    getSLP:async function(currentUser,message){
+        try{
+
+            let from_acc=currentUser.accountAddress
+            if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
+
+            let data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+            let ronin_slp= data.ronin_slp
+
+            data= await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1", { method: "Get" }).then(res => res.json()).then((json) => { return json});
+            let unclaimed=data.total
+            return {ronin_slp:ronin_slp,unclaimed:unclaimed}
+
         }catch(e){
             this.log("ERROR: "+e.message,message)
         }

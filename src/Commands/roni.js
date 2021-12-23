@@ -11,10 +11,10 @@ module.exports = new Command({
 	async run(message, args, client) {
 		let esPagos=utils.esJeissonPagos(message) || utils.esFabri(message)
 		if(args[1] && !esPagos)return message.reply('No tienes permisos para correr este comando')
-
+		
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
-		if(!utils.esIngresos(message) && !currentUser)return message.channel.send('Usuario invalido')
-		if(!utils.esIngresos(message) && !currentUser.discord)return message.channel.send('Usuario no validado')
+		//if(!utils.esIngresos(message) && !currentUser)return message.channel.send('Usuario invalido')
+		//if(!utils.esIngresos(message) && !currentUser.discord)return message.channel.send('Usuario no validado')
 		
 		let row=new MessageActionRow()
 		if(esPagos){
