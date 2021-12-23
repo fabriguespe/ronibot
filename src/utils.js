@@ -21,7 +21,6 @@ logger.level = "debug";
 
 module.exports = {
     esFechaCobros(){
-        return true
         let diadelmes=new Date().getDate()
         if(diadelmes>=1 &&  diadelmes<=3 || diadelmes>=15 &&  diadelmes<=17) return true
         return false
