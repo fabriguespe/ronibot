@@ -62,10 +62,11 @@ module.exports = new Command({
 						{ name: 'Nombre', value: ''+data.name,inline:true},
 						{ name: 'Estado', value: ''+data.nota==undefined || data.nota==null?'Aceptado':data.nota,inline:true},
 						{ name: 'Vacio', value: 'Vacio',inline:true},
-						{ name: axiesdata[0].tipo, value: axiesdata[0].partes.cola+'\n'+axiesdata[0].partes.espalda+'\n'+axiesdata[0].partes.cuerno+'\n'+axiesdata[0].partes.boca+'\n'+'[Link]('+axiesdata[0].url+")",inline:true},
-						{ name: axiesdata[1].tipo, value: axiesdata[1].partes.cola+'\n'+axiesdata[1].partes.espalda+'\n'+axiesdata[1].partes.cuerno+'\n'+axiesdata[1].partes.boca+'\n'+'[Link]('+axiesdata[1].url+")",inline:true},
-						{ name: axiesdata[2].tipo, value: axiesdata[2].partes.cola+'\n'+axiesdata[2].partes.espalda+'\n'+axiesdata[2].partes.cuerno+'\n'+axiesdata[2].partes.boca+'\n'+'[Link]('+axiesdata[2].url+")",inline:true},
 					)
+					for(let i in axiesdata){
+						exampleEmbed.addFields({ name: axiesdata[i].tipo, value: axiesdata[i].partes.cola+'\n'+axiesdata[i].partes.espalda+'\n'+axiesdata[i].partes.cuerno+'\n'+axiesdata[i].partes.boca+'\n'+'[Link]('+axiesdata[i].url+")",inline:true})
+					}
+
 					//if(utils.esFabri(message) ){
 					exampleEmbed.addFields(
 						{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
@@ -76,8 +77,6 @@ module.exports = new Command({
 					message.reply({ embeds: [exampleEmbed] });
 
 
-				}else{
-					message.reply('Esta cuenta tiene una cantidad de Axies incorrecta. Revisar')
 				}
 
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();

@@ -22,7 +22,7 @@ logger.level = "debug";
 module.exports = {
     esFechaCobros(){
         let diadelmes=new Date().getDate()
-        if(diadelmes>=1 &&  diadelmes<=3 || diadelmes>=15 &&  diadelmes<=17) return true
+        if(diadelmes>=1 &&  diadelmes<=2 || diadelmes>=15 &&  diadelmes<=16) return true
         return false
     },
     FROM_UNIX_EPOCH:function(epoch_in_secs){

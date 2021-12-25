@@ -1,4 +1,3 @@
-/** @format */
 const path = require('path');
 
 var utils = require(path.resolve(__dirname, "../utils.js"));
@@ -9,7 +8,7 @@ module.exports = new Command({
 	name: "roni",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		let temporal=true
+		let temporal=false
 		
 		let esPagos=utils.esJeissonPagos(message) || utils.esFabri(message)
 		if(args[1] && !esPagos)return message.reply('No tienes permisos para correr este comando')
