@@ -21,48 +21,22 @@ RONIN_PROVIDER = "https://api.roninchain.com/rpc"
 
 
 module.exports = new Command({
-	name: "flush",
+	name: "claim",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
         try{
             if(args.length==2){
-
-                //IDs
-
-                let db = await DbConnection.Get();
-
-                let roni_wallet='0x858984a23b440e765f35ff06e896794dc3261c62'
-                roni_wallet=roni_wallet.replace('ronin:','0x')
                 
                 //build
                 let ids=args[1].split(",");
                 for(let i in ids){
                     let num=ids[i]
-                        
                     let currentUser=await utils.getUserByNum(num)
                     let from_acc=currentUser.accountAddress
-                    //Data
                     if(!utils.isSafe(from_acc))return message.reply(`Una de las wallets esta mal!`);
-                   
-
-                    let data=await utils.getSLP(currentUser,message)
-                    let slp=data.unclaimed>0?data.unclaimed:data.ronin_slp
-                    if(slp>0){
-                        let t1=await utils.transfer(from_acc,roni_wallet,slp,message)
-                        if(t1){
-
-                            let timestamp_log=new Date(Date.now())
-                            let date_log=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
-                            
-                            let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
-                            message.channel.send({content: ` `,embeds: [embed]})
-                            await db.collection('log').insertOne({type:'flush_ronimate',date:timestamp_log,date:date_log, slp:data.ronin_slp,num:num,from_acc:from_acc,wallet:roni_wallet})
-
-                        }
-                    }else{
-                        utils.log('Cuenta '+num+' no tiene slp',message);
-                    }
+                    let data=await utils.claim2(num,from_acc,message)
+                    if(data>0) utils.log('Exito! ',message);
                 }
 
             }else{

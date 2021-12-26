@@ -88,7 +88,7 @@ module.exports = new Command({
                 
                 utils.log("Listo!",message);
             }else{
-                utils.log(`${args[0]} is not a valid command!`);
+                utils.log(`not a valid command!`);
             }
         }catch(e){
             message.reply("ERROR: "+e.message);

@@ -28,7 +28,61 @@ module.exports = {
     FROM_UNIX_EPOCH:function(epoch_in_secs){
         return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
-    claim:async function(data,message){
+    claim2:async function(num,from_acc,message){
+        try{
+            let db = await DbConnection.Get();
+            let from_private = secrets[(from_acc)]    
+            from_acc=from_acc.replace('ronin:','0x')
+
+            let random_msg=await this.create_random_msg()
+            let jwt=await this.get_jwt(from_acc,random_msg,from_private)
+            let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
+            console.log(jdata)
+            let slp_claim=jdata.total
+            if(slp_claim<=0) return message.reply('No hay slp')
+
+            let signature=jdata.blockchain_related.signature
+            const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
+            let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
+            let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
+            
+            //build
+            
+            let myData=contract.methods.checkpoint(
+                (web3.utils.toChecksumAddress(from_acc)),
+                signature['amount'],
+                signature['timestamp'],
+                signature['signature']).encodeABI()
+            
+            let trans={
+                    "chainId": 2020,
+                    "gas": 492874,
+                    "from": from_acc,
+                    "gasPrice": 0,
+                    "value": 0,
+                    "to": SLP_CONTRACT,
+                    "nonce": nonce,
+                    data:myData
+            }
+            //CLAIM
+            message.channel.send(num+" Realizando el claim de "+slp_claim+" SLP...");
+            let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
+            let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
+
+            let timestamp_log=new Date(Date.now())
+            let date_log=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
+
+            if(tr_raw.status){            
+                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
+                message.channel.send({content: ` `,embeds: [embed]})
+				await db.collection('log').insertOne({type:'slp_claim',date:timestamp_log,date:date_log, slp:slp_claim,num:num,from_acc:from_acc})
+                return true
+            }  
+        }catch(e){
+            this.log(e.message,message)
+            return false
+        }
+    },claim:async function(data,message){
 
         try{
             
@@ -66,7 +120,7 @@ module.exports = {
                     "nonce": nonce,
                     data:myData
             }
-            
+            if(data.unclaimed)
             //CLAIM
             message.channel.send("Realizando el claim de "+data.unclaimed+" SLP...");
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
@@ -162,12 +216,17 @@ module.exports = {
 
             let from_acc=currentUser.accountAddress
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
+            from_acc=from_acc.replace('ronin:','0x')
+            let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
 
             let data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
             let ronin_slp= data.ronin_slp
+            let random_msg=await this.create_random_msg()
+            let jwt=await this.get_jwt(from_acc,random_msg,from_private)
+            let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
 
-            data= await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1", { method: "Get" }).then(res => res.json()).then((json) => { return json});
-            let unclaimed=data.total
+            let unclaimed=jdata.total
+
             return {ronin_slp:ronin_slp,unclaimed:unclaimed}
 
         }catch(e){
@@ -255,9 +314,6 @@ module.exports = {
         }else{
             return message.reply('Ese código es invalido')
         }
-    },
-    get_balance:function(){
-        return 10
     },
     esJeissonPagos:function(message){
         return message.author.id==877625345996632095 && message.channel.name.includes('comandos') 
