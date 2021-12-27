@@ -76,7 +76,7 @@ module.exports = new Command({
 							{ name: 'Email', value: eluser.correo,inline:true},
 						)
 					}
-					message.reply({ embeds: [exampleEmbed] });
+					message.channel.send({ embeds: [exampleEmbed] });
 
 
 				}
@@ -115,7 +115,7 @@ module.exports = new Command({
 						datasets:[{label: 'SLP', data: data.slp}] 
 					},
 				}).setWidth(800).setHeight(400);
-				message.reply(`Grafico: ${await chart.getShortUrl()}`);
+				message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 
 				chart = new QuickChart().setConfig({
 					type: 'bar',
@@ -124,7 +124,7 @@ module.exports = new Command({
 						datasets:[{label: 'MMR', data: data.mmr}] 
 					},
 				}).setWidth(800).setHeight(400);
-				message.reply(`Grafico: ${await chart.getShortUrl()}`);
+				message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 	
 			}else{
 				message.reply(`Comando incompleto`);
