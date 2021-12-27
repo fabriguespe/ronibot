@@ -10,7 +10,7 @@ module.exports = new Command({
 	name: "update",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
+		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
 		if(args.length==4){	
             let quien=await utils.getWalletByNum(args[1])
 			let key=args[2]
@@ -20,7 +20,7 @@ module.exports = new Command({
 			let values={ $set: armado }
 			let db = await DbConnection.Get();
 			await db.collection("users").updateOne({ accountAddress:quien},values )
-			message.reply('El jugador fue actualizado con exito')
+			message.channel.send('El jugador fue actualizado con exito')
 			//let rCanal = message.guild.channels.cache.find(c => c.id == 917380557099380816);//canal ingresos
 			//if(value=='aprobada')rCanal.send('El jugador fue actualizado con exito')
 		}

@@ -11,7 +11,7 @@ module.exports = new Command({
 		let temporal=false
 		
 		let esPagos=utils.esJeissonPagos(message) || utils.esFabri(message)
-		if(args[1] && !esPagos)return message.reply('No tienes permisos para correr este comando')
+		if(args[1] && !esPagos)return message.channel.send('No tienes permisos para correr este comando')
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		if(!temporal && (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
 		if(!temporal && (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario no validado')
@@ -56,7 +56,7 @@ module.exports = new Command({
         let embed = new MessageEmbed().setTitle('Nuevo Ticket')
         .setDescription(`CLICK AQUI PARA CONTINUAR ----->>> <#${thread.id}>`).setColor('GREEN').setTimestamp()
 
-        await message.reply({content: ` `, embeds: [embed]})
+        await message.channel.send({content: ` `, embeds: [embed]})
 
         embed = new MessageEmbed().setTitle('Ticket')
         .setDescription(`Hola ${message.author}, soy Roni. \nCon que deseas que te ayude?`).setColor('GREEN').setTimestamp()
@@ -93,11 +93,11 @@ module.exports = new Command({
 						if (m.content.toLowerCase() == "si") {
 							let exito=await utils.claim(data,message)
 							if(exito){
-								//message.reply('Exito!\nEste canal se cerrara en 3 segundos.')
+								//message.channel.send('Exito!\nEste canal se cerrara en 3 segundos.')
 								//setTimeout(() => { message.channel.delete()}, 3000)
 							}
 						} else if (m.content.toLowerCase() == "no") {
-							message.reply('Este canal se cerrara en 3 segundos.')
+							message.channel.send('Este canal se cerrara en 3 segundos.')
 							setTimeout(() => { message.channel.delete()}, 3000)
 						}
 					})

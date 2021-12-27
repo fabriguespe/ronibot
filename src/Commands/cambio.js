@@ -24,7 +24,7 @@ module.exports = new Command({
 	name: "cambio",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
+		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
         if(args.length==4){
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
 
@@ -32,7 +32,7 @@ module.exports = new Command({
             let from_acc=await utils.getWalletByNum(args[2])
             let to_acc=await utils.getWalletByNum(args[3])
             //Data
-            if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.reply(`Una de las wallets esta mal!`);
+            if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
 
@@ -63,22 +63,22 @@ module.exports = new Command({
             // sign
             try{
                 
-                message.reply("Listo para transferir el Axie: "+axie_id+"\n Aguarde un momento...");
+                message.channel.send("Listo para transferir el Axie: "+axie_id+"\n Aguarde un momento...");
                 let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
                 let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
                 utils.log(tr_raw)
 
                 if(tr_raw.status){            
                     let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
-                    return message.reply({content: ` `,embeds: [embed]})
+                    return message.channel.send({content: ` `,embeds: [embed]})
                 }        
-                else message.reply("ERROR Status False");
+                else message.channel.send("ERROR Status False");
             }catch(e){
-                message.reply("ERROR: "+e.message);
+                message.channel.send("ERROR: "+e.message);
             }
         }else{
 
-            return message.reply(`${args[0]} is not a valid command!`);
+            return message.channel.send(`${args[0]} is not a valid command!`);
         }
 
 	}

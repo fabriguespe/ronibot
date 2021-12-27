@@ -13,7 +13,7 @@ module.exports = new Command({
 	name: "general",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
+		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
@@ -89,7 +89,7 @@ module.exports = new Command({
 					{ name: 'USD mes', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*30),inline:true},
 				)
 			}
-			message.reply({ embeds: [exampleEmbed] });
+			message.channel.send({ embeds: [exampleEmbed] });
 			
 			
 			let chart = new QuickChart().setConfig({
@@ -120,7 +120,7 @@ module.exports = new Command({
 					}
 				  }
 			}).setWidth(800).setHeight(400);
-			message.reply(`Grafico: ${await chart.getShortUrl()}`);
+			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 			
 			
 			if(utils.esFabri(message)){
@@ -131,7 +131,7 @@ module.exports = new Command({
 						datasets:[{label: 'usd-day', data: chart_data.usd,backgroundColor: '#9EC284'}] 
 					},
 				}).setWidth(800).setHeight(400);
-				message.reply(`Grafico: ${await chart.getShortUrl()}`);
+				message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 			}
 	
 			
@@ -142,7 +142,7 @@ module.exports = new Command({
 					datasets:[{label: 'slp-day', data: chart_data.slp,backgroundColor: '#F8D978'}] 
 				},
 			}).setWidth(800).setHeight(400);
-			message.reply(`Grafico: ${await chart.getShortUrl()}`);
+			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 
 			chart = new QuickChart().setConfig({
 				type: 'bar',
@@ -151,7 +151,7 @@ module.exports = new Command({
 					datasets:[{label: 'copas-prom', data: chart_data.prom_mmr,backgroundColor: '#5E9DF8'}] 
 				},
 			}).setWidth(800).setHeight(400);
-			message.reply(`Grafico: ${await chart.getShortUrl()}`);
+			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 	
 
 		}catch(e){

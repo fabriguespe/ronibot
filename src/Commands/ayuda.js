@@ -25,7 +25,7 @@ module.exports = new Command({
 		if(utils.esFabri(message))help+="!update XX FIELD VALUE para actualizar (nota,ScholarPayoutAddress)\n\n"
 		help+="!roni para poder validarte y realizar cobros\n\n"
 		let embed = new MessageEmbed().setTitle('Comandos').setDescription(help).setColor('GREEN').setTimestamp()
-		return message.reply({content: ` `,embeds: [embed]})
+		return message.channel.send({content: ` `,embeds: [embed]})
 		
 	}
 });

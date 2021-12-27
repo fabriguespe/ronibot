@@ -24,7 +24,7 @@ module.exports = new Command({
 	name: "flush",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
+		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
             if(args.length==2){
 
@@ -43,7 +43,7 @@ module.exports = new Command({
                     let currentUser=await utils.getUserByNum(num)
                     let from_acc=currentUser.accountAddress
                     //Data
-                    if(!utils.isSafe(from_acc))return message.reply(`Una de las wallets esta mal!`);
+                    if(!utils.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
                    
 
                     let data=await utils.getSLP(currentUser,message)
@@ -69,7 +69,7 @@ module.exports = new Command({
                 utils.log(`Comando invalido`,message);
             }
         }catch(e){
-            message.reply("ERROR: "+e.message);
+            message.channel.send("ERROR: "+e.message);
         }
 	}
 });

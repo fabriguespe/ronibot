@@ -24,7 +24,7 @@ module.exports = new Command({
 	name: "retiro",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-        if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
+        if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
             if(args.length==3){
                 const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
@@ -35,7 +35,7 @@ module.exports = new Command({
                 //Data
                 if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc)){
                     console.log(to_acc,from_acc)
-                    return message.reply(`Una de las wallets esta mal!`);
+                    return message.channel.send(`Una de las wallets esta mal!`);
 
                 }
                 from_acc=from_acc.replace('ronin:','0x')
@@ -56,7 +56,7 @@ module.exports = new Command({
                     let axie_id=axies.axies[i].id
                     console.log('Transfer:'+axie_id)
 
-                    message.reply("Listo para transferir el Axie: "+axie_id+" \n Aguarde un momento...");
+                    message.channel.send("Listo para transferir el Axie: "+axie_id+" \n Aguarde un momento...");
                     let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
                     let myData=axie_contract.methods.safeTransferFrom(
                     (web3.utils.toChecksumAddress(from_acc)),
@@ -81,9 +81,9 @@ module.exports = new Command({
                     
                     if(tr_raw.status){            
                         let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\nRecurda actualizar !update "+args[1]+" nota retirar").setColor('GREEN').setTimestamp()
-                        message.reply({content: ` `,embeds: [embed]})
+                        message.channel.send({content: ` `,embeds: [embed]})
                     }        
-                    else message.reply("ERROR Status False");
+                    else message.channel.send("ERROR Status False");
                 }
                 
                 utils.log("Listo!",message);
@@ -91,7 +91,7 @@ module.exports = new Command({
                 utils.log(`not a valid command!`);
             }
         }catch(e){
-            message.reply("ERROR: "+e.message);
+            message.channel.send("ERROR: "+e.message);
         }
 	}
 });

@@ -10,13 +10,13 @@ module.exports = new Command({
 	name: "cron",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
+		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
 		
 		if(args[1]=='stats'){
 			let db = await DbConnection.Get();
 			let users=await db.collection('users').find({}).toArray()
 			try{
-				message.reply('Se empezara a procesar')
+				message.channel.send('Se empezara a procesar')
 				for( let ii in [13,14,15]){
 
 					for(let i in users){

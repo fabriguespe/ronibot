@@ -39,7 +39,7 @@ module.exports = {
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
             console.log(jdata)
             let slp_claim=jdata.total
-            if(slp_claim<=0) return message.reply('No hay slp')
+            if(slp_claim<=0) return message.channel.send('No hay slp')
 
             let signature=jdata.blockchain_related.signature
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
@@ -285,16 +285,16 @@ module.exports = {
         let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");
         message.member.roles.remove(rJugador);
         await db.collection("users").updateOne(myquery, newvalues)
-        message.reply('Fuiste desasociado con exito.\nEste canal se cerrara en 3 segundos.')
+        message.channel.send('Fuiste desasociado con exito.\nEste canal se cerrara en 3 segundos.')
         setTimeout(() => { message.channel.delete()}, 3000)
     },
     asociar:async function(message){
         let msg=message.content
         let db = await DbConnection.Get();
         let resultpw = await db.collection('users').findOne({pass:msg})
-        //if(resultpw && (resultpw.num.includes('2_') || parseInt(resultpw.num)>=20))return message.reply('Todavia no le toca a tu lote. Por favor espera a ser llamado')
+        //if(resultpw && (resultpw.num.includes('2_') || parseInt(resultpw.num)>=20))return message.channel.send('Todavia no le toca a tu lote. Por favor espera a ser llamado')
         if(resultpw && resultpw.nota=='Entrevista'){
-            message.reply('Estas en estado de Entrevista, por tal motivo no podemos validarte aún cuando sea aprobado podrás validarte\nEste canal se cerrara en 5 segundos.')
+            message.channel.send('Estas en estado de Entrevista, por tal motivo no podemos validarte aún cuando sea aprobado podrás validarte\nEste canal se cerrara en 5 segundos.')
             setTimeout(() => { message.channel.delete()}, 5000)
         }else if(resultpw){
             var myquery = { pass: msg };
@@ -309,10 +309,10 @@ module.exports = {
             await db.collection("users").updateOne(myquery, newvalues)
             let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");
             message.member.roles.add(rJugador);
-            message.reply('Fuiste validado con exito!.\nEste canal se cerrara en 3 segundos.')
+            message.channel.send('Fuiste validado con exito!.\nEste canal se cerrara en 3 segundos.')
             setTimeout(() => { message.channel.delete()}, 3000)
         }else{
-            return message.reply('Ese código es invalido')
+            return message.channel.send('Ese código es invalido')
         }
     },
     esJeissonPagos:function(message){
@@ -337,7 +337,7 @@ module.exports = {
     log:function (log,message=null){
         logger.debug(log)
         console.log(log)
-        if(message)message.reply(log)
+        if(message)message.channel.send(log)
     },
     get_jwt:async function (wallet,msg,from_private){
         wallet=wallet.replace('ronin:','0x')

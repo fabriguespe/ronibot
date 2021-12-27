@@ -13,7 +13,7 @@ module.exports = new Command({
 	name: "recupero",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!utils.esManager(message))return message.reply('No tienes permisos para correr este comando')
+		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
@@ -55,7 +55,7 @@ module.exports = new Command({
 			}	
 			
 			let embed = new MessageEmbed().setTitle('Recupero').setDescription(help).setColor('GREEN').setTimestamp()
-			return message.reply({content: ` `,embeds: [embed]})
+			return message.channel.send({content: ` `,embeds: [embed]})
 
 		}catch(e){
 			utils.log(e.message,message)

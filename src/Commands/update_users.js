@@ -10,11 +10,11 @@ module.exports = new Command({
 	name: "update_users",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!utils.esFabri(message))return message.reply('No tienes permisos para correr este comando')
+		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
 		let db = await DbConnection.Get();
 		let users=await db.collection('users-db').find({}).toArray()
 		try{
-			message.reply('Se empezara a procesar')
+			message.channel.send('Se empezara a procesar')
 			for(let i in users){
 				let user=users[i]
 				user.num=user.num.toString()
