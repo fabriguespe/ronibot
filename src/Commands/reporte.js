@@ -76,7 +76,7 @@ module.exports = new Command({
 							{ name: 'Email', value: eluser.correo,inline:true},
 						)
 					}
-					message.reply({ embeds: [exampleEmbed] });
+					message.channel.send({ embeds: [exampleEmbed] });
 
 
 				}
