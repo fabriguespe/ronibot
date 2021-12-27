@@ -54,10 +54,10 @@ module.exports = new Command({
 				
 				exampleEmbed.addFields(
 					//{ name: 'Precio', value: ''+slp+'USD'},
-					{ name: 'SLP Total', value: ''+data.total_slp,inline:true},
+					{ name: 'SLP Total', value: ''+data.in_game_slp,inline:true},
+					{ name: 'SLP Ronin', value: ''+data.ronin_slp,inline:true},
 					{ name: 'Copas', value: ''+data.mmr,inline:true},
 					{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(data.last_claim),inline:true},
-					{ name: 'Nombre', value: ''+data.name,inline:true},
 					{ name: 'Estado', value: ''+data.nota==undefined || data.nota==null?'Aceptado':data.nota,inline:true},
 					{ name: 'Vacio', value: 'Vacio',inline:true},
 				)

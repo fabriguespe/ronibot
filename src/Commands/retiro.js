@@ -33,11 +33,8 @@ module.exports = new Command({
                 let from_acc=await utils.getWalletByNum(args[1])
                 let to_acc=await utils.getWalletByNum(args[2])
                 //Data
-                if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc)){
-                    console.log(to_acc,from_acc)
-                    return message.channel.send(`Una de las wallets esta mal!`);
-
-                }
+                if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
+                
                 from_acc=from_acc.replace('ronin:','0x')
                 to_acc=to_acc.replace('ronin:','0x')
 
@@ -45,13 +42,11 @@ module.exports = new Command({
 
                 //private
                 let from_private = secrets[(from_acc.replace('0x','ronin:'))]
-                utils.log(from_private)
                 
                 let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
             
                 //build
                 let axies=await utils.getAxiesIds(from_acc)
-                utils.log(axies.axies.length)
                 for(let i in axies.axies){
                     let axie_id=axies.axies[i].id
                     console.log('Transfer:'+axie_id)
@@ -82,6 +77,7 @@ module.exports = new Command({
                     if(tr_raw.status){            
                         let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\nRecurda actualizar !update "+args[1]+" nota retirar").setColor('GREEN').setTimestamp()
                         message.channel.send({content: ` `,embeds: [embed]})
+                        await db.collection("users").updateOne({ accountAddress:from_acc},{ $set: {nota:"retirar","discord":null} } )
                     }        
                     else message.channel.send("ERROR Status False");
                 }
