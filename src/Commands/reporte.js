@@ -48,38 +48,32 @@ module.exports = new Command({
 					axiesdata.push(pushed)
 				}
 				
-				if(axiesdata.length==3){
+				const exampleEmbed = new MessageEmbed()
+				.setColor('#0099ff')
+				.setTitle('Jugador #'+args[1])
+				
+				exampleEmbed.addFields(
+					//{ name: 'Precio', value: ''+slp+'USD'},
+					{ name: 'SLP Total', value: ''+data.total_slp,inline:true},
+					{ name: 'Copas', value: ''+data.mmr,inline:true},
+					{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(data.last_claim),inline:true},
+					{ name: 'Nombre', value: ''+data.name,inline:true},
+					{ name: 'Estado', value: ''+data.nota==undefined || data.nota==null?'Aceptado':data.nota,inline:true},
+					{ name: 'Vacio', value: 'Vacio',inline:true},
+				)
+				for(let i in axiesdata)exampleEmbed.addFields({ name: axiesdata[i].tipo, value: axiesdata[i].partes.cola+'\n'+axiesdata[i].partes.espalda+'\n'+axiesdata[i].partes.cuerno+'\n'+axiesdata[i].partes.boca+'\n'+'[Link]('+axiesdata[i].url+")",inline:true})
+				
 
-					const exampleEmbed = new MessageEmbed()
-					.setColor('#0099ff')
-					.setTitle('Jugador #'+args[1])
-					
+				if(utils.esManager(message)){
 					exampleEmbed.addFields(
-						//{ name: 'Precio', value: ''+slp+'USD'},
-						{ name: 'SLP Total', value: ''+data.total_slp,inline:true},
-						{ name: 'Copas', value: ''+data.mmr,inline:true},
-						{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(data.last_claim),inline:true},
-						{ name: 'Nombre', value: ''+data.name,inline:true},
-						{ name: 'Estado', value: ''+data.nota==undefined || data.nota==null?'Aceptado':data.nota,inline:true},
-						{ name: 'Vacio', value: 'Vacio',inline:true},
+						{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
+						{ name: 'JSON', value: '[Link](https://game-api.axie.technology/api/v1/'+eluser.accountAddress+")",inline:true},
+						{ name: 'Axies', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
+						{ name: 'Pass', value: eluser.pass,inline:true},
+						{ name: 'Email', value: eluser.correo,inline:true},
 					)
-					for(let i in axiesdata){
-						exampleEmbed.addFields({ name: axiesdata[i].tipo, value: axiesdata[i].partes.cola+'\n'+axiesdata[i].partes.espalda+'\n'+axiesdata[i].partes.cuerno+'\n'+axiesdata[i].partes.boca+'\n'+'[Link]('+axiesdata[i].url+")",inline:true})
-					}
-
-					if(utils.esManager(message)){
-						exampleEmbed.addFields(
-							{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
-							{ name: 'JSON', value: '[Link](https://game-api.axie.technology/api/v1/'+eluser.accountAddress+")",inline:true},
-							{ name: 'Axies', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
-							{ name: 'Pass', value: eluser.pass,inline:true},
-							{ name: 'Email', value: eluser.correo,inline:true},
-						)
-					}
-					message.channel.send({ embeds: [exampleEmbed] });
-
-
 				}
+				message.channel.send({ embeds: [exampleEmbed] });
 
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
