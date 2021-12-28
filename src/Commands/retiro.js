@@ -5,6 +5,7 @@ const path = require('path');
 var secrets = require(path.resolve(__dirname, "../Data/secrets"));
 var axie_abi = require(path.resolve(__dirname, "../Data/axie_abi.json"));
 var utils = require(path.resolve(__dirname, "../utils.js"));
+var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 const Web3 = require('web3');
@@ -26,6 +27,7 @@ module.exports = new Command({
 	async run(message, args, client) {
         if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
+			let db = await DbConnection.Get();
             if(args.length==3){
                 const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
 
