@@ -295,7 +295,7 @@ module.exports = {
         let db = await DbConnection.Get();
         let resultpw = await db.collection('users').findOne({pass:msg})
         //if(resultpw && (resultpw.num.includes('2_') || parseInt(resultpw.num)>=20))return message.channel.send('Todavia no le toca a tu lote. Por favor espera a ser llamado')
-        if(resultpw && resultpw.nota.includes('Entrevista')){
+        if(resultpw && resultpw.nota && resultpw.nota.includes('Entrevista')){
             message.channel.send('Estas en estado de Entrevista, por tal motivo no podemos validarte aún cuando sea aprobado podrás validarte\nEste canal se cerrara en 5 segundos.')
             setTimeout(() => { message.channel.delete()}, 5000)
         }else if(resultpw){
