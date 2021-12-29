@@ -74,7 +74,6 @@ module.exports = new Command({
                         
                     let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
                     let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
-                    utils.log(tr_raw.status)
                     
                     if(tr_raw.status){            
                         let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\nRecurda actualizar !update "+args[1]+" nota retirar").setColor('GREEN').setTimestamp()

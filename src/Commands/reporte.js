@@ -100,8 +100,6 @@ module.exports = new Command({
 						data['days'].push(utils.getDayName(stat.date, "es-ES"))
 					}
 				}
-
-
 				let chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
