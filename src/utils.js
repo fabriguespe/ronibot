@@ -252,7 +252,7 @@ module.exports = {
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
             let prom=Math.round(unclaimed/days)
-            let porcetage=prom<=50?10:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
+            let porcetage=prom<=50?20:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
             let recibe=Math.round(unclaimed/(100/porcetage))
 
             let embed = new MessageEmbed().setTitle('Calculo').addFields(
