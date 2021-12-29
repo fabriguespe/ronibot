@@ -21,8 +21,10 @@ logger.level = "debug";
 
 module.exports = {
     esFechaCobros(){
-        let diadelmes=new Date().getDate()
-        if(diadelmes>=1 &&  diadelmes<=2 || diadelmes>=15 &&  diadelmes<=16) return true
+        var today = new Date();
+        let diadelmes=today.getDate()
+        var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
+        if((lastDayOfMonth)>=(lastDayOfMonth-2) &&  (lastDayOfMonth)>=(lastDayOfMonth) || diadelmes>=15 &&  diadelmes<=16) return true
         return false
     },
     FROM_UNIX_EPOCH:function(epoch_in_secs){
