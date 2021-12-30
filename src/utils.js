@@ -259,8 +259,7 @@ module.exports = {
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
             let prom=Math.round(unclaimed/days)
             let porcetage=prom<=50?20:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
-            let bono=10
-
+            
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             embed.addFields(
                 //{ name: 'Precio', value: ''+slp+'USD'},
@@ -276,6 +275,8 @@ module.exports = {
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
                 { name: 'A recibir', value: ''+Math.round(unclaimed/(100/porcetage)),inline:true},
             )
+            
+            let bono=10
             if(bono>0){
                 embed.addFields(
                     { name: 'Bono', value: bono+'%',inline:true},
@@ -288,7 +289,7 @@ module.exports = {
             )
             message.channel.send({content: ` `,embeds: [embed]})
 
-            
+
             porcetage+=bono
             let recibe=Math.round(unclaimed/(100/porcetage))
             return {unix_ahora:(ahora/1000),unix_prox:data.next_claim,next_claim:data.next_claim,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
