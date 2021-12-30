@@ -83,34 +83,33 @@ module.exports = new Command({
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
 				if(!(data.unclaimed>=0)){
-					thread.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 30 segundos.') 
-					setTimeout(() => { message.channel.delete()}, 3000*10)
-					return
+					interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 10 segundos.') 
+					setTimeout(() => { message.channel.delete()}, 1000*10)
 				}
-				if(data.unix_ahora<=data.unix_prox){
-					thread.send('Faltan '+((Math.floor(data.unix_prox-data.unix_ahora / 3600) /24).toFixed(2))+' para que puedas reclamar\nEste canal se cerrara en 30 segundos.') 
-					setTimeout(() => { message.channel.delete()}, 3000*10)
-					return
+				else if(data.unix_ahora<=data.unix_prox){
+					interaction.channel.send('Faltan '+((Math.floor(data.unix_prox-data.unix_ahora / 3600) /24).toFixed(2))+' para que puedas reclamar\nEste canal se cerrara en 10 segundos.') 
+					setTimeout(() => { message.channel.delete()}, 1000*10)
 				}
-				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
-				
-				interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {
-					const filter = m => m.author.id === message.author.id;
-					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
-					collector.on('collect',async m => {
-						if(m.author.id==908739379059626094 || (!esPagos && (m.author.id==877625345996632095  || m.author.id==533994454391062529)))return //ronibot
-						if (m.content.toLowerCase() == "si") {
-							let exito=await utils.claim(data,message)
-							if(exito){
-								message.channel.send('Exito!\nEste canal se cerrara en 30 segundos.')
-								setTimeout(() => { message.channel.delete()}, 3000*10)
+				else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
+				else{
+					interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {
+						const filter = m => m.author.id === message.author.id;
+						const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
+						collector.on('collect',async m => {
+							if(m.author.id==908739379059626094 || (!esPagos && (m.author.id==877625345996632095  || m.author.id==533994454391062529)))return //ronibot
+							if (m.content.toLowerCase() == "si") {
+								let exito=await utils.claim(data,message)
+								if(exito){
+									message.channel.send('Exito!\nEste canal se cerrara en 30 segundos.')
+									setTimeout(() => { message.channel.delete()}, 3000*10)
+								}
+							} else if (m.content.toLowerCase() == "no") {
+								message.channel.send('Este canal se cerrara en 3 segundos.')
+								setTimeout(() => { message.channel.delete()}, 3000)
 							}
-						} else if (m.content.toLowerCase() == "no") {
-							message.channel.send('Este canal se cerrara en 3 segundos.')
-							setTimeout(() => { message.channel.delete()}, 3000)
-						}
+						})
 					})
-				})
+				}
 			}else if( customId=='cerrar_ticket'){
 				const thread = interaction.channel
 				thread.delete();
