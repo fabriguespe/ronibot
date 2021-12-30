@@ -55,6 +55,7 @@ module.exports = new Command({
 			}	
 			
 			let embed = new MessageEmbed().setTitle('Mejores').setDescription(help).setColor('GREEN').setTimestamp()
+			
 			return message.channel.send({content: ` `,embeds: [embed]})
 
 		}catch(e){
