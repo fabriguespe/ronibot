@@ -28,7 +28,7 @@ client.on("messageCreate", message => {
 	const command = client.commands.find(cmd => cmd.name == args[0]);
 	
 	if(!(message.channel.name.includes('comandos') || message.channel.name.includes('ingresos') || message.channel.name.includes('soporte')))return
-	//if (!command) return message.channel.send(`${args[0]} is not a valid command!`);
+	if (!command) return message.channel.send(`${args[0]} is not a valid command!`);
 	command.run(message, args, client);
 });
 
