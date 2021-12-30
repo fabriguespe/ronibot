@@ -102,7 +102,7 @@ module.exports = new Command({
 							if(m.author.id==908739379059626094 || (!esPagos && (m.author.id==877625345996632095  || m.author.id==533994454391062529)))return //ronibot
 							if (m.content.toLowerCase() == "si") {
 								let fallo=await utils.claim(data,message)
-								if(!fallo){
+								if(!fallo && !args[1]){
 									message.channel.send('Exito!\nEste canal se cerrara en 30 segundos.')
 									setTimeout(() => { message.channel.delete()}, 3000*10)
 								}
