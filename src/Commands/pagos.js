@@ -28,7 +28,7 @@ module.exports = new Command({
 				data_por_dia[fecha]={date:undia.date,slp:data_por_dia[fecha].slp+=undia.slp}
 
 			}
-			console.log(data_por_dia)
+			
 			let chart_data={days:[],slp:[]}
 			for(let i in data_por_dia){
 				chart_data.days.push(data_por_dia[i].date)
