@@ -20,27 +20,32 @@ module.exports = new Command({
 			let stats = await db.collection('log').find({type:'slp_jugador'},  { sort: { date: -1 } }).toArray();
 			stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 			
-			data={days:[],slp:[],mmr:[]}
+			let data_por_dia=[]
 			for(let i in stats){
-				let stat=stats[i]
-				let anteultimo=stats[i-1]
-				if(stat && anteultimo){
-					data.slp.push(stat['slp'])
-					data['days'].push(utils.getDayName(stat.date, "es-ES"))
-				}
+				let undia=stats[i]
+				let fecha=undia.date
+				if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,slp:0}
+				data_por_dia[fecha]={date:undia.date,slp:data_por_dia[fecha].slp+=undia.slp}
+
 			}
+			let chart_data={days:[],slp:[]}
+			for(let i in data_por_dia){
+				chart_data.days.push(data_por_dia[i].date)
+				chart_data.slp.push(data_por_dia[i].slp)
+			}
+			
 			let chart = new QuickChart().setConfig({
 				type: 'bar',
 				data: { 
-					labels: data.days,
-					datasets:[{label: 'SLP', data: data.slp}] 
+					labels: chart_data.days,
+					datasets:[{label: 'SLP', data: chart_data.slp}] 
 				},
 			}).setWidth(800).setHeight(400);
 			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 
-	}catch(e){
-		console.log(e.message)
-	}
+		}catch(e){
+			console.log(e.message)
+		}
 
 	}
 });
