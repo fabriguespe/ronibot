@@ -5,7 +5,7 @@ const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "ron",
+	name: "roni",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		let temporal=false
