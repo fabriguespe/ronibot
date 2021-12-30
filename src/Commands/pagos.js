@@ -16,7 +16,7 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let stats = await db.collection('log').find({type:"slp_jugador"}).toArray()
-			let data_users=[]
+			let data=[]
 			let count_users=0
 			for(let i in stats){
 				let stat=stats[i]
