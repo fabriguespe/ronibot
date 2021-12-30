@@ -3,6 +3,7 @@ const path = require('path');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
+const jsid=877625345996632095//jeisson
 
 module.exports = new Command({
 	name: "roni",
@@ -75,7 +76,6 @@ module.exports = new Command({
 			await interaction.deferUpdate();
 			let customId=interaction.customId
 			lascomnd=interaction.customId
-			let jsid=877625345996632095//jeisson
 			if( customId=='ticket_soporte'){
 				interaction.channel.send(`Hola! <@${jsid}>, necesito de tu ayuda`)
 			}else if( customId=='asociar' || customId=='desasociar'){
@@ -86,14 +86,16 @@ module.exports = new Command({
 				if(!(data.unclaimed>=0)){
 					interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 10 segundos.') 
 					setTimeout(() => { interaction.channel.delete()}, 1000*10)
-				}
-				else if(data.unix_ahora<=data.unix_prox){
+				}else if(data.unix_ahora<=data.unix_prox){
 					let diffInMilliSeconds=(data.unix_prox)-(data.unix_ahora)
 					let hours = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)*24
 					interaction.channel.send('Faltan '+hours+' hs para que puedas reclamar\nEste canal se cerrara en 10 segundos.') 
 					setTimeout(() => { interaction.channel.delete()}, 1000*10)
-				}else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
-				else{
+				}else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20){
+					interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 10 segundos.') 
+					setTimeout(() => { interaction.channel.delete()}, 1000*10)
+					return thread.send('La cuenta no tiene wallet para depositar'+` Notificale cual a <@${jsid}>`) 
+				}else{
 					interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {
 						const filter = m => m.author.id === message.author.id;
 						const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
