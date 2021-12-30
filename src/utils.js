@@ -122,7 +122,6 @@ module.exports = {
                     "nonce": nonce,
                     data:myData
             }
-            if(data.unclaimed)
             //CLAIM
             message.channel.send("Realizando el claim de "+data.unclaimed+" SLP...");
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
