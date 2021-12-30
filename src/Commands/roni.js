@@ -5,7 +5,7 @@ const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "roni",
+	name: "ron",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		let temporal=false
@@ -85,11 +85,13 @@ module.exports = new Command({
 				let data=await utils.claimData(currentUser,interaction.message)
 				if(!(data.unclaimed>=0)){
 					interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 10 segundos.') 
-					setTimeout(() => { message.channel.delete()}, 1000*10)
+					setTimeout(() => { channel.delete()}, 1000*10)
 				}
 				else if(data.unix_ahora<=data.unix_prox){
-					interaction.channel.send('Faltan '+((Math.floor(data.unix_prox-data.unix_ahora / 3600) /24).toFixed(2))+' para que puedas reclamar\nEste canal se cerrara en 10 segundos.') 
-					setTimeout(() => { message.channel.delete()}, 1000*10)
+					let diffInMilliSeconds=(data.unix_prox/1000)-data.unix_ahora
+					let hours = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)*24
+					interaction.channel.send('Faltan '+hours+'horas para que puedas reclamar\nEste canal se cerrara en 10 segundos.') 
+					setTimeout(() => { channel.delete()}, 1000*10)
 				}
 				else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
 				else{

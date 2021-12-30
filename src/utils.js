@@ -326,7 +326,7 @@ module.exports = {
         return message.channel.id==909165024642203658//canal ingreso
     },
     esFabri:function(message){
-        return message.author.id==533994454391062529 && message.channel.id==917380557099380816
+        return message.author.id==533994454391062529 && message.channel.id==926110027641667684
     },
     esManager:function(message){
         let r1=message.guild.roles.cache.find(r => r.name === "Manager")
