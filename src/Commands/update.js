@@ -10,7 +10,7 @@ module.exports = new Command({
 	name: "update",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
-		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
+		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.channel.send('No tienes permisos para correr este comando')
 		if(args.length==4){	
             let quien=await utils.getWalletByNum(args[1])
 			let key=args[2]
