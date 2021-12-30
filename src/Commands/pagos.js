@@ -17,7 +17,7 @@ module.exports = new Command({
 			let db = await DbConnection.Get();
 
 				
-			let stats = await db.collection('log').find({type:'slp_jugador'},  { sort: { date: -1 } }).toArray();
+			let stats = await db.collection('log').find({$or:[{type:'slp_jugador'},{type:'slp_ronimate'}]},  { sort: { date: -1 } }).toArray();
 			stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 			console.log(stats)
 			let data_por_dia=[]
@@ -28,7 +28,7 @@ module.exports = new Command({
 				data_por_dia[fecha]={date:undia.date,slp:data_por_dia[fecha].slp+=undia.slp}
 
 			}
-			
+
 			let chart_data={days:[],slp:[]}
 			for(let i in data_por_dia){
 				chart_data.days.push(data_por_dia[i].date)
