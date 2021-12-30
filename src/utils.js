@@ -274,8 +274,9 @@ module.exports = {
                 { name: 'Dias', value: ''+days,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
                 { name: 'A recibir', value: ''+Math.round(unclaimed/(100/porcetage)),inline:true},
+                { name: 'Feliz Año!', value: '😀',inline:true},
             )
-            
+
             let bono=10
             if(bono>0){
                 embed.addFields(
