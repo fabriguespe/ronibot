@@ -85,15 +85,14 @@ module.exports = new Command({
 				let data=await utils.claimData(currentUser,interaction.message)
 				if(!(data.unclaimed>=0)){
 					interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 10 segundos.') 
-					setTimeout(() => { channel.delete()}, 1000*10)
+					setTimeout(() => { interaction.channel.delete()}, 1000*10)
 				}
 				else if(data.unix_ahora<=data.unix_prox){
-					let diffInMilliSeconds=(data.unix_prox/1000)-data.unix_ahora
+					let diffInMilliSeconds=(data.unix_prox)-(data.unix_ahora)
 					let hours = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)*24
-					interaction.channel.send('Faltan '+hours+'horas para que puedas reclamar\nEste canal se cerrara en 10 segundos.') 
-					setTimeout(() => { channel.delete()}, 1000*10)
-				}
-				else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
+					interaction.channel.send('Faltan '+hours+' hs para que puedas reclamar\nEste canal se cerrara en 10 segundos.') 
+					setTimeout(() => { interaction.channel.delete()}, 1000*10)
+				}else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
 				else{
 					interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {
 						const filter = m => m.author.id === message.author.id;
