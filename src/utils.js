@@ -261,7 +261,7 @@ module.exports = {
             let embed = new MessageEmbed().setTitle('Calculo').addFields(
                 //{ name: 'Precio', value: ''+slp+'USD'},
                 { name: 'Wallet', value: ''+currentUser.scholarPayoutAddress},
-                //{ name: 'Comprobantes', value: 'https://explorer.roninchain.com/address/'+currentUser.accountAddress},
+                { name: 'Comprobantes', value: 'https://explorer.roninchain.com/address/'+currentUser.accountAddress},
                 { name: 'Fecha actual', value: ''+date_ahora,inline:true},
                 { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
                 { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
