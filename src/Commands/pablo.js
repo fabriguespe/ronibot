@@ -17,8 +17,6 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
-			let data_users=[]
-			let count_users=0
 			for(let ii in users){
 				let eluser=users[ii]
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
