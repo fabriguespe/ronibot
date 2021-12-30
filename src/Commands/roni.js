@@ -83,7 +83,7 @@ module.exports = new Command({
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
 				if(!(data.unclaimed>=0))return thread.send('Tu cuenta no tiene SLP para reclamar') 
-				if(data.date_ahora<data.date_next_claim)return thread.send('Todavía no llego tu fecha de reclamo') 
+				if(data.unix_ahora<=data.unix_prox)return thread.send('Todavía no llego tu fecha de reclamo') 
 				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
 				
 				interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {
