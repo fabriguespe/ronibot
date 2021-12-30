@@ -10,8 +10,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "ayuda",
-	description: "Shows the price of the slp!",
+	name: "ayuda"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		let help=""
 		if(utils.esManager(message))help+="!reporte XX para ver info del jugador\n\n"

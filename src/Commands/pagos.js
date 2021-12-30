@@ -8,43 +8,34 @@ const QuickChart = require('quickchart-js');
 const { stat } = require('fs');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
-
+console.log(process.env.LOGNAME)
 module.exports = new Command({
-	name: "general"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
+	name: "pagos"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
-			let users = await db.collection('users').find().toArray()
+			let stats = await db.collection('log').find({type:"slp_jugador"}).toArray()
 			let data_users=[]
 			let count_users=0
-			for(let ii in users){
-				let eluser=users[ii]				
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
-				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
-				let data=[]
-				
-				for(let i in stats){
-					let stat=stats[i]
-					let anteultimo=stats[i-1]
-					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined){
-						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
-						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
-						if(stat['mmr']!=1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue
-						if(stat.date=='16/12/2021'){
-							stat['slp']=(stat['slp']/3)
-							data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName("14/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
-							data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName("15/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
-						}
-						data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
+			for(let i in stats){
+				let stat=stats[i]
+				let anteultimo=stats[i-1]
+				if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined){
+					if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
+					else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
+					if(stat['mmr']!=1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue
+					if(stat.date=='16/12/2021'){
+						stat['slp']=(stat['slp']/3)
+						data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName("14/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
+						data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName("15/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 					}
+					data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 				}
-				if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
-				data_users.push(data)
 			}
 			let data_por_dia=[]
-			for(let i in data_users){
-				let dias_del_user=data_users[i]
+			for(let i in data){
+				let dias_del_user=data[i]
 				for(let j in dias_del_user){
 					let undia=dias_del_user[j]
 					let fecha=undia.date
@@ -53,6 +44,9 @@ module.exports = new Command({
 
 				}
 			}
+
+			console.log(data_por_dia)
+			return
 
 			data_por_dia=Object.values(data_por_dia)
 			data_por_dia=data_por_dia.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});

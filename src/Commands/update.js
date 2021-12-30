@@ -7,8 +7,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "update",
-	description: "Shows the price of the slp!",
+	name: "update"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.channel.send('No tienes permisos para correr este comando')
 		if(args.length==4){	

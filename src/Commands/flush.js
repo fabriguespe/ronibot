@@ -21,7 +21,7 @@ RONIN_PROVIDER = "https://api.roninchain.com/rpc"
 
 
 module.exports = new Command({
-	name: "flush",
+	name: "flush"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')

@@ -7,8 +7,7 @@ var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 var utils = require(path.resolve(__dirname, "../utils.js"));
 
 module.exports = new Command({
-	name: "update_users",
-	description: "Shows the price of the slp!",
+	name: "update_users"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
 		let db = await DbConnection.Get();

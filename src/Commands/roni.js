@@ -6,8 +6,7 @@ const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 const jsid=877625345996632095//jeisson
 
 module.exports = new Command({
-	name: "roni",
-	description: "Shows the price of the slp!",
+	name: "roni"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		let temporal=false
 		
@@ -61,7 +60,7 @@ module.exports = new Command({
 
 
 		embed = new MessageEmbed().setTitle('Ticket')
-        .setDescription(`Hola ${message.author}, soy Roni. \nCon que deseas que te ayude?`).setColor('GREEN').setTimestamp()
+        .setDescription(`Hola ${message.author}, soy Roni. \Por favor seleccioná una opción tocando el boton correspondiente`).setColor('GREEN').setTimestamp()
 
         await thread.send({content: ` `,embeds: [embed],components: [row] })
 		let lascomnd=''
