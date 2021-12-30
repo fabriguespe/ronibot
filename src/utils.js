@@ -143,7 +143,8 @@ module.exports = {
 
             let player_wallet=data.scholarPayoutAddress
             let roni_wallet='0x858984a23b440e765f35ff06e896794dc3261c62'
-           
+            
+            let fallo=false
             try{
                 let t1=await this.transfer(from_acc,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
                 if(t1){
@@ -152,6 +153,7 @@ module.exports = {
                     await db.collection('log').insertOne({type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:timestamp_log,date:date_log, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
                 }
             }catch(e){
+                fallo=true
                 this.log("ERROR: "+e.message,message)
             }
             try{
@@ -160,13 +162,14 @@ module.exports = {
                     let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t2+")").setColor('GREEN').setTimestamp()
                     message.channel.send({content: ` `,embeds: [embed]})
                     await db.collection('log').insertOne({type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:timestamp_log,date:date_log, slp:(!roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(!roniPrimero?roni_wallet:player_wallet)})
-                    return true
+                    
                 }
             }catch(e){
+                fallo=true
                 this.log("ERROR: "+e.message,message)
             }
 
-            return false
+            return fallo
              
         }catch(e){
             this.log("ERROR: "+e.message,message)
