@@ -199,7 +199,11 @@ module.exports = {
     
         
             //TRANSFER
-            message.channel.send("Enviando "+balance+" SLP a la cuenta de "+(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'?'Ronimate':'el jugador'));
+            if(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'){
+                message.channel.send("Estamos procesando la transacción....");
+            }else{
+                message.channel.send("Enviando "+balance+" SLP a la cuenta de el jugador");
+            }
             
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
