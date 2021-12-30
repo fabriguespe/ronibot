@@ -71,7 +71,7 @@ module.exports = new Command({
 						{ name: 'Axies', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
 						{ name: 'Pass', value: eluser.pass,inline:true},
 						{ name: 'Email', value: eluser.correo,inline:true},
-						{ name: 'Wallet', value: eluser.accountAddress,inline:true},
+						{ name: 'Binance', value: eluser.scholarPayoutAddress},
 					)
 				}
 				message.channel.send({ embeds: [exampleEmbed] });
