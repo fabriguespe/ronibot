@@ -88,7 +88,7 @@ module.exports = new Command({
 					setTimeout(() => { interaction.channel.delete()}, 1000*10)
 				}else if(data.unix_ahora<=data.unix_prox){
 					let diffInMilliSeconds=(data.unix_prox)-(data.unix_ahora)
-					let hours = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)*24
+					let hours = Math.floor(diffInMilliSeconds / 3600)
 					interaction.channel.send('Faltan '+hours+' hs para que puedas reclamar\nEste canal se cerrara en 10 segundos.') 
 					setTimeout(() => { interaction.channel.delete()}, 1000*10)
 				}else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20){

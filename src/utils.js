@@ -260,7 +260,7 @@ module.exports = {
             let embed = new MessageEmbed().setTitle('Calculo').addFields(
                 //{ name: 'Precio', value: ''+slp+'USD'},
                 { name: 'Wallet', value: ''+currentUser.scholarPayoutAddress},
-                { name: 'Comprobantes', value: 'https://explorer.roninchain.com/address/'+currentUser.accountAddress},
+                //{ name: 'Comprobantes', value: 'https://explorer.roninchain.com/address/'+currentUser.accountAddress},
                 { name: 'Fecha actual', value: ''+date_ahora,inline:true},
                 { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
                 { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
@@ -271,7 +271,7 @@ module.exports = {
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
                 { name: 'A recibir', value: ''+recibe,inline:true},
                 { name: 'Información', value: 'Revisa que tu wallet sea correcta\nTu promedio de SLP se baso en el calculo de los dias y el total acumulado. Si estas de acuerdo escribe "si" para poder cobrar, de lo contrario, "no"'},
-                { name: 'IMPORTANTE', value: 'Dado que es fin de año y sabemos que la situacion esta dificil Ronimate va a estar haciendose cargo de un 10% extra para cada jugador. \nEstamos orgullosos de contar con gente comprometida y responsable como vos en la academia. \nEsto es solo temporal y 2022 sin dudas sera el año que esperamos.'},
+                { name: 'IMPORTANTE', value: 'Dado que es fin de año y sabemos que la situacion esta dificil Ronimate va a estar haciendose cargo de un 10% extra para cada jugador. \nEstamos orgullosos de contar con gente comprometida y responsable como vos en la academia. \nEsto es solo temporal! 2022 sin dudas sera el año que esperamos.'},
             ).setColor('GREEN').setTimestamp()
             message.channel.send({content: ` `,embeds: [embed]})
 
