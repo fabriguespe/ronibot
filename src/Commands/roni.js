@@ -5,7 +5,7 @@ const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
-	name: "roni",
+	name: "ron",
 	description: "Shows the price of the slp!",
 	async run(message, args, client) {
 		let temporal=false
@@ -83,7 +83,7 @@ module.exports = new Command({
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
 				if(!(data.unclaimed>=0))return thread.send('Tu cuenta no tiene SLP para reclamar') 
-				if(data.unix_ahora<=data.unix_prox)return thread.send('Todavía no llego tu fecha de reclamo') 
+				if(data.unix_ahora<=data.unix_prox)return thread.send('Faltan '+((Math.floor(data.unix_prox-data.unix_ahora / 3600) /24).toFixed(2))+' para que puedas reclamar') 
 				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
 				
 				interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {
