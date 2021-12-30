@@ -92,9 +92,8 @@ module.exports = new Command({
 					interaction.channel.send('Faltan '+hours+' hs para que puedas reclamar\nEste canal se cerrara en 10 segundos.') 
 					setTimeout(() => { interaction.channel.delete()}, 1000*10)
 				}else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20){
-					interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 10 segundos.') 
+					thread.send(`La cuenta no tiene wallet para depositar.\nNotificale cual a <@${jsid}>\nEste canal se cerrara en 10 segundos.`) 
 					setTimeout(() => { interaction.channel.delete()}, 1000*10)
-					return thread.send('La cuenta no tiene wallet para depositar'+` Notificale cual a <@${jsid}>`) 
 				}else{
 					interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {
 						const filter = m => m.author.id === message.author.id;
