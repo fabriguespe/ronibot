@@ -19,7 +19,7 @@ module.exports = new Command({
 				
 			let stats = await db.collection('log').find({$or:[{type:'slp_jugador'},{type:'slp_ronimate'}]},  { sort: { date: -1 } }).toArray();
 			stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
-			console.log(stats)
+		
 			let data_por_dia=[]
 			for(let i in stats){
 				let undia=stats[i]
