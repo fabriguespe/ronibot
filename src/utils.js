@@ -255,6 +255,7 @@ module.exports = {
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
             let prom=Math.round(unclaimed/days)
             let porcetage=prom<=50?20:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
+            porcetage+=10
             let recibe=Math.round(unclaimed/(100/porcetage))
 
             let embed = new MessageEmbed().setTitle('Calculo').addFields(
@@ -270,6 +271,7 @@ module.exports = {
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
                 { name: 'A recibir', value: ''+recibe,inline:true},
                 { name: 'Información', value: 'Revisa que tu wallet sea correcta\nTu promedio de SLP se baso en el calculo de los dias y el total acumulado. Si estas de acuerdo escribe "si" para poder cobrar, de lo contrario, "no"'},
+                { name: 'IMPORTANTE', value: 'Dado que es fin de año y sabemos que la situacion esta dificil Ronimate va a estar haciendose cargo de un 10% extra para cada jugador. \nEstamos orgullosos de contar con gente comprometida y responsable como vos en la academia. \nEsto es solo temporal y 2022 sin dudas sera el año que esperamos.'},
             ).setColor('GREEN').setTimestamp()
             message.channel.send({content: ` `,embeds: [embed]})
 
