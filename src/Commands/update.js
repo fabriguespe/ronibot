@@ -14,6 +14,7 @@ module.exports = new Command({
 		if(args.length==4){	
             let quien=await utils.getWalletByNum(args[1])
 			let key=args[2]
+			if(key=='wallet')key='scholarPayoutAddress'
 			let value=args[3]
 			let armado={}
 			armado[key]=value
