@@ -82,8 +82,16 @@ module.exports = new Command({
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
-				if(!(data.unclaimed>=0))return thread.send('Tu cuenta no tiene SLP para reclamar') 
-				if(data.unix_ahora<=data.unix_prox)return thread.send('Faltan '+((Math.floor(data.unix_prox-data.unix_ahora / 3600) /24).toFixed(2))+' para que puedas reclamar') 
+				if(!(data.unclaimed>=0)){
+					thread.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 30 segundos.') 
+					setTimeout(() => { message.channel.delete()}, 3000*10)
+					return
+				}
+				if(data.unix_ahora<=data.unix_prox){
+					thread.send('Faltan '+((Math.floor(data.unix_prox-data.unix_ahora / 3600) /24).toFixed(2))+' para que puedas reclamar\nEste canal se cerrara en 30 segundos.') 
+					setTimeout(() => { message.channel.delete()}, 3000*10)
+					return
+				}
 				if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20)return thread.send('La cuenta no tiene wallet para depositar') 
 				
 				interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {
