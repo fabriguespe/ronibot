@@ -209,7 +209,7 @@ module.exports = {
             if(tr_raw.status)return tr_raw.transactionHash
             else return false          
         }catch(e){
-            this.log("ERROR: "+e.message,message)
+            this.log("ERROR: "+e.message)
         }
     },
     getSLP:async function(currentUser,message){
