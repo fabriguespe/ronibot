@@ -58,7 +58,8 @@ module.exports = new Command({
 
         await message.channel.send({content: ` `, embeds: [embed]})
 
-        embed = new MessageEmbed().setTitle('Ticket')
+
+		embed = new MessageEmbed().setTitle('Ticket')
         .setDescription(`Hola ${message.author}, soy Roni. \nCon que deseas que te ayude?`).setColor('GREEN').setTimestamp()
 
         await thread.send({content: ` `,embeds: [embed],components: [row] })
