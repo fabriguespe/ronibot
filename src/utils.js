@@ -77,7 +77,7 @@ module.exports = {
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({type:'slp_claim',date:timestamp_log,date:date_log, slp:slp_claim,num:num,from_acc:from_acc})
+				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',date:timestamp_log,date:date_log, slp:slp_claim,num:num,from_acc:from_acc})
                 return true
             }  
         }catch(e){
@@ -133,7 +133,7 @@ module.exports = {
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({type:'slp_claim',date:timestamp_log,date:date_log, slp:data.unclaimed,num:data.num,from_acc:from_acc})
+				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',date:timestamp_log,date:date_log, slp:data.unclaimed,num:data.num,from_acc:from_acc})
             }  
             
             let roni_slp=data.unclaimed-data.recibe

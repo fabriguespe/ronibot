@@ -49,15 +49,15 @@ module.exports = new Command({
                     let data=await utils.getSLP(currentUser,message)
                     let slp=data.unclaimed>0?data.unclaimed:data.ronin_slp
                     if(slp>0){
-                        let t1=await utils.transfer(from_acc,roni_wallet,slp,message)
-                        if(t1){
+                        let tx=await utils.transfer(from_acc,roni_wallet,slp,message)
+                        if(tx){
 
                             let timestamp_log=new Date(Date.now())
                             let date_log=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
                             
-                            let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
+                            let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
                             message.channel.send({content: ` `,embeds: [embed]})
-                            await db.collection('log').insertOne({type:'flush_ronimate',date:timestamp_log,date:date_log, slp:data.ronin_slp,num:num,from_acc:from_acc,wallet:roni_wallet})
+                            await db.collection('log').insertOne({tx:tx,type:'flush_ronimate',date:timestamp_log,date:date_log, slp:data.ronin_slp,num:num,from_acc:from_acc,wallet:roni_wallet})
 
                         }
                     }else{
