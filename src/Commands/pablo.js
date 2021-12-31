@@ -32,6 +32,7 @@ module.exports = new Command({
 						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp_sum']+=stat.in_game_slp
 						else users[ii]['slp_sum']+=stat.in_game_slp-anteultimo.in_game_slp
 						users[ii]['mmr_sum']+=stat['mmr']
+						users[ii]['mmr']=stat['mmr']
 						users[ii]['stat_count']+=1
 					}
 					
@@ -50,7 +51,7 @@ module.exports = new Command({
 			let help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr_prom+')\n\n'
+				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
 			}	
 			let embed = new MessageEmbed().setTitle("TOP 10 SLP").setDescription(help).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
@@ -60,18 +61,18 @@ module.exports = new Command({
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr_prom+')\n\n'
+				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
 			}	
 			embed = new MessageEmbed().setTitle("ULTIMOS 10 SLP").setDescription(help).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 			
 			
 			//Top 10 Copas
-			top=users.sort(function(a, b) {return b.mmr_prom - a.mmr_prom}).slice(0, 10);
+			top=users.sort(function(a, b) {return b.mmr - a.mmr}).slice(0, 10);
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr_prom+')\n\n'
+				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
 			}	
 			embed = new MessageEmbed().setTitle("TOP 10 COPAS").setDescription(help).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
@@ -83,7 +84,7 @@ module.exports = new Command({
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr_prom+')\n\n'
+				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
 			}	
 			embed = new MessageEmbed().setTitle("ULTIMOS 20 COPAS").setDescription(help).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
