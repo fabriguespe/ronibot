@@ -206,7 +206,7 @@ module.exports = {
             if(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'){
                 message.channel.send("Estamos procesando la transacción....");
             }else{
-                message.channel.send("Enviando "+balance+" SLP a la cuenta de el jugador");
+                message.channel.send("Enviando "+balance+" SLP a la cuenta del jugador");
             }
             
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
@@ -218,7 +218,7 @@ module.exports = {
             else return false          
         }catch(e){
             console.log(e)
-            this.log("ERROR",message)
+            this.log("ERROR:"+from_acc,message)
         }
     },
     getSLP:async function(currentUser,message){
