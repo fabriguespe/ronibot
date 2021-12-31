@@ -57,8 +57,7 @@ module.exports = new Command({
         .setDescription(`CLICK AQUI PARA CONTINUAR ----->>> <#${thread.id}>`).setColor('GREEN').setTimestamp()
 
         await message.channel.send({content: ` `, embeds: [embed]})
-
-
+		
 		embed = new MessageEmbed().setTitle('Ticket')
         .setDescription(`Hola ${message.author}, soy Roni. \nPor favor seleccioná una opción tocando el boton correspondiente`).setColor('GREEN').setTimestamp()
 
