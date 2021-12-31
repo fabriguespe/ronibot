@@ -25,13 +25,13 @@ module.exports = new Command({
 				if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,slp:0,cant:0}
 				data_por_dia[fecha]={date:undia.date,slp:data_por_dia[fecha].slp+=undia.slp,cant:data_por_dia[fecha].cant+=1}
 			}
-			console.log(data_por_dia)
 			let chart_data={days:[],slp:[],cant:[]}
 			for(let i in data_por_dia){
 				chart_data.days.push(data_por_dia[i].date)
 				chart_data.slp.push(data_por_dia[i].slp)
 				chart_data.cant.push(data_por_dia[i].cant)
 			}
+			
 			let chart = new QuickChart().setConfig({
 				type: 'bar',
 				data: { 
