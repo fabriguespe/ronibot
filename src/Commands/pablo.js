@@ -67,7 +67,7 @@ module.exports = new Command({
 			
 			
 			//Top 10 Copas
-			top=users.sort(function(a, b) {return b.mmr - a.mmr}).slice(0, 10);
+			top=users.sort(function(a, b) {return b.mmr_prom - a.mmr_prom}).slice(0, 10);
 			help=''
 			for(let ii in top){
 				let user=top[ii]
