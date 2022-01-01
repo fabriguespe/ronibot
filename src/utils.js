@@ -281,7 +281,7 @@ module.exports = {
                 { name: 'Feliz Año!', value: '😀',inline:true},
             )
 
-            let bono=10
+            let bono=0
             if(bono>0){
                 embed.addFields(
                     { name: 'Bono', value: bono+'%',inline:true},
