@@ -43,8 +43,9 @@ module.exports = new Command({
 				users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
 
 			}
-			users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
+			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
+		
 			let verde=''
 			let ama=''
 			let oran=''
@@ -53,10 +54,9 @@ module.exports = new Command({
 			let etrev=''
 			for(let ii in top){
 				let user=top[ii]
-				user.name=user.name.replace('*','')
+				if(user.name)user.name=user.name.replace('*','')
 				let value='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
-				
-				if(user.nota && user.nota.toLowerCase().includes('retiro'))continue
+				if(user.nota && user.nota.toLowerCase().includes('retir'))continue
 				else if(user.nota && user.nota.toLowerCase().includes('entrevista'))etrev+=value
 				else if(user.slp_prom>=130)verde+=value
 				else if(user.slp_prom>=100 && user.slp_prom<130)ama+=value
@@ -66,17 +66,17 @@ module.exports = new Command({
 			}
 
 			
-			let embed = new MessageEmbed().setTitle("Generadores 60%").setDescription(verde).setColor('GREEN').setTimestamp()
+			let embed = new MessageEmbed().setTitle("Generadores 60%").setDescription(verde).setColor('GREEN')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Generadores 50%").setDescription(ama).setColor('YELLOW').setTimestamp()
+			embed = new MessageEmbed().setTitle("Generadores 50%").setDescription(ama).setColor('YELLOW')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Generadores 40%").setDescription(oran).setColor('ORANGE').setTimestamp()
+			embed = new MessageEmbed().setTitle("Generadores 40%").setDescription(oran).setColor('ORANGE')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Alerta 30%").setDescription(rojo).setColor('RED').setTimestamp()
+			embed = new MessageEmbed().setTitle("Alerta 30%").setDescription(rojo).setColor('RED')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro).setColor('BLACK').setTimestamp()
+			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro).setColor('BLACK')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Entrevistas").setDescription(etrev).setColor('GOLD').setTimestamp()
+			embed = new MessageEmbed().setTitle("Entrevistas").setDescription(etrev).setColor('GOLD')
 			message.channel.send({content: ` `,embeds: [embed]})
 
 
