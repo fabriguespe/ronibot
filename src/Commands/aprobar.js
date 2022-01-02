@@ -10,7 +10,7 @@ module.exports = new Command({
 	name: "aprobar"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
-		if(args.length==3){	
+		if(args.length==2){	
             let quien=await utils.getWalletByNum(args[1])
 			let db = await DbConnection.Get();
 			await db.collection("users").updateOne({ accountAddress:quien},{ $set: {'nota':'aprobada'}} )
