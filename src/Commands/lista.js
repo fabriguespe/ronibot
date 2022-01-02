@@ -51,7 +51,9 @@ module.exports = new Command({
 			let ama=''
 			let oran=''
 			let rojo=''
-			let negro=''
+			let negro1=''
+			let negro2=''
+			let negro3=''
 			let etrev=''
 			for(let ii in top){
 				let user=top[ii]
@@ -63,7 +65,9 @@ module.exports = new Command({
 				else if(user.slp_prom>=100 && user.slp_prom<130)ama+=value
 				else if(user.slp_prom>=80 && user.slp_prom<100)oran+=value
 				else if(user.slp_prom>=50 && user.slp_prom<80)rojo+=value
-				else if(user.slp_prom>=0 && user.slp_prom<50)negro+=value
+				else if(user.slp_prom>=40 && user.slp_prom<50)negro1+=value
+				else if(user.slp_prom>=20 && user.slp_prom<40)negro2+=value
+				else if(user.slp_prom>=0 && user.slp_prom<20)negro3+=value
 			}
 			
 			
@@ -75,7 +79,12 @@ module.exports = new Command({
 			message.channel.send({content: ` `,embeds: [embed]})
 			embed = new MessageEmbed().setTitle("Alerta 30%").setDescription(rojo).setColor('RED')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro).setColor('BLACK')
+
+			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro1).setColor('BLACK')
+			message.channel.send({content: ` `,embeds: [embed]})
+			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro2).setColor('BLACK')
+			message.channel.send({content: ` `,embeds: [embed]})
+			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro3).setColor('BLACK')
 			message.channel.send({content: ` `,embeds: [embed]})
 			//embed = new MessageEmbed().setTitle("Entrevistas").setDescription(etrev).setColor('GOLD')
 			//message.channel.send({content: ` `,embeds: [embed]})
