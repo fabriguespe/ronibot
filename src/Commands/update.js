@@ -23,6 +23,39 @@ module.exports = new Command({
 			message.channel.send('El jugador fue actualizado con exito')
 			//let rCanal = message.guild.channels.cache.find(c => c.id == 917380557099380816);//canal ingresos
 			//if(value=='aprobada')rCanal.send('El jugador fue actualizado con exito')
+		}else if(args[1]=='all'){
+			if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
+			let db = await DbConnection.Get();
+			let users=await db.collection('users-db').find({}).toArray()
+			try{
+				message.channel.send('Se empezara a procesar')
+				for(let i in users){
+					let user=users[i]
+					user.num=user.num.toString()
+					let db = await DbConnection.Get();
+					var myquery = { num:user.num };
+					let find=await db.collection("users").findOne(myquery)
+					if(find){
+						var newvalues = { $set: {
+							name: user.name,
+							scholarPayoutAddress: user.scholarPayoutAddress,
+							nota: user.nota,
+							pass: user.pass,
+							ingreso: user.ingreso,
+							referido: user.referido,
+							estado: user.estado
+						}};
+						await db.collection("users").updateOne(myquery, newvalues)
+					}else{
+						await db.collection("users").insertOne(user)
+					}
+					console.log(user.num)
+				}
+			}catch (e) {
+				utils.log(e)
+			}
+		
+			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 		}
 	}
 });

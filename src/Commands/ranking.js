@@ -16,16 +16,14 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
-			let data_users=[]
-			let count_users=0
 			for(let ii in users){
 				let eluser=users[ii]
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 				users[ii]['mmr_sum']=0
 				users[ii]['slp_sum']=0
 				users[ii]['slp_prom']=0
 				users[ii]['mmr_prom']=0
 				users[ii]['stat_count']=0
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(3).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				for(let i in stats){
 					let stat=stats[i]
@@ -34,6 +32,7 @@ module.exports = new Command({
 						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp_sum']+=stat.in_game_slp
 						else users[ii]['slp_sum']+=stat.in_game_slp-anteultimo.in_game_slp
 						users[ii]['mmr_sum']+=stat['mmr']
+						users[ii]['mmr']=stat['mmr']
 						users[ii]['stat_count']+=1
 					}
 					
@@ -45,17 +44,56 @@ module.exports = new Command({
 				
 
 			}
-			users=users.filter(u => u.slp_prom>0)
+			users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
+
+			//Top 10 SLP
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(0, 10);
 			let help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" "+user.name+' SLP:'+user.slp_prom+' COPAS:'+user.mmr_prom+'\n\n'
+				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
 			}	
+			let embed = new MessageEmbed().setTitle("MEJORES 10 SLP").setDescription(help).setColor('#3C5D74').setTimestamp()
+			message.channel.send({content: ` `,embeds: [embed]})
+
 			
-			let embed = new MessageEmbed().setTitle('Mejores').setDescription(help).setColor('GREEN').setTimestamp()
+			//Top 10 Copas
+			top=users.sort(function(a, b) {return b.mmr - a.mmr}).slice(0, 10);
+			help=''
+			for(let ii in top){
+				let user=top[ii]
+				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
+			}	
+			embed = new MessageEmbed().setTitle("TOP 10 COPAS").setDescription(help).setColor('#3C5D74').setTimestamp()
+			message.channel.send({content: ` `,embeds: [embed]})
 			
-			return message.channel.send({content: ` `,embeds: [embed]})
+			
+			//Bottom 10 SLP
+			top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(users.length-1-10, users.length);
+			help=''
+			for(let ii in top){
+				let user=top[ii]
+				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
+			}	
+			embed = new MessageEmbed().setTitle("ULTIMOS 10 SLP").setDescription(help).setColor('#574760').setTimestamp()
+			message.channel.send({content: ` `,embeds: [embed]})
+			
+
+
+			//Ultimos 20 copas
+			if(utils.esManager(message)){
+			top=users.sort(function(a, b) {return b.mmr - a.mmr}).slice(users.length-1-20, users.length);
+			help=''
+			for(let ii in top){
+				let user=top[ii]
+				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
+			}	
+			embed = new MessageEmbed().setTitle("ULTIMOS 20 COPAS").setDescription(help).setColor('#574760').setTimestamp()
+			message.channel.send({content: ` `,embeds: [embed]})
+		}
+
+
+			
 
 		}catch(e){
 			utils.log(e.message,message)

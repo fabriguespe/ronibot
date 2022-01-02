@@ -75,7 +75,6 @@ module.exports = new Command({
 			message.channel.send({content: ` `,embeds: [embed]})
 			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro).setColor('BLACK').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
-			
 			embed = new MessageEmbed().setTitle("Entrevistas").setDescription(etrev).setColor('GOLD').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 

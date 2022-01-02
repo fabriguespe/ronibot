@@ -2,8 +2,7 @@
 
 console.clear();
 const path = require('path');
-
-const ID_ROL_JUGADOR="Jugador"
+const cron = require('node-cron');
 var utils = require(path.resolve(__dirname, "./utils.js"));
 const Client = require(path.resolve(__dirname, "./Structures/Client.js"));
 const config = require(path.resolve(__dirname, "./Data/config.json"));
@@ -22,7 +21,7 @@ fs.readdirSync(__dirname+"/Commands")
 client.on("ready", message => {utils.log('Listo!')})
 
 client.on("messageCreate", message => {
-	if (message.author.bot) return;
+	if (message.author.bot && !message.content=='!ranking') return;
 	if (!message.content.startsWith(config.prefix)) return;
 	const args = message.content.substring(config.prefix.length).split(/ +/);
 	const command = client.commands.find(cmd => cmd.name == args[0]);
@@ -35,8 +34,9 @@ client.on("messageCreate", message => {
 TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
 client.login(config.token);
 
-/*
-cron.schedule('0 0 * * *', get_slp, {timezone: "UTC"});
+cron.schedule('* * * * *', get_slp, {timezone: "UTC"});
 async function get_slp() {
-
-}*/
+	
+	let rCanal = message.guild.channels.cache.find(c => c.id == 926112581054246983);//canal admin
+	rCanal.send('jaja')
+}
