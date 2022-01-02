@@ -51,7 +51,7 @@ module.exports = new Command({
 			let help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
+				help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
 			}	
 			let embed = new MessageEmbed().setTitle("MEJORES 10 SLP").setDescription(help).setColor('#3C5D74').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
@@ -62,7 +62,7 @@ module.exports = new Command({
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
+				help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
 			}	
 			embed = new MessageEmbed().setTitle("TOP 10 COPAS").setDescription(help).setColor('#3C5D74').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
@@ -73,7 +73,7 @@ module.exports = new Command({
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
+				help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
 			}	
 			embed = new MessageEmbed().setTitle("ULTIMOS 10 SLP").setDescription(help).setColor('#574760').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
@@ -86,7 +86,7 @@ module.exports = new Command({
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" "+user.name+' slp:'+user.slp_prom+' - Copas ('+user.mmr+')\n\n'
+				help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
 			}	
 			embed = new MessageEmbed().setTitle("ULTIMOS 20 COPAS").setDescription(help).setColor('#574760').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
