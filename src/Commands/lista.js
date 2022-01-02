@@ -55,9 +55,9 @@ module.exports = new Command({
 				let user=top[ii]
 				user.name=user.name.replace('*','')
 				let value='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
-				console.log(user.nota)
+				
 				if(user.nota && user.nota.toLowerCase().includes('retiro'))continue
-				else if(user.nota && user.nota.includes('entrevista'))etrev+=value
+				else if(user.nota && user.nota.toLowerCase().includes('entrevista'))etrev+=value
 				else if(user.slp_prom>=130)verde+=value
 				else if(user.slp_prom>=100 && user.slp_prom<130)ama+=value
 				else if(user.slp_prom>=80 && user.slp_prom<100)oran+=value
