@@ -52,7 +52,7 @@ module.exports = new Command({
 			
 			for(let ii in top){
 				let user=top[ii]
-				if(user.nota && user.nota.toLowerCase().includes('entrevist') && user.slp_prom>0){
+				if(user.nota && user.nota.toLowerCase().includes('entrevist')){
 
 					if(user.name)user.name=user.name.replaceAll('*','')
 					let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')\n'
