@@ -50,9 +50,12 @@ module.exports = new Command({
 			let oran=''
 			let rojo=''
 			let negro=''
+			let etrev=''
 			for(let ii in top){
 				let user=top[ii]
-				if(user.slp_prom>=130)verde+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
+				if(user.nota && user.nota.includes('retiro'))continue
+				else if(user.nota && user.nota.includes('entrevista'))etrev+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
+				else if(user.slp_prom>=130)verde+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
 				else if(user.slp_prom>=100 && user.slp_prom<130)ama+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
 				else if(user.slp_prom>=80 && user.slp_prom<100)oran+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
 				else if(user.slp_prom>=50 && user.slp_prom<80)rojo+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
@@ -70,6 +73,11 @@ module.exports = new Command({
 			message.channel.send({content: ` `,embeds: [embed]})
 			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro).setColor('BLACK').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
+			
+			embed = new MessageEmbed().setTitle("Entrevistas").setDescription(etrev).setColor('GOLD').setTimestamp()
+			message.channel.send({content: ` `,embeds: [embed]})
+
+
 
 		}catch(e){
 			utils.log(e.message,message)
