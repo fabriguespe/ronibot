@@ -53,13 +53,15 @@ module.exports = new Command({
 			let etrev=''
 			for(let ii in top){
 				let user=top[ii]
+				let value='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
+				
 				if(user.nota && user.nota.includes('retiro'))continue
-				else if(user.nota && user.nota.includes('entrevista'))etrev+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
-				else if(user.slp_prom>=130)verde+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
-				else if(user.slp_prom>=100 && user.slp_prom<130)ama+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
-				else if(user.slp_prom>=80 && user.slp_prom<100)oran+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
-				else if(user.slp_prom>=50 && user.slp_prom<80)rojo+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
-				else if(user.slp_prom>=0 && user.slp_prom<5)negro+='#'+user.num+" "+user.name+' '+user.slp_prom+':'+user.mmr+'\n'
+				else if(user.nota && user.nota.includes('entrevista'))etrev+=value
+				else if(user.slp_prom>=130)verde+=value
+				else if(user.slp_prom>=100 && user.slp_prom<130)ama+=value
+				else if(user.slp_prom>=80 && user.slp_prom<100)oran+=value
+				else if(user.slp_prom>=50 && user.slp_prom<80)rojo+=value
+				else if(user.slp_prom>=0 && user.slp_prom<5)negro+=value
 			}
 
 			
