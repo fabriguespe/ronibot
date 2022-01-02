@@ -46,11 +46,9 @@ module.exports = new Command({
 			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
 		
-			let verde=''
-			let ama=''
-			let oran=''
-			let rojo=''
-			let negro=''
+			let aprobar=''
+			let evaluar=''
+			let retirar=''
 			
 			for(let ii in top){
 				let user=top[ii]
@@ -59,24 +57,20 @@ module.exports = new Command({
 					if(user.name)user.name=user.name.replaceAll('*','')
 					let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')\n'
 	
-					if(user.slp_prom>=130)verde+=value
-					else if(user.slp_prom>=100 && user.slp_prom<130)ama+=value
-					else if(user.slp_prom>=80 && user.slp_prom<100)oran+=value
-					else if(user.slp_prom>=50 && user.slp_prom<80)rojo+=value
-					else if(user.slp_prom>=0 && user.slp_prom<50)negro+=value
+					if(user.slp_prom>=130)aprobar+=value
+					else if(user.slp_prom>=100 && user.slp_prom<130)aprobar+=value
+					else if(user.slp_prom>=90 && user.slp_prom<100)aprobar+=value
+					else if(user.slp_prom>=50 && user.slp_prom<80)evaluar+=value
+					else if(user.slp_prom>=0 && user.slp_prom<50)retirar+=value
 				}
 				
 			}
 			
-			let embed = new MessageEmbed().setTitle("Entrevista 60%").setDescription(verde).setColor('GREEN')
+			let embed = new MessageEmbed().setTitle("Aprobar").setDescription(aprobar).setColor('GREEN')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Entrevista 50%").setDescription(ama).setColor('YELLOW')
+			embed = new MessageEmbed().setTitle("Prorroga").setDescription(evaluar).setColor('RED')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Entrevista 40%").setDescription(oran).setColor('ORANGE')
-			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Entrevista 30%").setDescription(rojo).setColor('RED')
-			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro).setColor('BLACK')
+			embed = new MessageEmbed().setTitle("Retirar").setDescription(retirar).setColor('BLACK')
 			message.channel.send({content: ` `,embeds: [embed]})
 
 
