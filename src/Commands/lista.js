@@ -23,7 +23,7 @@ module.exports = new Command({
 				users[ii]['slp_prom']=0
 				users[ii]['mmr_prom']=0
 				users[ii]['stat_count']=0
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(3).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(args[1]?args[1]:3).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				for(let i in stats){
 					let stat=stats[i]
@@ -56,7 +56,7 @@ module.exports = new Command({
 				let user=top[ii]
 				if(user.name)user.name=user.name.replace('*','')
 				let value='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
-				if(user.nota && user.nota.toLowerCase().includes('retir'))continue
+				if(user.nota && (user.nota.toLowerCase().includes('retir') || user.nota.toLowerCase().includes('vac')))continue
 				else if(user.nota && user.nota.toLowerCase().includes('entrevista'))etrev+=value
 				else if(user.slp_prom>=130)verde+=value
 				else if(user.slp_prom>=100 && user.slp_prom<130)ama+=value
