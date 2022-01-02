@@ -23,7 +23,7 @@ module.exports = new Command({
 				users[ii]['slp_prom']=0
 				users[ii]['mmr_prom']=0
 				users[ii]['stat_count']=0
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(args[1]?args[1]:3).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(args[1]?parseInt(args[1]):3).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				for(let i in stats){
 					let stat=stats[i]
