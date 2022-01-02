@@ -10,7 +10,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "lista"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
+	name: "entrevista"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
@@ -51,32 +51,32 @@ module.exports = new Command({
 			let oran=''
 			let rojo=''
 			let negro=''
-			let etrev=''
+			
 			for(let ii in top){
 				let user=top[ii]
-				if(user.name)user.name=user.name.replaceAll('*','')
-				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')\n'
-				if(user.nota && (user.nota.toLowerCase().includes('retir') || user.nota.toLowerCase().includes('vac')))continue
-				else if(user.nota && user.nota.toLowerCase().includes('entrevista'))etrev+=value
-				else if(user.slp_prom>=130)verde+=value
-				else if(user.slp_prom>=100 && user.slp_prom<130)ama+=value
-				else if(user.slp_prom>=80 && user.slp_prom<100)oran+=value
-				else if(user.slp_prom>=50 && user.slp_prom<80)rojo+=value
-				else if(user.slp_prom>=0 && user.slp_prom<50)negro+=value
-			}
+				if(user.nota && user.nota.toLowerCase().includes('entrevist')){
 
+					if(user.name)user.name=user.name.replaceAll('*','')
+					let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')\n'
+	
+					if(user.slp_prom>=130)verde+=value
+					else if(user.slp_prom>=100 && user.slp_prom<130)ama+=value
+					else if(user.slp_prom>=80 && user.slp_prom<100)oran+=value
+					else if(user.slp_prom>=50 && user.slp_prom<80)rojo+=value
+					else if(user.slp_prom>=0 && user.slp_prom<50)negro+=value
+				}
+				
+			}
 			
-			let embed = new MessageEmbed().setTitle("Generadores 60%").setDescription(verde).setColor('GREEN')
+			let embed = new MessageEmbed().setTitle("Entrevista 60%").setDescription(verde).setColor('GREEN')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Generadores 50%").setDescription(ama).setColor('YELLOW')
+			embed = new MessageEmbed().setTitle("Entrevista 50%").setDescription(ama).setColor('YELLOW')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Generadores 40%").setDescription(oran).setColor('ORANGE')
+			embed = new MessageEmbed().setTitle("Entrevista 40%").setDescription(oran).setColor('ORANGE')
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Alerta 30%").setDescription(rojo).setColor('RED')
+			embed = new MessageEmbed().setTitle("Entrevista 30%").setDescription(rojo).setColor('RED')
 			message.channel.send({content: ` `,embeds: [embed]})
 			embed = new MessageEmbed().setTitle("Retiros").setDescription(negro).setColor('BLACK')
-			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setTitle("Entrevistas").setDescription(etrev).setColor('GOLD')
 			message.channel.send({content: ` `,embeds: [embed]})
 
 
