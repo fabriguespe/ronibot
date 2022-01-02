@@ -46,6 +46,7 @@ module.exports = new Command({
 			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
 		
+			
 			let verde=''
 			let ama=''
 			let oran=''
