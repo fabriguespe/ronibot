@@ -57,14 +57,14 @@ module.exports = new Command({
 				if(user.name)user.name=user.name.replaceAll('*','')
 				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')\n'
 				if(user.nota && (user.nota.toLowerCase().includes('retir') || user.nota.toLowerCase().includes('vac')))continue
-				else if(user.nota && user.nota.toLowerCase().includes('entrevista'))etrev+=value
+				else if(user.nota && user.nota.toLowerCase().includes('entrevist'))etrev+=value
 				else if(user.slp_prom>=130)verde+=value
 				else if(user.slp_prom>=100 && user.slp_prom<130)ama+=value
 				else if(user.slp_prom>=80 && user.slp_prom<100)oran+=value
 				else if(user.slp_prom>=50 && user.slp_prom<80)rojo+=value
 				else if(user.slp_prom>=0 && user.slp_prom<50)negro+=value
 			}
-
+			
 			
 			let embed = new MessageEmbed().setTitle("Generadores 60%").setDescription(verde).setColor('GREEN')
 			message.channel.send({content: ` `,embeds: [embed]})
