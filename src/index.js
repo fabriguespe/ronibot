@@ -35,7 +35,8 @@ client.on("messageCreate", message => {
 TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
 client.login(config.token);
 
+/*
 cron.schedule('0 0 * * *', get_slp, {timezone: "UTC"});
 async function get_slp() {
 
-}
+}*/

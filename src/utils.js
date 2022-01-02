@@ -24,7 +24,7 @@ module.exports = {
         var today = new Date();
         let diadelmes=today.getDate()
         var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
-        if((lastDayOfMonth)>=(lastDayOfMonth-2) &&  (lastDayOfMonth)>=(lastDayOfMonth) || diadelmes>=15 &&  diadelmes<=16) return true
+        if((diadelmes>=(lastDayOfMonth-2) &&  diadelmes<=lastDayOfMonth) || diadelmes>=15 &&  diadelmes<=16) return true
         return false
     },
     FROM_UNIX_EPOCH:function(epoch_in_secs){
@@ -203,11 +203,9 @@ module.exports = {
     
         
             //TRANSFER
-            if(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62'){
-                message.channel.send("Estamos procesando la transacción....");
-            }else{
-                message.channel.send("Enviando "+balance+" SLP a la cuenta del jugador");
-            }
+            if(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62')message.channel.send("Estamos procesando la transacción....");
+            else message.channel.send("Enviando "+balance+" SLP a la cuenta del jugador");
+            
             
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
