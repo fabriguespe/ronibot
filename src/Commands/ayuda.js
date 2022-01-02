@@ -23,7 +23,7 @@ module.exports = new Command({
 			help+="!general para ver el estado de la academia\n\n"
 		}else if(utils.esFabri(message)){
 			help+="!retiro DESDE_XX HASTA_XX para transferir todos los axies\n\n"
-			help+="!aprobar XX NAME para aprobar una entrevista\n\n"
+			help+="!aprobar XX para aprobar una entrevista\n\n"
 			help+="!claim ID,ID claimea multiples cuentas\n\n"
 			help+="!flush ID,ID retira slp multiples cuentas\n\n"
 			help+="!pagar SLP DE HASTA para hacer un pago normal\n\n"
