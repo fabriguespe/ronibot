@@ -19,7 +19,8 @@ module.exports = new Command({
 			help+="!cambio AXIE_ID DESDE_XX HASTA_XX para transferir axies\n\n"
 			help+="!update XX FIELD VALUE para actualizar (nota,wallet,name)\n\n"
 			help+="!ranking para traer los 10 mejores\n\n"
-			help+="!pablo para un reporte completo\n\n"
+			help+="!lista para traer los 10 mejores\n\n"
+			help+="!entrevista para traer los 10 mejores\n\n"
 			help+="!general para ver el estado de la academia\n\n"
 		}else if(utils.esFabri(message)){
 			help+="!retiro DESDE_XX HASTA_XX para transferir todos los axies\n\n"
