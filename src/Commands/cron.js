@@ -3,6 +3,7 @@ const path = require('path');
 
 const Command = require("../Structures/Command.js");
 const fetch = require( "node-fetch")
+const cron = require('node-cron'), spawn = require('child_process').spawn;
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 var utils = require(path.resolve(__dirname, "../utils.js"));
 
@@ -11,7 +12,24 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
 		
-		if(args[1]=='stats'){
+		if(args[1]=='bk'){
+			try{
+				console.log('ja')
+				let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
+	
+				backupProcess.on('exit', (code, signal) => {
+					if(code) 
+						console.log('Backup process exited with code ', code);
+					else if (signal)
+						console.error('Backup process was killed with singal ', signal);
+					else 
+						console.log('Successfully backedup the database')
+				});
+			}catch (e) {
+				utils.log(e.message,message)
+			}
+
+		}if(args[1]=='stats'){
 			let db = await DbConnection.Get();
 			let users=await db.collection('users').find({}).toArray()
 			try{

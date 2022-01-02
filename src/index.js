@@ -7,6 +7,7 @@ var utils = require(path.resolve(__dirname, "./utils.js"));
 const Client = require(path.resolve(__dirname, "./Structures/Client.js"));
 const config = require(path.resolve(__dirname, "./Data/config.json"));
 const fetch = require( "node-fetch")
+const spawn = require('child_process').spawn;
 const client = new Client();
 const Command = require(path.resolve(__dirname, "./Structures/Command.js"));
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
@@ -22,7 +23,17 @@ client.on("ready", message => {
 	utils.log('Listo!')
 	let scheduledMessage = new cron.CronJob('0 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 867150874912882688);//ranking en general
+		let admin = message.channels.cache.find(c => c.id == 926112581054246983);//ranking en general
 		rCanal.send('!ranking')
+
+		let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
+
+		backupProcess.on('exit', (code, signal) => {
+			if(code) admin.send('Backup process exited with code ', code);
+			else if (signal)admin.send('Backup process was killed with singal ', signal);
+			else admin.send('Successfully backedup the database')
+		});
+
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 })
