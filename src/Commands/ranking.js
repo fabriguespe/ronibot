@@ -12,7 +12,7 @@ var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 module.exports = new Command({
 	name: "ranking"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
+		//if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()

@@ -2,7 +2,7 @@
 
 console.clear();
 const path = require('path');
-const cron = require('node-cron');
+var cron = require("cron");
 var utils = require(path.resolve(__dirname, "./utils.js"));
 const Client = require(path.resolve(__dirname, "./Structures/Client.js"));
 const config = require(path.resolve(__dirname, "./Data/config.json"));
@@ -18,7 +18,15 @@ fs.readdirSync(__dirname+"/Commands")
 	console.log(`Command ${command.name} loaded`);
 	client.commands.set(command.name, command);
 });
-client.on("ready", message => {utils.log('Listo!')})
+client.on("ready", message => {
+	utils.log('Listo!')
+	let scheduledMessage = new cron.CronJob('0 0 * * *', () => {
+		let rCanal = message.channels.cache.find(c => c.id == 867150874912882688);//ranking en general
+		rCanal.send('!ranking')
+	}, null, true, 'UTC');
+	scheduledMessage.start()
+})
+
 
 client.on("messageCreate", message => {
 	if (message.author.bot && !message.content=='!ranking') return;
@@ -33,10 +41,3 @@ client.on("messageCreate", message => {
 
 TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
 client.login(config.token);
-
-cron.schedule('* * * * *', get_slp, {timezone: "UTC"});
-async function get_slp() {
-	
-	let rCanal = message.guild.channels.cache.find(c => c.id == 926112581054246983);//canal admin
-	rCanal.send('jaja')
-}
