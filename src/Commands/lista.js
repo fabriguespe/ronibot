@@ -48,18 +48,28 @@ module.exports = new Command({
 		
 
 			let colores={GREEN:'',YELLOW:'',ORANGE:'',RED:'',BLACK:''}
+			let numcolores={GREEN:0,YELLOW:0,ORANGE:0,RED:0,BLACK:0}
 			for(let ii in users){
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
 				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')\n'
 				if(user.nota && (user.nota.toLowerCase().includes('retir') || user.nota.toLowerCase().includes('vac') || user.nota.toLowerCase().includes('entrevist')))continue
-				else if(user.slp_prom>=130)colores['GREEN']+=value
+				
+				if(user.slp_prom>=130)colores['GREEN']+=value
 				else if(user.slp_prom>=100 && user.slp_prom<130)colores['YELLOW']+=value
 				else if(user.slp_prom>=80 && user.slp_prom<100)colores['ORANGE']+=value
 				else if(user.slp_prom>=50 && user.slp_prom<80)colores['RED']+=value
 				else if(user.slp_prom>=0 && user.slp_prom<50)colores['BLACK']+=value
+				
+				if(user.slp_prom>=130)numcolores['GREEN']+=1
+				else if(user.slp_prom>=100 && user.slp_prom<130)numcolores['YELLOW']+=1
+				else if(user.slp_prom>=80 && user.slp_prom<100)numcolores['ORANGE']+=1
+				else if(user.slp_prom>=50 && user.slp_prom<80)numcolores['RED']+=1
+				else if(user.slp_prom>=0 && user.slp_prom<50)numcolores['BLACK']+=1
 			}
+
 			let titulo=''
+			let pie_chart={}
 			for(let i in Object.keys(colores)){
 				let color=Object.keys(colores)[i]
 				let lista=colores[color]
@@ -71,9 +81,19 @@ module.exports = new Command({
 					let text=lista.substring(Math.floor(init), Math.floor( fin) )
 					message.channel.send({content: ` `,embeds: [new MessageEmbed().setTitle(titulo).setDescription(text).setColor(color)]})
 				}
+				pie_chart[(color=='GREEN')?'Generando 60%':(color=='YELLOW')?'Generando 50%':(color=='ORANGE')?'Generando 40%':(color=='RED')?'Alerta 30%':(color=='BLACK')?'Retiro':'']=numcolores[color]
 
 			}
-			
+			console.log(pie_chart)
+			let chart = new QuickChart().setConfig({
+				type: 'pie',
+				data: { 
+					labels: Object.keys(pie_chart),
+					datasets:[{label: 'SLP', data: Object.values(pie_chart)}] 
+				},
+			}).setWidth(800).setHeight(400);
+			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+
 
 
 		}catch(e){
