@@ -24,6 +24,7 @@ client.on("ready", message => {
 	let scheduledMessage = new cron.CronJob('0 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 904491832556265502);//ranking en general
 		let admin = message.channels.cache.find(c => c.id == 926112581054246983);//ranking en admin
+		rCanal.send("<@everyone>" + "Hola! Estos son los resultados del día")
 		rCanal.send('!ranking')
 
 		let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
