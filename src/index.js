@@ -19,6 +19,7 @@ fs.readdirSync(__dirname+"/Commands")
 	console.log(`Command ${command.name} loaded`);
 	client.commands.set(command.name, command);
 });
+
 client.on("ready", message => {
 	utils.log('Listo!')
 	let scheduledMessage = new cron.CronJob('0 0 * * *', () => {

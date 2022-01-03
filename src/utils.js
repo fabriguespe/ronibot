@@ -421,16 +421,16 @@ module.exports = {
         else return null
     },
     getUserByNum:async function(num){
-        if(num=='BREED' || num=='breed')return 'ronin:858984a23b440e765f35ff06e896794dc3261c62'
-        if(num=='VENTA' || num=='venta')return 'ronin:33cd85881e79cc7c21d92218711821c7c919f330'
+        if(num=='BREED' || num=='breed')return 'ronin:b1c0e5cb955ac17d9cb42fb4ee6b6ae01b5a9c82'
+        if(num=='VENTA' || num=='venta')return 'ronin:29e29959cbb316923e57238467e14135d19c16f9'
         let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({num:num.toString()})
         if(user)return user
         else return null
     },
     getWalletByNum:async function(num){
-        if(num=='BREED' || num=='breed')return 'ronin:858984a23b440e765f35ff06e896794dc3261c62'
-        if(num=='VENTA' || num=='venta')return 'ronin:33cd85881e79cc7c21d92218711821c7c919f330'
+        if(num=='BREED' || num=='breed')return 'ronin:b1c0e5cb955ac17d9cb42fb4ee6b6ae01b5a9c82'
+        if(num=='VENTA' || num=='venta')return 'ronin:29e29959cbb316923e57238467e14135d19c16f9'
         let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({num:num.toString()})
         if(user)return user.accountAddress
