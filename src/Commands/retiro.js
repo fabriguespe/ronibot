@@ -77,7 +77,8 @@ module.exports = new Command({
                     if(tr_raw.status){            
                         let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\nRecurda actualizar !update "+args[1]+" nota retirar").setColor('GREEN').setTimestamp()
                         message.channel.send({content: ` `,embeds: [embed]})
-                        await db.collection("users").updateOne({ accountAddress:from_acc},{ $set: {nota:"retirar","discord":null} } )
+                        console.log({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} })
+                        await db.collection("users").updateOne({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} } )
                     }        
                     else message.channel.send("ERROR Status False");
                 }
