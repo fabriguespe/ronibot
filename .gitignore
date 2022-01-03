@@ -1,4 +1,5 @@
 # ignore all logs
 *.log
 log.log
+archive.gz
 src/Data/secrets.json
