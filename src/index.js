@@ -22,18 +22,18 @@ fs.readdirSync(__dirname+"/Commands")
 
 client.on("ready", message => {
 	utils.log('Listo!')
-	let scheduledMessage = new cron.CronJob('0 0 * * *', () => {
+	let scheduledMessage = new cron.CronJob('0 1 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 904491832556265502);//ranking en general
 		let admin = message.channels.cache.find(c => c.id == 926112581054246983);//ranking en admin
-		rCanal.send("<@everyone>" + "Hola! Estos son los resultados del día")
+		rCanal.send("@everyone" + "Hola! Estos son los resultados del día")
 		rCanal.send('!ranking')
 
 		let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
 
 		backupProcess.on('exit', (code, signal) => {
-			if(code) admin.send('Backup process exited with code ', code);
-			else if (signal)admin.send('Backup process was killed with singal ', signal);
-			else admin.send('Successfully backedup the database')
+			if(code) admin.send('ERROR BACKUP ', code);
+			else if (signal)admin.send('ERROR BACKUP ', signal);
+			else admin.send('BACKUP de base datos se realizó con Exito!')
 		});
 
 	}, null, true, 'UTC');

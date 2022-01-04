@@ -82,15 +82,15 @@ module.exports = new Command({
 
 			//Ultimos 20 copas
 			if(utils.esManager(message)){
-			top=users.sort(function(a, b) {return b.mmr - a.mmr}).slice(users.length-1-20, users.length);
-			help=''
-			for(let ii in top){
-				let user=top[ii]
-				help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
-			}	
-			embed = new MessageEmbed().setTitle("ULTIMOS 20 COPAS").setDescription(help).setColor('#574760').setTimestamp()
-			message.channel.send({content: ` `,embeds: [embed]})
-		}
+				top=users.sort(function(a, b) {return b.mmr - a.mmr}).slice(users.length-1-20, users.length);
+				help=''
+				for(let ii in top){
+					let user=top[ii]
+					help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
+				}	
+				embed = new MessageEmbed().setTitle("ULTIMOS 20 COPAS").setDescription(help).setColor('#574760').setTimestamp()
+				message.channel.send({content: ` `,embeds: [embed]})
+			}
 
 
 			
