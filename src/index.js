@@ -23,13 +23,12 @@ fs.readdirSync(__dirname+"/Commands")
 client.on("ready", message => {
 	utils.log('Listo!')
 	let scheduledMessage = new cron.CronJob('0 1 * * *', () => {
-		let rCanal = message.channels.cache.find(c => c.id == 904491832556265502);//ranking en general
+		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
+		rCanal.send("@everyone" + "Hola! Estos son los resultados del día")
+		rCanal.send('!diario')
+
 		let admin = message.channels.cache.find(c => c.id == 926112581054246983);//ranking en admin
-		//rCanal.send("@everyone" + "Hola! Estos son los resultados del día")
-		//rCanal.send('!diario')
-
 		let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
-
 		backupProcess.on('exit', (code, signal) => {
 			if(code) admin.send('ERROR BACKUP ', code);
 			else if (signal)admin.send('ERROR BACKUP ', signal);
