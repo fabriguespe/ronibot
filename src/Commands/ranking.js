@@ -31,8 +31,13 @@ module.exports = new Command({
 					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined){
 						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp_sum']+=stat.in_game_slp
 						else users[ii]['slp_sum']+=stat.in_game_slp-anteultimo.in_game_slp
+						
+						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp']=stat.in_game_slp
+						else users[ii]['slp']=stat.in_game_slp-anteultimo.in_game_slp
+
 						users[ii]['mmr_sum']+=stat['mmr']
 						users[ii]['mmr']=stat['mmr']
+					
 						users[ii]['stat_count']+=1
 					}
 					
@@ -47,14 +52,25 @@ module.exports = new Command({
 			users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 
 			//Top 10 SLP
-			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(0, 10);
-			let help=''
-			for(let ii in top){
-				let user=top[ii]
-				help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
-			}	
-			let embed = new MessageEmbed().setTitle("MEJORES 10 SLP").setDescription(help).setColor('#3C5D74').setTimestamp()
-			message.channel.send({content: ` `,embeds: [embed]})
+			if(utils.esManager(message)){
+				let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(0, 10);
+				let help=''
+				for(let ii in top){
+					let user=top[ii]
+					help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
+				}	
+				let embed = new MessageEmbed().setTitle("MEJORES 10 SLP").setDescription(help).setColor('#3C5D74').setTimestamp()
+				message.channel.send({content: ` `,embeds: [embed]})
+			}else{
+				let top=users.sort(function(a, b) {return b.slp - a.slp}).slice(0, 10);
+				let help=''
+				for(let ii in top){
+					let user=top[ii]
+					help+='#'+user.num+" ***"+user.name+'*** '+user.slp+'('+user.mmr+')\n'
+				}	
+				let embed = new MessageEmbed().setTitle("MEJORES 10 SLP").setDescription(help).setColor('#3C5D74').setTimestamp()
+				message.channel.send({content: ` `,embeds: [embed]})
+			}
 
 			
 			//Top 10 Copas
