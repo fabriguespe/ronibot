@@ -10,7 +10,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
 module.exports = new Command({
-	name: "ranking"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
+	name: "diario"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		//if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
@@ -46,17 +46,16 @@ module.exports = new Command({
 				
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])
 				users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
-				
-
 			}
-			users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
+			
+			users=users.filter(u => u.slp>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 
 			//Top 10 SLP
-			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(0, 10);
+			let top=users.sort(function(a, b) {return b.slp - a.slp}).slice(0, 10);
 			let help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
+				help+='#'+user.num+" ***"+user.name+'*** '+user.slp+'('+user.mmr+')\n'
 			}	
 			let embed = new MessageEmbed().setTitle("MEJORES 10 SLP").setDescription(help).setColor('#3C5D74').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
@@ -67,38 +66,23 @@ module.exports = new Command({
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
+				help+='#'+user.num+" ***"+user.name+'*** '+user.slp+'('+user.mmr+')\n'
 			}	
 			embed = new MessageEmbed().setTitle("TOP 10 COPAS").setDescription(help).setColor('#3C5D74').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 			
 			
 			//Bottom 10 SLP
-			top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(users.length-1-10, users.length);
+			top=users.sort(function(a, b) {return b.slp - a.slp}).slice(users.length-1-10, users.length);
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
+				help+='#'+user.num+" ***"+user.name+'*** '+user.slp+'('+user.mmr+')\n'
 			}	
 			embed = new MessageEmbed().setTitle("ULTIMOS 10 SLP").setDescription(help).setColor('#574760').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 			
-
-
-			//Ultimos 20 copas
-			if(utils.esManager(message)){
-				top=users.sort(function(a, b) {return b.mmr - a.mmr}).slice(users.length-1-20, users.length);
-				help=''
-				for(let ii in top){
-					let user=top[ii]
-					help+='#'+user.num+" ***"+user.name+'*** '+user.slp_prom+'('+user.mmr+')\n'
-				}	
-				embed = new MessageEmbed().setTitle("ULTIMOS 20 COPAS").setDescription(help).setColor('#574760').setTimestamp()
-				message.channel.send({content: ` `,embeds: [embed]})
-			}
-
-
-			
+		
 
 		}catch(e){
 			utils.log(e.message,message)
