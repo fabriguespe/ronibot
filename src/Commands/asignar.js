@@ -33,13 +33,11 @@ module.exports = new Command({
                 //Data
                 if(!utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
                 let from_acc=await utils.getWalletByNum("BREED")
+                from_acc=from_acc.replace('ronin:','0x')
                 to_acc=to_acc.replace('ronin:','0x')
-
-                
 
                 //private
                 let from_private = secrets[(from_acc.replace('0x','ronin:'))]
-                
                 let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
             
                 //build
@@ -47,7 +45,6 @@ module.exports = new Command({
                 for(let i in axies_ids){
                     let axie_id=axies_ids[i]
                     console.log('Transfer:'+axie_id)
-
                     message.channel.send("Listo para transferir el Axie: "+axie_id+" \nAguarde un momento...");
                     let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
                     let myData=axie_contract.methods.safeTransferFrom(

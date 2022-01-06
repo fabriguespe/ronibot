@@ -143,6 +143,7 @@ module.exports = {
 
             let player_wallet=data.scholarPayoutAddress
             let roni_wallet=await utils.getWalletByNum("BREED")
+            roni_wallet=roni_wallet.replace('ronin:','0x')
             
             let fallo=false
             try{
@@ -204,6 +205,7 @@ module.exports = {
         
             //TRANSFER
             let breed=await utils.getWalletByNum("BREED")
+            breed=breed.replace('ronin:','0x')
             if(to_acc==breed)message.channel.send("Estamos procesando la transacción....");
             else message.channel.send("Enviando "+balance+" SLP a la cuenta del jugador");
             
