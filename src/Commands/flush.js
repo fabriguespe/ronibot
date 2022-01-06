@@ -32,7 +32,7 @@ module.exports = new Command({
 
                 let db = await DbConnection.Get();
 
-                let roni_wallet='0x858984a23b440e765f35ff06e896794dc3261c62'
+                let roni_wallet=await utils.getWalletByNum("BREED")
                 roni_wallet=roni_wallet.replace('ronin:','0x')
                 
                 //build

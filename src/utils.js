@@ -142,7 +142,7 @@ module.exports = {
             let roniPrimero=(roni_slp>=jugador_slp)
 
             let player_wallet=data.scholarPayoutAddress
-            let roni_wallet='0x858984a23b440e765f35ff06e896794dc3261c62'
+            let roni_wallet=await utils.getWalletByNum("BREED")
             
             let fallo=false
             try{
@@ -203,7 +203,8 @@ module.exports = {
     
         
             //TRANSFER
-            if(to_acc=='0x858984a23b440e765f35ff06e896794dc3261c62')message.channel.send("Estamos procesando la transacción....");
+            let breed=await utils.getWalletByNum("BREED")
+            if(to_acc==breed)message.channel.send("Estamos procesando la transacción....");
             else message.channel.send("Enviando "+balance+" SLP a la cuenta del jugador");
             
             

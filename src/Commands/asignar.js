@@ -32,14 +32,13 @@ module.exports = new Command({
                 let to_acc=await utils.getWalletByNum(args[2])
                 //Data
                 if(!utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
-                let from_acc='0x858984a23b440e765f35ff06e896794dc3261c62'
+                let from_acc=await utils.getWalletByNum("BREED")
                 to_acc=to_acc.replace('ronin:','0x')
 
                 
 
                 //private
                 let from_private = secrets[(from_acc.replace('0x','ronin:'))]
-                utils.log(from_private)
                 
                 let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
             
@@ -76,7 +75,7 @@ module.exports = new Command({
                             let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                             message.channel.send({content: ` `,embeds: [embed]})
                         }        
-                        else message.channel.send("ERROR Status False");
+                        else utils.log("ERROR Status False!",message);
 
                     }catch(e){
                         utils.log("Fallo la transfer");
