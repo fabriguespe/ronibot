@@ -37,7 +37,7 @@ module.exports = new Command({
 						else users[ii]['slp_sum']+=stat.in_game_slp-anteultimo.in_game_slp
 						users[ii]['mmr_sum']+=stat['mmr']
 						users[ii]['mmr']=stat['mmr']
-						users[ii]['stat_count']+=1
+						if(users[ii]['slp_sum']>0)users[ii]['stat_count']+=1
 
 						if(!users[ii]['days'] && stat.total_slp){
 							let ahora=new Date().getTime()
