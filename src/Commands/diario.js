@@ -41,7 +41,7 @@ module.exports = new Command({
 						users[ii]['stat_count']+=1
 					}
 					
-					if(users[ii]['stat_count']>=7)break
+					//if(users[ii]['stat_count']>=7)break
 				}
 				
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])
