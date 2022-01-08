@@ -75,18 +75,19 @@ module.exports = new Command({
 
 					if(user.name)user.name=user.name.replaceAll('*','')
 					let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')'+'('+user.days+')\n'
-	
+					
+					let aprobado=85
 					if(user.days<=3){//FASE 1
 						if(user.slp_prom<50)retirar+=value
-						else if(user.slp_prom>=50 && user.slp_prom<=90)evaluar+=value
-						else if(user.slp_prom>90)aprobar+=value
+						else if(user.slp_prom>=50 && user.slp_prom<=aprobado)evaluar+=value
+						else if(user.slp_prom>aprobado)aprobar+=value
 					}else if(user.days<=7){//FASE 2
 						if(user.slp_prom<75)retirar+=value
-						else if(user.slp_prom>=75 && user.slp_prom<=90)evaluar+=value
-						else if(user.slp_prom>90)aprobar+=value
+						else if(user.slp_prom>=75 && user.slp_prom<=aprobado)evaluar+=value
+						else if(user.slp_prom>aprobado)aprobar+=value
 					}else if(user.days<=14){// FASE 3
-						if(user.slp_prom<90)retirar+=value
-						else if(user.slp_prom>=90)aprobar+=value
+						if(user.slp_prom<aprobado)retirar+=value
+						else if(user.slp_prom>=aprobado)aprobar+=value
 					}else fin+=value
 				}
 				
