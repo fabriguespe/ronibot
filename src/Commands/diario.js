@@ -15,6 +15,7 @@ module.exports = new Command({
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
+			let limit_prom=1
 			let users = await db.collection('users').find().toArray()
 			for(let ii in users){
 				let eluser=users[ii]
@@ -23,7 +24,8 @@ module.exports = new Command({
 				users[ii]['slp_prom']=0
 				users[ii]['mmr_prom']=0
 				users[ii]['stat_count']=0
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(3).toArray();
+
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(limit_prom).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				for(let i in stats){
 					let stat=stats[i]
@@ -41,7 +43,7 @@ module.exports = new Command({
 						users[ii]['stat_count']+=1
 					}
 					
-					//if(users[ii]['stat_count']>=7)break
+					//if(users[ii]['stat_count']>=limit_prom)break
 				}
 				
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])

@@ -16,6 +16,7 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
+			let limit_prom=args[1]?parseInt(args[1]):3
 			for(let ii in users){
 				let eluser=users[ii]
 				users[ii]['mmr_sum']=0
@@ -23,7 +24,7 @@ module.exports = new Command({
 				users[ii]['slp_prom']=0
 				users[ii]['mmr_prom']=0
 				users[ii]['stat_count']=0
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(args[1]?parseInt(args[1]):3).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(limit_prom).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				for(let i in stats){
 					let stat=stats[i]
@@ -36,7 +37,7 @@ module.exports = new Command({
 						users[ii]['stat_count']+=1
 					}
 					
-					//if(users[ii]['stat_count']>=7)break
+					//if(users[ii]['stat_count']>=limit_prom)break
 				}
 				
 				if(users[ii]['slp_sum']>0 && users[ii]['stat_count']>0)users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])

@@ -51,7 +51,6 @@ module.exports = new Command({
 						}
 					}
 					
-					
 					//if(users[ii]['stat_count']>=7)break ???? q es esto
 				}
 				
