@@ -15,7 +15,7 @@ module.exports = new Command({
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
-			let limit_prom=1
+			let limit_prom=2
 			let users = await db.collection('users').find().toArray()
 			for(let ii in users){
 				let eluser=users[ii]
