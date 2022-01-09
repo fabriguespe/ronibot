@@ -77,6 +77,7 @@ module.exports = new Command({
 					let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')'+'('+user.days+')\n'
 					
 					let aprobado=85
+					
 					if(user.days<=3){//FASE 1
 						if(user.slp_prom<50)retirar+=value
 						else if(user.slp_prom>=50 && user.slp_prom<=aprobado)evaluar+=value
