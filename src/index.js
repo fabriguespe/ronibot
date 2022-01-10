@@ -41,7 +41,7 @@ client.on("ready", message => {
 
 
 client.on("messageCreate", message => {
-	if (message.author.bot && !message.content=='!ranking') return;
+	if (message.author.bot && !message.content=='!diario') return;
 	if (!message.content.startsWith(config.prefix)) return;
 	const args = message.content.substring(config.prefix.length).split(/ +/);
 	const command = client.commands.find(cmd => cmd.name == args[0]);
