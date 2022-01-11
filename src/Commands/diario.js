@@ -91,7 +91,8 @@ module.exports = new Command({
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" ***"+user.name.replaceAll('*','')+'*** '+user.slp+'('+user.mmr+')\n'
+				let nombre=user.name?user.name.replaceAll('*',''):''
+				help+='#'+user.num+" ***"+nombre+'*** '+user.slp+'('+user.mmr+')\n'
 			}	
 			embed = new MessageEmbed().setTitle("TOP 10 COPAS").setDescription(help).setColor('#3C5D74').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
