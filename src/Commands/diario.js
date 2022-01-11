@@ -53,14 +53,14 @@ module.exports = new Command({
 			users=users.filter(u => u.slp>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 
 			//Top 10 SLP
-			/*
-			let top=users.sort(function(a, b) {return b.slp - a.slp}).slice(0, 10);
+		
+			let top=users.sort(function(a, b) {return b.slp - a.slp})/*.slice(0, 10);*/
 			let help=''
 			for(let ii in top){
 				let user=top[ii]
 				help+='#'+user.num+" ***"+user.name+'*** '+user.slp+'('+user.mmr+')\n'
 			}	
-			let embed = new MessageEmbed().setTitle("MEJORES 10 SLP").setDescription(help).setColor('#3C5D74').setTimestamp()
+			let embed = new MessageEmbed().setTitle("Ranking general").setDescription(help).setColor('#3C5D74').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 			
 			
@@ -76,6 +76,7 @@ module.exports = new Command({
 			
 			
 			//Bottom 10 SLP
+			/*
 			top=users.sort(function(a, b) {return b.slp - a.slp}).slice(users.length-1-10, users.length);
 			help=''
 			for(let ii in top){
@@ -86,17 +87,6 @@ module.exports = new Command({
 			message.channel.send({content: ` `,embeds: [embed]})
 			*/
 			
-			//Top 10 Copas
-			top=users.sort(function(a, b) {return b.mmr - a.mmr})
-			help=''
-			for(let ii in top){
-				let user=top[ii]
-				let nombre=user.name?user.name.replaceAll('*',''):''
-				help+=ii+'#'+user.num+" ***"+nombre+'*** '+user.slp+'('+user.mmr+')\n'
-			}	
-			embed = new MessageEmbed().setTitle("TOP 10 COPAS").setDescription(help).setColor('#3C5D74').setTimestamp()
-			message.channel.send({content: ` `,embeds: [embed]})
-		
 
 		}catch(e){
 			utils.log(e.message,message)
