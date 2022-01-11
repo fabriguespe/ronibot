@@ -43,15 +43,12 @@ module.exports = new Command({
 
                 //private
                 let from_private = secrets[(from_acc.replace('0x','ronin:'))]
-                
                 let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
             
                 //build
                 let axies=await utils.getAxiesIds(from_acc)
                 for(let i in axies.axies){
                     let axie_id=axies.axies[i].id
-                    console.log('Transfer:'+axie_id)
-
                     message.channel.send("Listo para transferir el Axie: "+axie_id+" \nAguarde un momento...");
                     let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
                     let myData=axie_contract.methods.safeTransferFrom(
@@ -79,12 +76,11 @@ module.exports = new Command({
                         message.channel.send({content: ` `,embeds: [embed]})
 
                         //Retirar
-                        let ja=await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: {nota:"retirar",discord:null} } )
-                        console.log(ja)
-
+                        await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: {nota:"retirar",discord:null} } )
+                        
                         //Mandar mensaje
                         let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal ingresos
-                        rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador a "+quien.name+"(#"+quien.num+") fue retirado").setColor('GREEN').setTimestamp()]})
+                        rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador #"+args[1]+" fue retirado").setColor('GREEN').setTimestamp()]})
                     }        
                     else message.channel.send("ERROR Status False");
                 }
