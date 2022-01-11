@@ -78,7 +78,12 @@ module.exports = new Command({
                         let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\n").setColor('GREEN').setTimestamp()
                         message.channel.send({content: ` `,embeds: [embed]})
                         console.log({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} })
+                        //Retirar
                         await db.collection("users").updateOne({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} } )
+                        //Mandar mensaje
+                        let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
+                        let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a "+quien.name+"(#"+quien.num+")\nYa puedes escribir !roni para validarte").setColor('GREEN').setTimestamp()
+                        rCanal.send({content: ` `,embeds: [embed]})
                     }        
                     else message.channel.send("ERROR Status False");
                 }
