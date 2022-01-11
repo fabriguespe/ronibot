@@ -25,7 +25,7 @@ module.exports = new Command({
 				users[ii]['mmr_prom']=0
 				users[ii]['stat_count']=0
 
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(limit_prom).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				for(let i in stats){
 					let stat=stats[i]
