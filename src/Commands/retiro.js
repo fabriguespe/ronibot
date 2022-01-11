@@ -75,7 +75,7 @@ module.exports = new Command({
                     let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
                     
                     if(tr_raw.status){            
-                        let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\nRecurda actualizar !update "+args[1]+" nota retirar").setColor('GREEN').setTimestamp()
+                        let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\n").setColor('GREEN').setTimestamp()
                         message.channel.send({content: ` `,embeds: [embed]})
                         console.log({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} })
                         await db.collection("users").updateOne({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} } )
