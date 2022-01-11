@@ -79,7 +79,6 @@ module.exports = new Command({
                         message.channel.send({content: ` `,embeds: [embed]})
 
                         //Retirar
-
                         let ja=await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: {nota:"retirar",discord:null} } )
                         console.log(ja)
 

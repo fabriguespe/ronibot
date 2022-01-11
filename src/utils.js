@@ -352,6 +352,7 @@ module.exports = {
         return message.author.id==533994454391062529 && message.channel.name.includes('comandos-admin')
     },
     esManager:function(message){
+        if(message.author.bot)return true
         let r1=message.guild.roles.cache.find(r => r.name === "Manager")
         if(r1 && message.member.roles.cache.has(r1.id))return true
         return false
