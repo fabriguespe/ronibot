@@ -77,9 +77,12 @@ module.exports = new Command({
                     if(tr_raw.status){            
                         let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\n").setColor('GREEN').setTimestamp()
                         message.channel.send({content: ` `,embeds: [embed]})
-                        console.log({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} })
+
                         //Retirar
-                        await db.collection("users").updateOne({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} } )
+
+                        let ja=await db.collection("users").updateOne({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} } )
+                        console.log(ja)
+                        
                         //Mandar mensaje
                         let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal ingresos
                         let embed = new MessageEmbed().setTitle('Retiro').setDescription("El jugador a "+quien.name+"(#"+quien.num+") fue retirado").setColor('GREEN').setTimestamp()
