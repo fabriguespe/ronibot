@@ -52,7 +52,7 @@ module.exports = new Command({
                     let axie_id=axies.axies[i].id
                     console.log('Transfer:'+axie_id)
 
-                    message.channel.send("Listo para transferir el Axie: "+axie_id+" \n Aguarde un momento...");
+                    message.channel.send("Listo para transferir el Axie: "+axie_id+" \nAguarde un momento...");
                     let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
                     let myData=axie_contract.methods.safeTransferFrom(
                     (web3.utils.toChecksumAddress(from_acc)),
