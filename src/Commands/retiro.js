@@ -60,14 +60,14 @@ module.exports = new Command({
                     (axie_id)).encodeABI()
                     
                     let trans={
-                            "chainId": 2020,
-                            "gas": 492874,
-                            "from": from_acc,
-                            "gasPrice": 0,
-                            "value": 0,
-                            "to": AXIE_CONTRACT,
-                            "nonce": nonce,
-                            data:myData
+                        "chainId": 2020,
+                        "gas": 492874,
+                        "from": from_acc,
+                        "gasPrice": 0,
+                        "value": 0,
+                        "to": AXIE_CONTRACT,
+                        "nonce": nonce,
+                        data:myData
                     }
 
                         
@@ -80,13 +80,12 @@ module.exports = new Command({
 
                         //Retirar
 
-                        let ja=await db.collection("users").updateOne({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} } )
+                        let ja=await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: {nota:"retirar",discord:null} } )
                         console.log(ja)
-                        
+
                         //Mandar mensaje
                         let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal ingresos
-                        let embed = new MessageEmbed().setTitle('Retiro').setDescription("El jugador a "+quien.name+"(#"+quien.num+") fue retirado").setColor('GREEN').setTimestamp()
-                        rCanal.send({content: ` `,embeds: [embed]})
+                        rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador a "+quien.name+"(#"+quien.num+") fue retirado").setColor('GREEN').setTimestamp()]})
                     }        
                     else message.channel.send("ERROR Status False");
                 }
