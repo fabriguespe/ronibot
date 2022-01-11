@@ -81,8 +81,8 @@ module.exports = new Command({
                         //Retirar
                         await db.collection("users").updateOne({ accountAddress:from_acc},{ $set: {nota:"retirar",discord:null} } )
                         //Mandar mensaje
-                        let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
-                        let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a "+quien.name+"(#"+quien.num+")\nYa puedes escribir !roni para validarte").setColor('GREEN').setTimestamp()
+                        let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal ingresos
+                        let embed = new MessageEmbed().setTitle('Retiro').setDescription("El jugador a "+quien.name+"(#"+quien.num+") fue retirado").setColor('GREEN').setTimestamp()
                         rCanal.send({content: ` `,embeds: [embed]})
                     }        
                     else message.channel.send("ERROR Status False");
