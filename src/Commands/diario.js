@@ -37,10 +37,9 @@ module.exports = new Command({
 						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp']=stat.in_game_slp
 						else users[ii]['slp']=stat.in_game_slp-anteultimo.in_game_slp
 
+						if(users[ii]['slp']>0 )users[ii]['stat_count']+=1
 						users[ii]['mmr_sum']+=stat['mmr']
 						users[ii]['mmr']=stat['mmr']
-					
-						users[ii]['stat_count']+=1
 					}
 					
 					//if(users[ii]['stat_count']>=limit_prom)break
