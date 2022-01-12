@@ -16,12 +16,13 @@ module.exports = new Command({
             let user_from=await utils.getUserByNum(args[2])
             let user_to=await utils.getUserByNum(args[3])
             let from_acc=user_from.accountAddress
-            let to_acc=user_to.accountAddress
+            let to_acc=user_to.accountAddress?user_to.accountAddress:user_to
             let num_from=user_from.num
-            let num_to=user_to.num
+            let num_to=user_to.num?user_to.num:args[3]
 
             let axie_id=args[1]
             //Data
+            console.log(from_acc,to_acc)
             if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')

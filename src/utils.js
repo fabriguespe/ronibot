@@ -194,6 +194,7 @@ module.exports = {
       
         try{
             
+            let db = await DbConnection.Get();
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]
             let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
