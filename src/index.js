@@ -25,7 +25,7 @@ client.on("ready", message => {
 	let scheduledMessage = new cron.CronJob('30 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
 		rCanal.send("@here" + "Estos estan en la cuerda floja, y se retiraran en el proximo cobro")
-		rCanal.send('!listat 7 Retiro')
+		rCanal.send('!lista 7 Retiro')
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 
@@ -52,7 +52,7 @@ client.on("ready", message => {
 
 
 client.on("messageCreate", message => {
-	if (message.author.bot && !message.content=='!diario') return;
+	if (message.author.bot && !message.content=='!diario' && !message.content=='!lista 7 Retiro') return;
 	if (!message.content.startsWith(config.prefix)) return;
 	const args = message.content.substring(config.prefix.length).split(/ +/);
 	const command = client.commands.find(cmd => cmd.name == args[0]);
