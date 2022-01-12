@@ -52,7 +52,6 @@ client.on("ready", message => {
 
 
 client.on("messageCreate", message => {
-	console.log('ja')
 	if (message.author.bot && !message.content=='!diario' && !message.content=='!lista 7 Retiro') return;
 
 	if (!message.content.startsWith(config.prefix)) return;

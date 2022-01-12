@@ -13,7 +13,6 @@ module.exports = new Command({
 		let esPagos=(utils.esJeissonPagos(message) || utils.esFabri(message) && args[1])
 		if(args[1] && !esPagos)return message.channel.send('No tienes permiso s para correr este comando')
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
-		console.log(currentUser)
 		if(!temporal && (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
 		if(!temporal && (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario no validado')
 		
@@ -65,7 +64,6 @@ module.exports = new Command({
 		let lascomnd=''
 		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1/*,time:600000*/})
 		mcollector.on('collect', async message => {
-			console.log(lascomnd)
 			if(lascomnd=='desasociar')return utils.desasociar(message)
 			else if(lascomnd=='asociar')return utils.asociar(message)
 		});

@@ -14,7 +14,6 @@ module.exports = new Command({
 		
 		if(args[1]=='bk'){
 			try{
-				console.log('ja')
 				let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
 	
 				backupProcess.on('exit', (code, signal) => {
