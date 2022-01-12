@@ -22,11 +22,22 @@ fs.readdirSync(__dirname+"/Commands")
 
 client.on("ready", message => {
 	utils.log('Listo!')
-	let scheduledMessage = new cron.CronJob('0 1 * * *', () => {
+	let scheduledMessage = new cron.CronJob('30 0 * * *', () => {
+		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
+		rCanal.send("@here" + "Estos estan en la cuerda floja, y se retiraran en el proximo cobro")
+		rCanal.send('!diario')
+	}, null, true, 'UTC');
+	scheduledMessage.start()
+
+	scheduledMessage = new cron.CronJob('20 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
 		rCanal.send("@here" + "Hola! Estos son los resultados del día")
 		rCanal.send('!diario')
 
+	}, null, true, 'UTC');
+	scheduledMessage.start()
+
+	scheduledMessage = new cron.CronJob('10 0 * * *', () => {
 		let admin = message.channels.cache.find(c => c.id == 926112581054246983);//ranking en admin
 		let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
 		backupProcess.on('exit', (code, signal) => {

@@ -39,20 +39,17 @@ module.exports = new Command({
 
 						users[ii]['mmr_sum']+=stat['mmr']
 						users[ii]['mmr']=stat['mmr']
-						if(users[ii]['slp']>0 )users[ii]['stat_count']+=1
+						if(users[ii]['slp']>0)users[ii]['stat_count']+=1
 					}
-					
-					//if(users[ii]['stat_count']>=limit_prom)break
 				}
 				
 				if(users[ii]['slp_sum']>0 && users[ii]['stat_count']>0)users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])
 				if(users[ii]['mmr_sum']>0 && users[ii]['stat_count']>0)users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
 
 			}
+			let tipo=args[2]
 			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 			users=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
-		
-
 			let colores={GREEN:'',YELLOW:'',ORANGE:'',RED:'',BLACK:''}
 			let numcolores={GREEN:0,YELLOW:0,ORANGE:0,RED:0,BLACK:0}
 			for(let ii in users){
@@ -82,6 +79,7 @@ module.exports = new Command({
 				let partes=Math.floor(lista.length/4095)+1
 				for(let j=1;j<=partes;j++){
 					titulo=(color=='GREEN')?'Generando 60%':(color=='YELLOW')?'Generando 50%':(color=='ORANGE')?'Generando 40%':(color=='RED')?'Alerta 30%':(color=='BLACK')?'Retiro':''
+					if(tipo && tipo!=titulo)continue
 					let init=(j==1)?0:(lista.length/partes*(j-1))
 					let fin=(lista.length/partes*j)
 					let text=lista.substring(Math.floor(init), Math.floor( fin) )
@@ -90,7 +88,7 @@ module.exports = new Command({
 				pie_chart[(color=='GREEN')?'Generando 60%':(color=='YELLOW')?'Generando 50%':(color=='ORANGE')?'Generando 40%':(color=='RED')?'Alerta 30%':(color=='BLACK')?'Retiro':'']=numcolores[color]
 
 			}
-			console.log(pie_chart)
+			
 			let chart = new QuickChart().setConfig({
 				type: 'pie',
 				data: { 
