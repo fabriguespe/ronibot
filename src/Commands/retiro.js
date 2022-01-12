@@ -53,7 +53,8 @@ module.exports = new Command({
                    
                     
                     //Retirar
-                    await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: {nota:"retirar",discord:null} } )
+                    await utils.cambiarEstado(from_acc,'retiro')
+                    
                     let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal ingresos
                     rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador #"+args[1]+" fue retirado").setColor('GREEN').setTimestamp()]})
                     

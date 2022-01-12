@@ -13,8 +13,7 @@ module.exports = new Command({
 		if(args.length==2){	
             let quien=await utils.getUserByNum(args[1])
 			let db = await DbConnection.Get();
-			await db.collection("users").updateOne({ accountAddress:quien.accountAddress},{ $set: {'nota':'aprobada'}} )
-			message.channel.send('El jugador fue aprobado con exito')
+			await utils.cambiarEstado(quien.accountAddress,'aprobado')
 			let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
 			let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a "+quien.name+"(#"+quien.num+")\nYa puedes escribir !roni para validarte").setColor('GREEN').setTimestamp()
 			rCanal.send({content: ` `,embeds: [embed]})

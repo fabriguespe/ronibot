@@ -190,6 +190,13 @@ module.exports = {
     },date_log:function(){
         return new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
     },
+    cambiarEstado:async function(from_acc,estado,message){
+        let obj={nota:estado}
+        if(estado.includes('retir'))obj['discord']=null
+        await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: obj } )
+        db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), status:estado})
+        message.channel.send('El jugador fue aprobado con exito')
+    },
     transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
       
         try{

@@ -15,6 +15,7 @@ module.exports = new Command({
 			let key=args[2]
 			if(key=='wallet')key='scholarPayoutAddress'
 			let value=args[3]
+			if(value=='nota')return message.channel.send('El estado debe actualizarse con los procesos')
 			let armado={}
 			armado[key]=value
 			let values={ $set: armado }
