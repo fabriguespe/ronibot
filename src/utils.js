@@ -80,7 +80,7 @@ module.exports = {
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
-
+            
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
@@ -191,6 +191,7 @@ module.exports = {
         return new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
     },
     cambiarEstado:async function(from_acc,estado,message){
+        let db = await DbConnection.Get();
         let obj={nota:estado}
         if(estado.includes('retir'))obj['discord']=null
         await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: obj } )
