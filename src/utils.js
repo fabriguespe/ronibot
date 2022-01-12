@@ -199,10 +199,7 @@ module.exports = {
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]
             let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
             let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-            let myData=axie_contract.methods.safeTransferFrom(
-                (web3.utils.toChecksumAddress(from_acc)),
-                (web3.utils.toChecksumAddress(to_acc)),
-                (axie_id)).encodeABI()
+            let myData=axie_contract.methods.safeTransferFrom((web3.utils.toChecksumAddress(from_acc)),(web3.utils.toChecksumAddress(to_acc)),(axie_id)).encodeABI()
             
             let trans={
                     "chainId": 2020,
