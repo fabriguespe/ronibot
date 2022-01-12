@@ -40,7 +40,7 @@ module.exports = new Command({
 						users[ii]['mmr_sum']+=stat['mmr']
 						users[ii]['mmr']=stat['mmr']
 					
-						users[ii]['stat_count']+=1
+						if(users[ii]['slp']>0 )users[ii]['stat_count']+=1
 					}
 					
 					//if(users[ii]['stat_count']>=limit_prom)break
