@@ -31,7 +31,8 @@ module.exports = new Command({
 
                 let username=args[2].split('#')[0]
                 let discriminator=args[2].split('#')[1]
-                let ingreso=message.guild.members.cache.find(c => {return (c.user.username == username && c.user.discriminator == discriminator) || c.user.username == username });
+                await message.guild.members.fetch()
+                let ingreso=message.guild.members.cache.find(c => { return (c.user.username == username && c.user.discriminator == discriminator) || c.user.username == username });
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 
                 let discord_id=ingreso.id
@@ -39,7 +40,7 @@ module.exports = new Command({
                 await utils.asociar2(new_account.num,username,discord_id)
                 
                 let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones a "+username+" <@"+discord_id+">\nYa puedes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
-                let rCanal = message.guild.channels.cache.find(c => c.id == 926112581054246983);//canal ingresos
+                let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
                 rCanal.send({content: ` `,embeds: [embed]})
                 
             }else{
