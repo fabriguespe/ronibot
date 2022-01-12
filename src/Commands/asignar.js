@@ -30,9 +30,9 @@ module.exports = new Command({
                 //IDs
                 let user_from=await utils.getUserByNum(args[2])
                 let user_to=await utils.getUserByNum(args[3])
-                let from_acc=user_from.accountAddress
+                let from_acc=user_from.accountAddress?user_from.accountAddress:user_from
                 let to_acc=user_to.accountAddress?user_to.accountAddress:user_to
-                let num_from=user_from.num
+                let num_from=user_from.num?user_from.num:args[3]
                 let num_to=user_to.num?user_to.num:args[3]
 
                 //Data
