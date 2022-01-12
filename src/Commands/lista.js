@@ -88,15 +88,17 @@ module.exports = new Command({
 				pie_chart[(color=='GREEN')?'Generando 60%':(color=='YELLOW')?'Generando 50%':(color=='ORANGE')?'Generando 40%':(color=='RED')?'Alerta 30%':(color=='BLACK')?'Retiro':'']=numcolores[color]
 
 			}
-			
-			let chart = new QuickChart().setConfig({
-				type: 'pie',
-				data: { 
-					labels: Object.keys(pie_chart),
-					datasets:[{label: 'SLP', data: Object.values(pie_chart)}] 
-				},
-			}).setWidth(800).setHeight(400);
-			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+			if(!tipo){
+
+				let chart = new QuickChart().setConfig({
+					type: 'pie',
+					data: { 
+						labels: Object.keys(pie_chart),
+						datasets:[{label: 'SLP', data: Object.values(pie_chart)}] 
+					},
+				}).setWidth(800).setHeight(400);
+				message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+			}
 
 
 

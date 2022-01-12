@@ -25,7 +25,7 @@ client.on("ready", message => {
 	let scheduledMessage = new cron.CronJob('30 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
 		rCanal.send("@here" + "Estos estan en la cuerda floja, y se retiraran en el proximo cobro")
-		rCanal.send('!diario')
+		rCanal.send('!listat 7 Retiro')
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 
