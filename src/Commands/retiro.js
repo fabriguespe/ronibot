@@ -53,7 +53,7 @@ module.exports = new Command({
                    
                     
                     //Retirar
-                    await utils.cambiarEstado(from_acc,'retiro')
+                    await utils.cambiarEstado(from_acc,'retiro',message)
                     
                     let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal ingresos
                     rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador #"+args[1]+" fue retirado").setColor('GREEN').setTimestamp()]})
