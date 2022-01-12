@@ -31,7 +31,7 @@ module.exports = new Command({
 
                 let username=args[2].split('#')[0]
                 let discriminator=args[2].split('#')[1]
-                let ingreso=message.guild.members.cache.find(c => {return c.user.username == username && c.user.discriminator == discriminator } );
+                let ingreso=message.guild.members.cache.find(c => {return (c.user.username == username && c.user.discriminator == discriminator) || c.user.username == username });
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 
                 let discord_id=ingreso.id
