@@ -44,7 +44,6 @@ module.exports = new Command({
 						data.accountAddress=user.accountAddress
 						data.user_id=user._id
 						
-						data.last_updated=user.last_updated
 						data.timestamp = new Date("12/"+[13,14,15][ii]+"/2021");
 						data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
 						

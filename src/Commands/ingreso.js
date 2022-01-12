@@ -32,8 +32,11 @@ module.exports = new Command({
                 let username=args[2].split('#')[0]
                 let discriminator=args[2].split('#')[1]
                 let ingreso=message.guild.members.cache.find(c => {return c.user.username == username && c.user.discriminator == discriminator } );
+                let discord_id=ingreso.id
                 await utils.cambiarEstado(from_acc,'entrevista',message)
-                let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones a "+username+" <@"+ingreso.id+">\nYa puedes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
+                await utils.asociar2(new_account.num,username,discord_id)
+                
+                let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones a "+username+" <@"+discord_id+">\nYa puedes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
                 let rCanal = message.guild.channels.cache.find(c => c.id == 926112581054246983);//canal ingresos
                 rCanal.send({content: ` `,embeds: [embed]})
                 

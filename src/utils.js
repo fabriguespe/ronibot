@@ -147,7 +147,7 @@ module.exports = {
             let roniPrimero=(roni_slp>=jugador_slp)
 
             let player_wallet=data.scholarPayoutAddress
-            let roni_wallet=await utils.getWalletByNum("BREED")
+            let roni_wallet=await this.getWalletByNum("BREED")
             roni_wallet=roni_wallet.replace('ronin:','0x')
             
             let fallo=false
@@ -196,7 +196,7 @@ module.exports = {
         if(estado.includes('retir'))obj['discord']=null
         await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: obj } )
         db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), status:estado})
-        message.channel.send('El jugador fue aprobado con exito')
+        message.channel.send('El estado del jugador fue cambiado a ***'+estado+'*** con exito')
     },
     transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
       
@@ -261,7 +261,7 @@ module.exports = {
     
         
             //TRANSFER
-            let breed=await utils.getWalletByNum("BREED")
+            let breed=await this.getWalletByNum("BREED")
             breed=breed.replace('ronin:','0x')
             if(to_acc==breed)message.channel.send("Estamos procesando la transacción....");
             else message.channel.send("Enviando "+balance+" SLP a la cuenta del jugador");
@@ -372,12 +372,31 @@ module.exports = {
         message.channel.send('Fuiste desasociado con exito.\nEste canal se cerrara en 3 segundos.')
         setTimeout(() => { message.channel.delete()}, 3000)
     },
+    ver_datos:async function(currentUser,message){
+        //let embed = new MessageEmbed().setTitle('Datos de acceso').setDescription("Email: manager+"+currentUser.num+"@ronimate.xyz\nPassword: "+currentUser.pass+"\nEste canal se cerrara en 20 segundos.").setColor('GREEN').setTimestamp()
+        //message.channel.send({content: ` `,embeds: [embed]})
+        message.channel.send('Datos de acceso')
+        message.channel.send("Email: manager+"+currentUser.num+"@ronimate.xyz")
+        message.channel.send("Password: "+currentUser.pass)
+        setTimeout(() => { message.channel.delete()}, 20000)
+    },
+    asociar2:async function(num,username,discord_id){
+        let db = await DbConnection.Get();
+        var myquery = { num: num };
+        var newvalues = { $set: {
+            discord: discord_id,
+            username:username,
+            timestamp:this.timestamp_log(),
+            date:this.date_log()
+        }};
+        await db.collection("users").updateOne(myquery, newvalues)
+           
+    },
     asociar:async function(message){
         let msg=message.content
         let db = await DbConnection.Get();
         let resultpw = await db.collection('users').findOne({pass:msg})
-        //if(resultpw && (resultpw.num.includes('2_') || parseInt(resultpw.num)>=20))return message.channel.send('Todavia no le toca a tu lote. Por favor espera a ser llamado')
-        if(resultpw && resultpw.nota && resultpw.nota.includes('Entrevista')){
+        if(resultpw && resultpw.nota && resultpw.nota.includes('entrevist')){
             message.channel.send('Estas en estado de Entrevista, por tal motivo no podemos validarte aún cuando sea aprobado podrás validarte\nEste canal se cerrara en 5 segundos.')
             setTimeout(() => { message.channel.delete()}, 5000)
         }else if(resultpw){
@@ -385,7 +404,6 @@ module.exports = {
             var newvalues = { $set: {
                 discord: message.author.id,
                 username:message.author.username,
-                last_updated:new Date(Date.now()),
                 timestamp:this.timestamp_log(),
                 date:this.date_log()
             }};
@@ -402,7 +420,8 @@ module.exports = {
         return message.author.id==877625345996632095 && message.channel.name.includes('comandos') 
     },
     esIngresos:function(message){
-        return message.channel.id==909165024642203658//canal ingreso
+        if(this.esFabri(message))return true
+        return message.channel.id==909165024642203658//canal entrevistas
     },
     esFabri:function(message){
         return message.author.id==533994454391062529 && message.channel.name.includes('comandos-admin')

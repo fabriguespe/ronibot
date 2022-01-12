@@ -10,25 +10,26 @@ module.exports = new Command({
 	async run(message, args, client) {
 		let temporal=false
 		
-		let esPagos=utils.esJeissonPagos(message) || utils.esFabri(message)
-		if(args[1] && !esPagos)return message.channel.send('No tienes permisos para correr este comando')
+		let esPagos=(utils.esJeissonPagos(message) || utils.esFabri(message) && args[1])
+		if(args[1] && !esPagos)return message.channel.send('No tienes permiso s para correr este comando')
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
+		console.log(currentUser)
 		if(!temporal && (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
 		if(!temporal && (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario no validado')
 		
 		let row=new MessageActionRow()
+		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
 		if(esPagos){
-			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
 			if(temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar').setStyle('SUCCESS'));
 		}else if(utils.esJugador(message)){
-			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
 			if(temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
-		}else{
-			row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
+		}else if(currentUser && currentUser.nota.includes('entrevist')){
+			row.addComponents(new MessageButton().setCustomId('ver_datos').setLabel('🔑 Ver mis datos').setStyle('SUCCESS'));
+		} else{
 			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🔑 Ingresar').setStyle('SUCCESS'));
-		} 
+		}
 
 		let ticket_name=(!esPagos?'ticket':'pagos')+(currentUser?"-"+currentUser.num:"")+"-"+(esPagos?'':message.author.username)
 		try{
@@ -64,6 +65,7 @@ module.exports = new Command({
 		let lascomnd=''
 		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1/*,time:600000*/})
 		mcollector.on('collect', async message => {
+			console.log(lascomnd)
 			if(lascomnd=='desasociar')return utils.desasociar(message)
 			else if(lascomnd=='asociar')return utils.asociar(message)
 		});
@@ -75,6 +77,8 @@ module.exports = new Command({
 			lascomnd=interaction.customId
 			if( customId=='ticket_soporte'){
 				interaction.channel.send(`Hola! <@${jsid}>, necesito de tu ayuda`)
+			}else if( customId=='ver_datos'){
+				return utils.ver_datos(currentUser,interaction.message)
 			}else if( customId=='asociar' || customId=='desasociar'){
 				interaction.channel.send('Por favor ingresa tu contraseña. Tenes 60 segundos.')
 			}else if( customId=='cobros'){
