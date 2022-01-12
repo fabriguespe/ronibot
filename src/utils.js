@@ -5,10 +5,19 @@ const fetch = require( "node-fetch")
 var slp_abi = require(path.resolve(__dirname, "./Data/slp_abi.json"));
 var DbConnection = require(path.resolve(__dirname, "./Data/db.js"));
 const Web3 = require('web3');
-
+var axie_abi = require(path.resolve(__dirname, "./Data/axie_abi.json"));
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
+
+
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36"
+TIMEOUT_MINS = 5
+AXIE_CONTRACT = "0x32950db2a7164ae833121501c797d79e7b79d74c"
+AXS_CONTRACT = "0x97a9107c1793bc407d6f527b77e7fff4d812bece"
+SLP_CONTRACT = "0xa8754b9fa15fc18bb59458815510e40a12cd2014"
+WETH_CONTRACT = "0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5"
 RONIN_PROVIDER_FREE = "https://proxy.roninchain.com/free-gas-rpc"
+RONIN_PROVIDER = "https://api.roninchain.com/rpc"
+
 
 var log4js = require("log4js");
 const { sign } = require('crypto');
@@ -71,13 +80,11 @@ module.exports = {
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
-            let timestamp_log=new Date(Date.now())
-            let date_log=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
 
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',date:timestamp_log,date:date_log, slp:slp_claim,num:num,from_acc:from_acc})
+				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',date:this.timestamp_log(),date:this.date_log(), slp:slp_claim,num:num,from_acc:from_acc})
                 return true
             }  
         }catch(e){
@@ -127,13 +134,11 @@ module.exports = {
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
-            let timestamp_log=new Date(Date.now())
-            let date_log=new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
 
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',date:timestamp_log,date:date_log, slp:data.unclaimed,num:data.num,from_acc:from_acc})
+				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',date:this.timestamp_log(),date:this.date_log(), slp:data.unclaimed,num:data.num,from_acc:from_acc})
             }  
             
             let roni_slp=data.unclaimed-data.recibe
@@ -146,12 +151,15 @@ module.exports = {
             roni_wallet=roni_wallet.replace('ronin:','0x')
             
             let fallo=false
+
             try{
                 let tx=await this.transfer(from_acc,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
                 if(tx){
                     let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
                     message.channel.send({content: ` `,embeds: [embed]})
-                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:timestamp_log,date:date_log,num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
+
+
+                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
                 }
             }catch(e){
                 fallo=true
@@ -163,7 +171,8 @@ module.exports = {
                 if(tx){
                     let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
                     message.channel.send({content: ` `,embeds: [embed]})
-                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:timestamp_log,date:date_log,num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
+                    
+                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
                     
                 }
             }catch(e){
@@ -175,6 +184,48 @@ module.exports = {
              
         }catch(e){
             this.log("ERROR: "+e.message,message)
+        }
+    },timestamp_log:function(){
+        return new Date(Date.now())
+    },date_log:function(){
+        return new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
+    },
+    transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
+      
+        try{
+            
+            const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
+            let from_private = secrets[(from_acc.replace('0x','ronin:'))]
+            let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
+            let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
+            let myData=axie_contract.methods.safeTransferFrom(
+                (web3.utils.toChecksumAddress(from_acc)),
+                (web3.utils.toChecksumAddress(to_acc)),
+                (axie_id)).encodeABI()
+            
+            let trans={
+                    "chainId": 2020,
+                    "gas": 492874,
+                    "from": from_acc,
+                    "gasPrice": 0,
+                    "value": 0,
+                    "to": AXIE_CONTRACT,
+                    "nonce": nonce,
+                    data:myData
+            }
+                 
+            message.channel.send("Listo para transferir el Axie: "+axie_id+"\nAguarde un momento...");
+            let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
+            let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
+            
+            if(tr_raw.status){            
+                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
+				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'axie_transfer',date:this.timestamp_log(),date:this.date_log(), axie_id:axie_id,num_from:num_from,num_to:num_to,from_acc:from_acc,to_acc:to_acc})
+                return message.channel.send({content: ` `,embeds: [embed]})
+            }        
+            else message.channel.send("ERROR Status False");
+        }catch(e){
+            message.channel.send("ERROR: "+e.message);
         }
     },
     transfer:async function(from_acc,to_acc,balance,message){
@@ -329,9 +380,8 @@ module.exports = {
                 discord: message.author.id,
                 username:message.author.username,
                 last_updated:new Date(Date.now()),
-                timestamp:new Date(Date.now()),
-                date:new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
-                
+                timestamp:this.timestamp_log(),
+                date:this.date_log()
             }};
             await db.collection("users").updateOne(myquery, newvalues)
             let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");

@@ -31,58 +31,32 @@ module.exports = new Command({
                 const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
 
                 //IDs
-                let from_acc=await utils.getWalletByNum(args[1])
-                let to_acc=await utils.getWalletByNum(args[2])
+                let user_from=await utils.getUserByNum(args[1])
+                let user_to=await utils.getUserByNum(args[2])
+                let from_acc=user_from.accountAddress
+                let to_acc=user_to.accountAddress
+                let num_from=user_from.num
+                let num_to=user_to.num
+
                 //Data
                 if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
-                
                 from_acc=from_acc.replace('ronin:','0x')
                 to_acc=to_acc.replace('ronin:','0x')
 
-                
-
-                //private
-                let from_private = secrets[(from_acc.replace('0x','ronin:'))]
-                let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
-            
                 //build
                 let axies=await utils.getAxiesIds(from_acc)
                 for(let i in axies.axies){
                     let axie_id=axies.axies[i].id
                     message.channel.send("Listo para transferir el Axie: "+axie_id+" \nAguarde un momento...");
-                    let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-                    let myData=axie_contract.methods.safeTransferFrom(
-                    (web3.utils.toChecksumAddress(from_acc)),
-                    (web3.utils.toChecksumAddress(to_acc)),
-                    (axie_id)).encodeABI()
+                    //Transfer
+                    await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
+                   
                     
-                    let trans={
-                        "chainId": 2020,
-                        "gas": 492874,
-                        "from": from_acc,
-                        "gasPrice": 0,
-                        "value": 0,
-                        "to": AXIE_CONTRACT,
-                        "nonce": nonce,
-                        data:myData
-                    }
-
-                        
-                    let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
-                    let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
+                    //Retirar
+                    await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: {nota:"retirar",discord:null} } )
+                    let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal ingresos
+                    rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador #"+args[1]+" fue retirado").setColor('GREEN').setTimestamp()]})
                     
-                    if(tr_raw.status){            
-                        let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")\n").setColor('GREEN').setTimestamp()
-                        message.channel.send({content: ` `,embeds: [embed]})
-
-                        //Retirar
-                        await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: {nota:"retirar",discord:null} } )
-                        
-                        //Mandar mensaje
-                        let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal ingresos
-                        rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador #"+args[1]+" fue retirado").setColor('GREEN').setTimestamp()]})
-                    }        
-                    else message.channel.send("ERROR Status False");
                 }
                 
                 utils.log("Listo!",message);

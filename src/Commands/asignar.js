@@ -26,58 +26,28 @@ module.exports = new Command({
 		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
             if(args.length==3){
-                const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
 
                 //IDs
-                let to_acc=await utils.getWalletByNum(args[2])
+                let user_from=await utils.getUserByNum("BREED")
+                let user_to=await utils.getUserByNum(args[2])
+                let from_acc=user_from.accountAddress
+                let to_acc=user_to.accountAddress
+                let num_from=user_from.num
+                let num_to=user_to.num
+
                 //Data
                 if(!utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
-                let from_acc=await utils.getWalletByNum("BREED")
                 from_acc=from_acc.replace('ronin:','0x')
                 to_acc=to_acc.replace('ronin:','0x')
 
                 //private
-                let from_private = secrets[(from_acc.replace('0x','ronin:'))]
-                let axie_contract = new web3.eth.Contract(axie_abi,web3.utils.toChecksumAddress(AXIE_CONTRACT))
             
                 //build
                 let axies_ids=args[1].split(",");
                 for(let i in axies_ids){
                     let axie_id=axies_ids[i]
-                    console.log('Transfer:'+axie_id)
                     message.channel.send("Listo para transferir el Axie: "+axie_id+" \nAguarde un momento...");
-                    let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-                    let myData=axie_contract.methods.safeTransferFrom(
-                    (web3.utils.toChecksumAddress(from_acc)),
-                    (web3.utils.toChecksumAddress(to_acc)),
-                    (axie_id)).encodeABI()
-                    
-                    let trans={
-                            "chainId": 2020,
-                            "gas": 492874,
-                            "from": from_acc,
-                            "gasPrice": 0,
-                            "value": 0,
-                            "to": AXIE_CONTRACT,
-                            "nonce": nonce,
-                            data:myData
-                    }
-
-                    try{
-                        let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
-                        let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
-                        utils.log(tr_raw.status)
-                        
-                        if(tr_raw.status){            
-                            let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
-                            message.channel.send({content: ` `,embeds: [embed]})
-                        }        
-                        else utils.log("ERROR Status False!",message);
-
-                    }catch(e){
-                        utils.log("Fallo la transfer");
-                        
-                    }
+                    await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
                 }
                 utils.log("Listo!",message);
             }else{
