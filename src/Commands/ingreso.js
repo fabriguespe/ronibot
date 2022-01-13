@@ -22,16 +22,18 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
-            if(args[2].includes('"')){
+            if(args[2].includes('"') || args[2].includes("'")){
                 let completo=args.join(" ")
-                let nombre=completo.includes('"')?completo.split('"')[1]:completo.includes("'")?completcompleto.split("'")[1]:''
-                if(!nombre)return message.send('Error de sintaxis')
+                console.log(completo)
+                completo=completo.replaceAll("'",'"')
+                let nombre=completo.split('"')[1]
                 nombre=nombre.replaceAll('"','')
                 console.log(nombre)
                 let uno=args[1]
                 let dos=nombre
                 args=['ingreso',uno,dos]
             }
+            console.log(args)
             if(args.length==3){
                 
                 //IDs
