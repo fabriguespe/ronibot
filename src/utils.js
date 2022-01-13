@@ -384,13 +384,11 @@ module.exports = {
         var myquery = { num: num };
         var newvalues = { $set: {
             discord: discord_id,
-            username:username,
             name:username,
             timestamp:this.timestamp_log(),
             date:this.date_log()
         }};
         await db.collection("users").updateOne(myquery, newvalues)
-           
     },
     asociar:async function(message){
         let msg=message.content
@@ -403,7 +401,7 @@ module.exports = {
             var myquery = { pass: msg };
             var newvalues = { $set: {
                 discord: message.author.id,
-                username:message.author.username,
+                name:message.author.username,
                 timestamp:this.timestamp_log(),
                 date:this.date_log()
             }};

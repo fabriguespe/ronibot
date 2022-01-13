@@ -17,7 +17,6 @@ module.exports = new Command({
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
 			for(let ii in users){
-				if(users[ii].num!='134')continue
 				let eluser=users[ii]
 				users[ii]['mmr_sum']=0
 				users[ii]['slp_sum']=0
@@ -26,8 +25,6 @@ module.exports = new Command({
 				users[ii]['stat_count']=0
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
-				//if(!stats || !stats[0])continue me saca los dias vacios
-
 
 				for(let i in stats){
 					let stat=stats[i]
@@ -63,7 +60,6 @@ module.exports = new Command({
 			}
 			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
-		
 			let aprobar=''
 			let evaluar=''
 			let retirar=''
@@ -72,12 +68,9 @@ module.exports = new Command({
 			for(let ii in top){
 				let user=top[ii]
 				if(user.nota && user.nota.toLowerCase().includes('entrevist')){
-
 					if(user.name)user.name=user.name.replaceAll('*','')
 					let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')'+'('+user.days+')\n'
-					
 					let aprobado=85
-					
 					if(user.days<=3){//FASE 1
 						if(user.slp_prom<50)retirar+=value
 						else if(user.slp_prom>=50 && user.slp_prom<=aprobado)evaluar+=value
@@ -91,9 +84,7 @@ module.exports = new Command({
 						else if(user.slp_prom>=aprobado)aprobar+=value
 					}else fin+=value
 				}
-				
 			}
-			
 			let embed = new MessageEmbed().setTitle("Aprobar").setDescription(aprobar).setColor('GREEN').setFooter( 'PROM SLP - COPAS - DIAS')
 			message.channel.send({content: ` `,embeds: [embed]})
 			embed = new MessageEmbed().setTitle("Prorroga").setDescription(evaluar).setColor('RED').setFooter( 'PROM SLP - COPAS - DIAS')
