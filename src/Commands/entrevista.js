@@ -43,8 +43,8 @@ module.exports = new Command({
 						users[ii]['days']+=1
 					}
 				}
-				
-				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/3)
+				let divisor=users[ii]['days']>=limit_prom?limit_prom:users[ii]['days']
+				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/divisor)
 			}
 			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
