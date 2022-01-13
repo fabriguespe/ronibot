@@ -68,8 +68,8 @@ module.exports = new Command({
 						{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
 						{ name: 'JSON', value: '[Link](https://game-api.axie.technology/api/v1/'+eluser.accountAddress+")",inline:true},
 						{ name: 'Axies', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
-						{ name: 'Pass', value: ''+eluser.pass,inline:true},
-						{ name: 'Email', value: ''+eluser.correo,inline:true},
+						/*{ name: 'Pass', value: ''+eluser.pass,inline:true},
+						{ name: 'Email', value: ''+eluser.correo,inline:true},*/
 						{ name: 'Binance', value: ''+eluser.scholarPayoutAddress},
 					)
 				}
