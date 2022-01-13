@@ -376,7 +376,7 @@ module.exports = {
         message.channel.send('Datos de acceso')
         message.channel.send("Email: manager+"+currentUser.num+"@ronimate.xyz")
         message.channel.send("Password: "+currentUser.pass)
-        message.channel.send("Este canal se cerrara en 60 segundos")
+        message.channel.send("Este canal se cerrara en 60 segundos\nMucha suerte!")
         setTimeout(() => { message.channel.delete()}, 60000)
     },
     ingresar:async function(num,username,discord_id){
