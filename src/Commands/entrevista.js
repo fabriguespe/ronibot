@@ -40,7 +40,8 @@ module.exports = new Command({
 						
 						users[ii]['mmr_sum']+=stat['mmr']
 						users[ii]['mmr']=stat['mmr']
-						if(users[ii]['slp']>0 )users[ii]['stat_count']+=1
+						//if(users[ii]['slp']>0 )
+						users[ii]['stat_count']+=1
 
 						if(!users[ii]['days'] && stat.total_slp){
 							let ahora=new Date().getTime()
