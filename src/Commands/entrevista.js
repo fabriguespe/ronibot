@@ -23,15 +23,15 @@ module.exports = new Command({
 				users[ii]['slp_prom']=0
 				users[ii]['mmr_prom']=0
 				users[ii]['days']=0
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(5).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
 					
-					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined && stat.total_slp>=0){
-						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp_sum']+=stat.in_game_slp
+					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined && stat.total_slp>0 && i>=(stats.length-3) ){
+						if(stat.in_game_slp<anteultimo.in_game_slp )users[ii]['slp_sum']+=stat.in_game_slp
 						else users[ii]['slp_sum']+=stat.in_game_slp-anteultimo.in_game_slp
 						
 						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp']=stat.in_game_slp
@@ -40,9 +40,10 @@ module.exports = new Command({
 						
 						users[ii]['mmr_sum']+=stat['mmr']
 						users[ii]['mmr']=stat['mmr']
-						if(users[ii]['slp_sum']>0)users[ii]['days']+=1
+						users[ii]['days']+=1
 					}
 				}
+				
 				users[ii]['days']=users[ii]['days']
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['days'])
 				users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['days'])
