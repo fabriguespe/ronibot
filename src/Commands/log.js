@@ -86,10 +86,10 @@ module.exports = new Command({
 				data: { 
 					labels: chart_data.days,
 					datasets:[
-						{label: 'Aspirante',backgroundColor:'blue',  data: chart_data.aspirante},
-						{label: 'Entrevista', backgroundColor:'orange', data: chart_data.entrevista},
-						{label: 'Aprobado', backgroundColor:'green', data: chart_data.aprobado},
-						{label: 'Retiro',backgroundColor:'black', data: chart_data.retiro},
+						{label: 'Aspirante',backgroundColor:'#6F9CF1',  data: chart_data.aspirante},
+						{label: 'Entrevista', backgroundColor: '#9EC284', data: chart_data.entrevista},
+						{label: 'Aprobado', backgroundColor: '#9EC284', data: chart_data.aprobado},
+						{label: 'Retiro',backgroundColor: '#D55040', data: chart_data.retiro},
 					] 
 				},
 			}).setWidth(800).setHeight(400);
