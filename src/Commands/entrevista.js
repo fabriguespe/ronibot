@@ -16,6 +16,7 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
+			let limit_prom=3
 			for(let ii in users){
 				let eluser=users[ii]
 				users[ii]['slp_sum']=0
@@ -29,7 +30,7 @@ module.exports = new Command({
 					let anteultimo=stats[i-1]
 					
 					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined && stat.total_slp>0){
-						if(i>=(stats.length-3)){
+						if(i>=(stats.length-limit_prom)){
 							if(stat.in_game_slp<anteultimo.in_game_slp )users[ii]['slp_sum']+=stat.in_game_slp
 							else users[ii]['slp_sum']+=stat.in_game_slp-anteultimo.in_game_slp
 						}
