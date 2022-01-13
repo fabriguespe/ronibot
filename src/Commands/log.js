@@ -89,7 +89,7 @@ module.exports = new Command({
 						{label: 'Aspirante', data: chart_data.aspirante},
 						{label: 'Entrevista', data: chart_data.entrevista},
 						{label: 'Aprobado', data: chart_data.aprobado},
-						{label: 'Retiro',color:'black', data: chart_data.retiro},
+						{label: 'Retiro',backgroundColor:'black', data: chart_data.retiro},
 					] 
 				},
 			}).setWidth(800).setHeight(400);
