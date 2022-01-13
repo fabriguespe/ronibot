@@ -22,8 +22,18 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
+            if(args[2].includes('"')){
+                let completo=args.join(" ")
+                let nombre=completo.split('"')[1]
+                nombre=nombre.replaceAll('"','')
+                console.log(nombre)
+                let uno=args[1]
+                let dos=nombre
+                args=['ingreso',uno,dos]
+            }
+            console.log(args)
             if(args.length==3){
-
+                
                 //IDs
                 let new_account=await utils.getUserByNum(args[1])
                 let from_acc=new_account.accountAddress
