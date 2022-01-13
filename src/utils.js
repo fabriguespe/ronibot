@@ -157,8 +157,6 @@ module.exports = {
                 if(tx){
                     let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
                     message.channel.send({content: ` `,embeds: [embed]})
-
-
                     await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
                 }
             }catch(e){
@@ -378,7 +376,7 @@ module.exports = {
         message.channel.send('Datos de acceso')
         message.channel.send("Email: manager+"+currentUser.num+"@ronimate.xyz")
         message.channel.send("Password: "+currentUser.pass)
-        setTimeout(() => { message.channel.delete()}, 20000)
+        setTimeout(() => { message.channel.delete()}, 60000)
     },
     asociar2:async function(num,username,discord_id){
         let db = await DbConnection.Get();
