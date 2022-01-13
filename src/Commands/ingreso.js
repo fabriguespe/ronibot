@@ -36,10 +36,10 @@ module.exports = new Command({
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 
                 let discord_id=ingreso.id
-                await utils.cambiarEstado(from_acc,'entrevista',message)
+                await utils.cambiarEstado(new_account.num,'entrevista',message)
                 await utils.asociar2(new_account.num,username,discord_id)
                 
-                let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones a "+username+" <@"+discord_id+">\nYa puedes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
+                let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones <@"+discord_id+">\nYa puedes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
                 let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
                 rCanal.send({content: ` `,embeds: [embed]})
                 

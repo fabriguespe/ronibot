@@ -190,11 +190,11 @@ module.exports = {
     },date_log:function(){
         return new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
     },
-    cambiarEstado:async function(from_acc,estado,message){
+    cambiarEstado:async function(num,estado,message){
         let db = await DbConnection.Get();
         let obj={nota:estado}
         if(estado.includes('retir'))obj['discord']=null
-        await db.collection("users").updateOne({ accountAddress:from_acc.replace('0x','ronin:')},{ $set: obj } )
+        await db.collection("users").updateOne({ num:num},{ $set: obj } )
         db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), status:estado})
         message.channel.send('El estado del jugador fue cambiado a ***'+estado+'*** con exito')
     },
