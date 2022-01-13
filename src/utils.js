@@ -376,6 +376,7 @@ module.exports = {
         message.channel.send('Datos de acceso')
         message.channel.send("Email: manager+"+currentUser.num+"@ronimate.xyz")
         message.channel.send("Password: "+currentUser.pass)
+        message.channel.send("Este canal se cerrara en 60 segundos")
         setTimeout(() => { message.channel.delete()}, 60000)
     },
     asociar2:async function(num,username,discord_id){
