@@ -40,7 +40,7 @@ module.exports = new Command({
 						
 						users[ii]['mmr_sum']+=stat['mmr']
 						users[ii]['mmr']=stat['mmr']
-						if(users[ii]['slp_sum']>0)users[ii]['stat_count']+=1
+						if(users[ii]['slp_sum']>0)users[ii]['stat_count']+=1//empieza a contar ok
 
 						if(!users[ii]['days'] && stat.total_slp){
 							let ahora=new Date().getTime()
@@ -50,13 +50,13 @@ module.exports = new Command({
 						
 						}
 					}
-					
+					users[ii]['days']=users[ii]['stat_count']
 					//if(users[ii]['stat_count']>=7)break ???? q es esto
 				}
 				
+				users[ii]['days']=users[ii]['stat_count']
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])
 				users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
-				console.log(users[ii]['slp_sum'],users[ii]['stat_count'])
 			}
 			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
