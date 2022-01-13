@@ -31,11 +31,9 @@ module.exports = new Command({
                 let axies=await utils.getAxiesIds(from_acc)
                 for(let i in axies.axies){
                     let axie_id=axies.axies[i].id
-                    message.channel.send("Listo para transferir el Axie: "+axie_id+" \nAguarde un momento...");
                     //Transfer
                     await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
             
-                    
                     //Retirar
                     await utils.cambiarEstado(user_from.num,'retiro',message)
                     
