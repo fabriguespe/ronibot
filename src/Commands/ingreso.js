@@ -31,7 +31,6 @@ module.exports = new Command({
                 let dos=nombre
                 args=['ingreso',uno,dos]
             }
-            console.log(args)
             if(args.length==3){
                 
                 //IDs
