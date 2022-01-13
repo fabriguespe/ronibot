@@ -87,7 +87,7 @@ module.exports = new Command({
 					labels: chart_data.days,
 					datasets:[
 						{label: 'Aspirante',backgroundColor:'#6F9CF1',  data: chart_data.aspirante},
-						{label: 'Entrevista', backgroundColor: '#9EC284', data: chart_data.entrevista},
+						{label: 'Entrevista', backgroundColor: '#F8D978', data: chart_data.entrevista},
 						{label: 'Aprobado', backgroundColor: '#9EC284', data: chart_data.aprobado},
 						{label: 'Retiro',backgroundColor: '#D55040', data: chart_data.retiro},
 					] 
