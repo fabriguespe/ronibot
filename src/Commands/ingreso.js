@@ -37,7 +37,7 @@ module.exports = new Command({
                 
                 let discord_id=ingreso.id
                 await utils.cambiarEstado(new_account.num,'entrevista',message)
-                await utils.asociar2(new_account.num,username,discord_id)
+                await utils.ingresar(new_account.num,username,discord_id)
                 
                 let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones <@"+discord_id+">\nYa puedes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
                 let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos

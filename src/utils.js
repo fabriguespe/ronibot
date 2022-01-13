@@ -379,12 +379,13 @@ module.exports = {
         message.channel.send("Este canal se cerrara en 60 segundos")
         setTimeout(() => { message.channel.delete()}, 60000)
     },
-    asociar2:async function(num,username,discord_id){
+    ingresar:async function(num,username,discord_id){
         let db = await DbConnection.Get();
         var myquery = { num: num };
         var newvalues = { $set: {
             discord: discord_id,
             username:username,
+            name:username,
             timestamp:this.timestamp_log(),
             date:this.date_log()
         }};
