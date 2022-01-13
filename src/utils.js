@@ -194,8 +194,7 @@ module.exports = {
         if(estado.includes('retir'))obj['discord']=null
         await db.collection("users").updateOne({ num:num},{ $set: obj } )
         message.channel.send('El estado del jugador fue cambiado a ***'+estado+'*** con exito')
-        await db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), status:estado})
-      
+        await db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), status:estado,num:num})
     },
     transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
       
