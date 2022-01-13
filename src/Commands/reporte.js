@@ -22,7 +22,7 @@ module.exports = new Command({
 			if(args.length==2){
 				url = "https://game-api.axie.technology/api/v1/"+eluser.accountAddress;
 				let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-				utils.log(data)
+			
 				url = `https://graphql-gateway.axieinfinity.com/graphql`;
 				query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
 				"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
@@ -57,7 +57,7 @@ module.exports = new Command({
 					{ name: 'Nombre', value: ''+eluser.name,inline:true},
 					{ name: 'Copas', value: ''+data.mmr,inline:true},
 					{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(data.last_claim),inline:true},
-					{ name: 'Estado', value: ''+data.nota==undefined || data.nota==null?'Aceptado':data.nota,inline:true},
+					{ name: 'Estado', value: ''+eluser.nota,inline:true},
 					{ name: 'Vacio', value: 'Vacio',inline:true},
 				)
 				for(let i in axiesdata)exampleEmbed.addFields({ name: axiesdata[i].tipo, value: axiesdata[i].partes.cola+'\n'+axiesdata[i].partes.espalda+'\n'+axiesdata[i].partes.cuerno+'\n'+axiesdata[i].partes.boca+'\n'+'[Link]('+axiesdata[i].url+")",inline:true})
