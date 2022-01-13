@@ -24,7 +24,8 @@ module.exports = new Command({
         try{
             if(args[2].includes('"')){
                 let completo=args.join(" ")
-                let nombre=completo.split('"')[1]
+                let nombre=completo.includes('"')?completo.split('"')[1]:completo.includes("'")?completcompleto.split("'")[1]:''
+                if(!nombre)return message.send('Error de sintaxis')
                 nombre=nombre.replaceAll('"','')
                 console.log(nombre)
                 let uno=args[1]
