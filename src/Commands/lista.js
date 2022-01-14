@@ -82,7 +82,7 @@ module.exports = new Command({
 					if(tipo && tipo!=titulo)continue
 					let init=(j==1)?0:(lista.length/partes*(j-1))
 					let fin=(lista.length/partes*j)
-					let text=lista.substring(Math.floor(init), Math.floor( fin) )
+					let text=lista?lista.substring(Math.floor(init), Math.floor( fin) ):"No hay"
 					message.channel.send({content: ` `,embeds: [new MessageEmbed().setTitle(titulo).setDescription(text).setColor(color)]})
 				}
 				pie_chart[(color=='GREEN')?'Generando 60%':(color=='YELLOW')?'Generando 50%':(color=='ORANGE')?'Generando 40%':(color=='RED')?'Alerta 30%':(color=='BLACK')?'Retiro':'']=numcolores[color]

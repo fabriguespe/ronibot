@@ -22,10 +22,16 @@ fs.readdirSync(__dirname+"/Commands")
 
 client.on("ready", message => {
 	utils.log('Listo!')
-	let scheduledMessage = new cron.CronJob('30 0 * * *', () => {
-		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
-		rCanal.send("@here" + "Estos estan en la cuerda floja, y se retiraran en el proximo cobro")
-		rCanal.send('!lista 7 Retiro')
+	
+	scheduledMessage = new cron.CronJob('10 0 * * *', () => {
+		let admin = message.channels.cache.find(c => c.id == 930958850713079838);//ranking en admin
+		let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
+		backupProcess.on('exit', (code, signal) => {
+			if(code) admin.send('ERROR BACKUP ', code);
+			else if (signal)admin.send('ERROR BACKUP ', signal);
+			else admin.send('BACKUP de base datos se realizó con Exito!')
+		});
+
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 
@@ -45,15 +51,10 @@ client.on("ready", message => {
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 
-	scheduledMessage = new cron.CronJob('10 0 * * *', () => {
-		let admin = message.channels.cache.find(c => c.id == 926112581054246983);//ranking en admin
-		let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
-		backupProcess.on('exit', (code, signal) => {
-			if(code) admin.send('ERROR BACKUP ', code);
-			else if (signal)admin.send('ERROR BACKUP ', signal);
-			else admin.send('BACKUP de base datos se realizó con Exito!')
-		});
-
+	let scheduledMessage = new cron.CronJob('30 0 * * *', () => {
+		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
+		rCanal.send("@here" + " Estos estan en la cuerda floja, y se retiraran en el proximo cobro")
+		rCanal.send('!lista 7 Retiro')
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 })

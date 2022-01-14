@@ -55,7 +55,6 @@ module.exports = new Command({
 
 		}else if(args[1]=='estados'){
 			let query={type:'status_change'}
-
 			let stats = await db.collection('log').find(query,  { sort: { timestamp_log: -1 } }).toArray();
 		
 			let data_por_dia=[]
