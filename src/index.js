@@ -37,7 +37,7 @@ client.on("ready", message => {
 
 	scheduledMessage = new cron.CronJob('15 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
-		rCanal.send("@here" + "Este es el estado de las entrevistas")
+		rCanal.send("@here" + "Soy Roni, este es el reporte de la academia.\nPrimero nuestras entrevistas")
 		rCanal.send('!entrevista')
 
 	}, null, true, 'UTC');
@@ -45,7 +45,7 @@ client.on("ready", message => {
 
 	scheduledMessage = new cron.CronJob('20 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
-		rCanal.send("@here" + "Hola! Estos son los resultados del día")
+		rCanal.send("@here" + "Seguimos con el ranking del día")
 		rCanal.send('!diario')
 
 	}, null, true, 'UTC');
@@ -53,7 +53,7 @@ client.on("ready", message => {
 
 	let scheduledMessage = new cron.CronJob('30 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
-		rCanal.send("@here" + " Estos estan en la cuerda floja, y se retiraran en el proximo cobro")
+		rCanal.send("@here" + " Por último veamos quienes estan con bajo promedio y en riesgo a ser retirados")
 		rCanal.send('!lista 7 Retiro')
 	}, null, true, 'UTC');
 	scheduledMessage.start()
