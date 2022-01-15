@@ -22,7 +22,7 @@ fs.readdirSync(__dirname+"/Commands")
 
 client.on("ready", message => {
 	utils.log('Listo!')
-	
+	let scheduledMessage=''
 	scheduledMessage = new cron.CronJob('10 0 * * *', () => {
 		let admin = message.channels.cache.find(c => c.id == 930958850713079838);//ranking en admin
 		let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
@@ -51,7 +51,7 @@ client.on("ready", message => {
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 
-	let scheduledMessage = new cron.CronJob('30 0 * * *', () => {
+	scheduledMessage = new cron.CronJob('30 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
 		rCanal.send("@here" + " Por último veamos quienes estan con bajo promedio y en riesgo a ser retirados")
 		rCanal.send('!lista 7 Retiro')
