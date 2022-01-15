@@ -40,7 +40,7 @@ module.exports = new Command({
 						var newvalues = { $set: {
 							name: user.name,
 							scholarPayoutAddress: user.scholarPayoutAddress,
-							nota: user.nota,
+							/*nota: user.nota,*/
 							pass: user.pass,
 							ingreso: user.ingreso,
 							referido: user.referido,
