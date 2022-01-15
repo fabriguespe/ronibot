@@ -339,14 +339,14 @@ module.exports = {
             let bono=10
             if(bono>0){
                 embed.addFields(
-                    { name: 'Feliz Año!', value: '😀',inline:true},
+                    { name: 'Gracias!', value: '😀',inline:true},
                     { name: 'Bono', value: bono+'%',inline:true},
                     { name: 'A recibir', value: ''+Math.round(unclaimed/(100/bono)),inline:true}
                 )
             }
             embed.addFields(
                 { name: 'Información', value: 'Revisa que tu wallet sea correcta\nTu promedio de SLP se baso en el calculo de los dias y el total acumulado. Si estas de acuerdo escribe "si" para poder cobrar, de lo contrario, "no"'},
-                { name: 'IMPORTANTE', value: 'Dado que es fin de año y sabemos que la situacion esta dificil Ronimate va a estar haciendose cargo de un 10% extra para cada jugador. \nEstamos orgullosos de contar con gente comprometida y responsable como vos en la academia. \nEsto es solo temporal! 2022 sin dudas sera el año que esperamos.'},
+                { name: 'IMPORTANTE', value: 'Dado que sabemos que la situacion esta dificil Ronimate va a estar haciendose cargo de un 10% extra para cada jugador. \nEstamos orgullosos de contar con gente comprometida y responsable como vos en la academia.'},
             )
             message.channel.send({content: ` `,embeds: [embed]})
 
