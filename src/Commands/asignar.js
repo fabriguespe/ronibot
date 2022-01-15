@@ -29,7 +29,7 @@ module.exports = new Command({
 
                 //IDs
                 let user_from=await utils.getUserByNum(args[2])
-                let user_to=await utils.getUserByNum(args[3])
+                let user_to=await utils.getUserByNum("BREED")
                 let from_acc=(user_from && user_from.accountAddress?user_from.accountAddress:user_from)
                 let to_acc=(user_to && user_to.accountAddress?user_to.accountAddress:user_to)
                 let num_from=(user_from && user_from.num)?user_from.num:args[2]
@@ -40,13 +40,9 @@ module.exports = new Command({
                 from_acc=from_acc.replace('ronin:','0x')
                 to_acc=to_acc.replace('ronin:','0x')
 
-                //private
-            
-                //build
                 let axies_ids=args[1].split(",");
                 for(let i in axies_ids){
                     let axie_id=axies_ids[i]
-                    message.channel.send("Listo para transferir el Axie: "+axie_id+" \nAguarde un momento...");
                     await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
                 }
                 utils.log("Listo!",message);
