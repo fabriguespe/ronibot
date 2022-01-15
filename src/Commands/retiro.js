@@ -35,10 +35,6 @@ module.exports = new Command({
                     await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
             
                     //Retirar
-                    
-                    let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal ingresos
-                    rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador #"+user_from.num+" fue retirado").setColor('GREEN').setTimestamp()]})
-                    
                 }
                 await utils.cambiarEstado(user_from.num,'retiro',message)
                 utils.log("Listo!",message);

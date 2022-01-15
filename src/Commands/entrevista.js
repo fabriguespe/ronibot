@@ -63,7 +63,7 @@ module.exports = new Command({
 					let aprobado=85
 					if(user.days==1){//FASE 1
 						nuevos+=value
-					}if(user.days==3){//FASE 1
+					}else if(user.days==3){//FASE 1
 						if(user.slp_prom<50)retirar+=value
 						else if(user.slp_prom>=50 && user.slp_prom<=aprobado)evaluar+=value
 						else if(user.slp_prom>aprobado)aprobar+=value
