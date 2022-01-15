@@ -243,9 +243,7 @@ module.exports = {
             //nonce+=nonceplus
             let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
             
-            let myData=contract.methods.transfer(
-                (web3.utils.toChecksumAddress(to_acc)),
-                balance).encodeABI()
+            let myData=contract.methods.transfer((web3.utils.toChecksumAddress(to_acc)),balance).encodeABI()
             
             let trans={
                 "chainId": 2020,

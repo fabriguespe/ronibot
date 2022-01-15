@@ -49,9 +49,11 @@ module.exports = new Command({
 			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
 			let aprobar=''
+			let nuevos=''
 			let evaluar=''
 			let retirar=''
 			let fin=''
+			let embed=''
 			
 			for(let ii in top){
 				let user=top[ii]
@@ -59,7 +61,9 @@ module.exports = new Command({
 					if(user.name)user.name=user.name.replaceAll('*','')
 					let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')'+'('+user.days+')\n'
 					let aprobado=85
-					if(user.days<=3){//FASE 1
+					if(user.days==1){//FASE 1
+						nuevos+=value
+					}if(user.days==3){//FASE 1
 						if(user.slp_prom<50)retirar+=value
 						else if(user.slp_prom>=50 && user.slp_prom<=aprobado)evaluar+=value
 						else if(user.slp_prom>aprobado)aprobar+=value
@@ -73,7 +77,9 @@ module.exports = new Command({
 					}else fin+=value
 				}
 			}
-			let embed = new MessageEmbed().setTitle("Aprobar").setDescription(aprobar).setColor('GREEN').setFooter( 'PROM SLP - COPAS - DIAS')
+			embed = new MessageEmbed().setTitle("Nuevos").setDescription(nuevos).setColor('WHITE').setFooter( 'PROM SLP - COPAS - DIAS')
+			message.channel.send({content: ` `,embeds: [embed]})
+			embed = new MessageEmbed().setTitle("Aprobar").setDescription(aprobar).setColor('GREEN').setFooter( 'PROM SLP - COPAS - DIAS')
 			message.channel.send({content: ` `,embeds: [embed]})
 			embed = new MessageEmbed().setTitle("Prorroga").setDescription(evaluar).setColor('RED').setFooter( 'PROM SLP - COPAS - DIAS')
 			message.channel.send({content: ` `,embeds: [embed]})
