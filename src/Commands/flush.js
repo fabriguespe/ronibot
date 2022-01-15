@@ -39,13 +39,12 @@ module.exports = new Command({
                 let ids=args[1].split(",");
                 for(let i in ids){
                     let num=ids[i]
-                        
                     let currentUser=await utils.getUserByNum(num)
                     let from_acc=currentUser.accountAddress
+                    console.log(num,from_acc)
                     //Data
                     if(!utils.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
                    
-
                     let data=await utils.getSLP(currentUser,message)
                     let slp=data.unclaimed>0?data.unclaimed:data.ronin_slp
                     if(slp>0){

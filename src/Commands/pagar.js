@@ -12,7 +12,7 @@ module.exports = new Command({
         if(args.length==4 || args.length==3){
             let slp =args[1]
             let from_acc=args[2].length<=10?await utils.getWalletByNum(args[2]):args[2]
-            let to_acc=args[3]?args[3]:'ronin:b1c0e5cb955ac17d9cb42fb4ee6b6ae01b5a9c82'
+            let to_acc=args[3]?args[3]:await utils.getWalletByNum("BREED")
             //Data
             if(!utils.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')

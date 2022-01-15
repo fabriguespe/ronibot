@@ -234,6 +234,7 @@ module.exports = {
     },
     transfer:async function(from_acc,to_acc,balance,message){
         try{
+            console.log(from_acc,to_acc,balance)
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
 
