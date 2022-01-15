@@ -28,12 +28,12 @@ module.exports = new Command({
             if(args.length==3){
 
                 //IDs
-                let user_from=await utils.getUserByNum(args[2])
-                let user_to=await utils.getUserByNum("BREED")
+                let user_from=await utils.getUserByNum("BREED")
+                let user_to=await utils.getUserByNum(args[2])
                 let from_acc=(user_from && user_from.accountAddress?user_from.accountAddress:user_from)
                 let to_acc=(user_to && user_to.accountAddress?user_to.accountAddress:user_to)
-                let num_from=(user_from && user_from.num)?user_from.num:args[2]
-                let num_to=(user_to && user_to.num)?user_to.num:args[3]
+                let num_from=(user_from && user_from.num)?user_from.num:"BREED"
+                let num_to=(user_to && user_to.num)?user_to.num:args[2]
 
                 //Data
                 if(!utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
