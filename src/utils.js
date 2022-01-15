@@ -336,7 +336,7 @@ module.exports = {
                 { name: 'A recibir', value: ''+Math.round(unclaimed/(100/porcetage)),inline:true},
             )
 
-            let bono=0
+            let bono=10
             if(bono>0){
                 embed.addFields(
                     { name: 'Feliz Año!', value: '😀',inline:true},
