@@ -28,7 +28,6 @@ module.exports = new Command({
         try{
             if(args.length==2){
 
-                //IDs
 
                 let db = await DbConnection.Get();
 

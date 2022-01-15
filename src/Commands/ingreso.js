@@ -36,7 +36,6 @@ module.exports = new Command({
             console.log(args)
             if(args.length==3){
                 
-                //IDs
                 let new_account=await utils.getUserByNum(args[1])
                 let from_acc=new_account.accountAddress
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
