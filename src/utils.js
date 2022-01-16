@@ -47,6 +47,7 @@ module.exports = {
 
             let random_msg=await this.create_random_msg()
             let jwt=await this.get_jwt(from_acc,random_msg,from_private)
+            console.log(from_acc)
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
             console.log(jdata)
             let slp_claim=jdata.total
@@ -75,7 +76,6 @@ module.exports = {
                     "nonce": nonce,
                     data:myData
             }
-            //CLAIM
             message.channel.send(num+" Realizando el claim de "+slp_claim+" SLP...");
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
@@ -194,8 +194,10 @@ module.exports = {
         message.channel.send('El estado del jugador fue cambiado a ***'+estado+'*** con exito')
         await db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), status:estado,num:num})
         
-        let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
-        rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador #"+num+" fue retirado").setColor('GREEN').setTimestamp()]})
+        if(estado=='retiro'){
+            let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
+            rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador #"+num+" fue retirado").setColor('GREEN').setTimestamp()]})
+        }
     },
     transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
       
@@ -287,9 +289,9 @@ module.exports = {
 
             let data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
             let ronin_slp= data.ronin_slp
-            let random_msg=await this.create_random_msg()
-            let jwt=await this.get_jwt(from_acc,random_msg,from_private)
-            let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
+            //let random_msg=await this.create_random_msg()
+            //let jwt=await this.get_jwt(from_acc,random_msg,from_private)
+            let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});
 
             let unclaimed=jdata.total
 
