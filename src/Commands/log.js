@@ -30,19 +30,18 @@ module.exports = new Command({
 			for(let i in data_por_dia){
 				let data=data_por_dia[i]
 				message.channel.send(data.date+' '+data.slp+' '+data.cant)
-				if(chart_data[data.type].days)chart_data.days=[]
-				if(chart_data[data.type].date)chart_data[data.type].days.push(data.date)
-				if(chart_data[data.type].slp)chart_data[data.type].slp.push(data.slp)
-				if(chart_data[data.type].cant)chart_data[data.type].cant.push(data.cant)
+				if(!chart_data[data.type])chart_data[data.type]={days:[],slp:[],cant:[]}
+				chart_data[data.type].days.push(data.date)
+				chart_data[data.type].slp.push(data.slp)
+				chart_data[data.type].cant.push(data.cant)
 			}
-			
 			let chart = new QuickChart().setConfig({
 				type: 'bar',
 				data: { 
 					labels: chart_data['slp_jugador'].days,
 					datasets:[
 						{label: 'Jugador',backgroundColor:'#6F9CF1',  data: chart_data['slp_jugador'].slp},
-						{label: 'Ronimate', backgroundColor: '#F8D978', data: chart_data['slp_jugador'].slp},
+						{label: 'Ronimate', backgroundColor: '#F8D978', data: chart_data['slp_ronimate'].slp},
 					] 
 				},
 			}).setWidth(800).setHeight(400);
@@ -54,7 +53,7 @@ module.exports = new Command({
 				data: { 
 					labels: chart_data['slp_ronimate'].days,
 					datasets:[
-						{label: 'Jugador',backgroundColor:'#6F9CF1',  data: chart_data['slp_ronimate'].cant},
+						{label: 'Jugador',backgroundColor:'#6F9CF1',  data: chart_data['slp_jugador'].cant},
 						{label: 'Ronimate', backgroundColor: '#F8D978', data: chart_data['slp_ronimate'].cant},
 					] 
 				},
