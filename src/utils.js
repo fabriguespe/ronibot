@@ -194,9 +194,9 @@ module.exports = {
         message.channel.send('El estado del jugador fue cambiado a ***'+estado+'*** con exito')
         await db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), status:estado,num:num})
         
-        if(estado=='retiro'){
+        if(num){
             let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
-            rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El jugador #"+num+" fue retirado").setColor('GREEN').setTimestamp()]})
+            rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El estado del jugador #"+num+" fue cambiado a ***"+estado+"***").setColor('GREEN').setTimestamp()]})
         }
     },
     transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
