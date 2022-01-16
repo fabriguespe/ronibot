@@ -19,6 +19,7 @@ module.exports = new Command({
 			let users = await db.collection('users').find().toArray()
 			for(let ii in users){
 				let eluser=users[ii]
+				if(utils.esPro(eluser.num))continue
 				users[ii]['mmr_sum']=0
 				users[ii]['slp_sum']=0
 				users[ii]['slp_prom']=0

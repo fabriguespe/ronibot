@@ -39,6 +39,10 @@ module.exports = {
     FROM_UNIX_EPOCH:function(epoch_in_secs){
         return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
+    esPro:function(num){
+        if(num=='43')return true
+        else if(num=='94')return true
+    },
     claim2:async function(num,from_acc,message){
         try{
             let db = await DbConnection.Get();
