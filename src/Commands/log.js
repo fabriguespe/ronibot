@@ -19,26 +19,31 @@ module.exports = new Command({
 			let query={$or:[{type:'slp_jugador'},{type:'slp_ronimate'}]}
 			let stats = await db.collection('log').find(query,  { sort: { timestamp_log: -1 } }).toArray();
 			let data_por_dia=[]
+			
 			for(let i in stats){
 				let undia=stats[i]
 				let fecha=undia.date
 				if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,slp:0,cant:0}
-				data_por_dia[fecha]={date:undia.date,slp:data_por_dia[fecha].slp+=undia.slp,cant:data_por_dia[fecha].cant+=1}
+				data_por_dia[fecha]={type:undia.type,date:undia.date,slp:data_por_dia[fecha].slp+=undia.slp,cant:data_por_dia[fecha].cant+=1}
 			}
-			let chart_data={days:[],slp:[],cant:[]}
+			let chart_data={}
 			for(let i in data_por_dia){
 				let data=data_por_dia[i]
 				message.channel.send(data.date+' '+data.slp+' '+data.cant)
-				chart_data.days.push(data.date)
-				chart_data.slp.push(data.slp)
-				chart_data.cant.push(data.cant)
+				if(chart_data[data.type].days)chart_data.days=[]
+				if(chart_data[data.type].date)chart_data[data.type].days.push(data.date)
+				if(chart_data[data.type].slp)chart_data[data.type].slp.push(data.slp)
+				if(chart_data[data.type].cant)chart_data[data.type].cant.push(data.cant)
 			}
 			
 			let chart = new QuickChart().setConfig({
 				type: 'bar',
 				data: { 
-					labels: chart_data.days,
-					datasets:[{label: 'SLP', data: chart_data.slp}] 
+					labels: chart_data['slp_jugador'].days,
+					datasets:[
+						{label: 'Jugador',backgroundColor:'#6F9CF1',  data: chart_data['slp_jugador'].slp},
+						{label: 'Ronimate', backgroundColor: '#F8D978', data: chart_data['slp_jugador'].slp},
+					] 
 				},
 			}).setWidth(800).setHeight(400);
 			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
@@ -47,8 +52,11 @@ module.exports = new Command({
 			chart = new QuickChart().setConfig({
 				type: 'bar',
 				data: { 
-					labels: chart_data.days,
-					datasets:[{label: 'Jugadores', data: chart_data.cant}] 
+					labels: chart_data['slp_ronimate'].days,
+					datasets:[
+						{label: 'Jugador',backgroundColor:'#6F9CF1',  data: chart_data['slp_ronimate'].cant},
+						{label: 'Ronimate', backgroundColor: '#F8D978', data: chart_data['slp_ronimate'].cant},
+					] 
 				},
 			}).setWidth(800).setHeight(400);
 			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
