@@ -27,6 +27,7 @@ module.exports = new Command({
 			}
 			let chart_data={days:[],slp:[],cant:[]}
 			for(let i in data_por_dia){
+				let data=data_por_dia[i]
 				message.channel.send(data.date+' '+data.slp+' '+data.cant)
 				chart_data.days.push(data.date)
 				chart_data.slp.push(data.slp)
