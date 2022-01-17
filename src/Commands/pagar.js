@@ -22,14 +22,10 @@ module.exports = new Command({
             return message.channel.send(`Cantidad de argumentos invalida!`);
         }
         from_acc=from_acc.replace('ronin:','0x')
-        try{
-            let t1=await utils.transfer(from_acc,to_acc,slp,message)
-            if(t1){
-                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
-                message.channel.send({content: ` `,embeds: [embed]})
-            }
-        }catch(e){
-            utils.log("ERROR: "+e.message,message)
+        let t1=await utils.transfer(from_acc,to_acc,slp,message)
+        if(t1){
+            let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
+            message.channel.send({content: ` `,embeds: [embed]})
         }
 
 	}
