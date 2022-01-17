@@ -16,51 +16,28 @@ module.exports = new Command({
 		let db = await DbConnection.Get();
 			
 		if(args[1]=='pagos'){
-			let query={$or:[{type:'slp_jugador'},{type:'slp_ronimate'}]}
-			let stats = await db.collection('log').find(query,  { sort: { timestamp_log: -1 } }).toArray();
+			let query=args[2]?{type:args[2]}:{$or:[{type:'slp_jugador'},{type:'slp_ronimate'}]}
+			let stats = await db.collection('log').find(query,  { sort: { date: -1 } }).toArray();
 			let data_por_dia=[]
 			
 			for(let i in stats){
 				let undia=stats[i]
 				let fecha=undia.date
-				if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,slp:0,cant:0}
-				data_por_dia[fecha]={type:undia.type,date:undia.date,slp:data_por_dia[fecha].slp+=undia.slp,cant:data_por_dia[fecha].cant+=1}
+				if(!data_por_dia[fecha])data_por_dia[fecha]={}
+				if(!data_por_dia[fecha][undia.type])data_por_dia[fecha][undia.type]={date:undia.date,slp:0,cant:0}
+				data_por_dia[fecha][undia.type]={type:undia.type,date:undia.date,slp:data_por_dia[fecha][undia.type].slp+=undia.slp,cant:data_por_dia[fecha][undia.type].cant+=1}
 			}
-			let chart_data={}
+			let texto=''
 			for(let i in data_por_dia){
-				let data=data_por_dia[i]
-				if(data.type=='slp_jugador')message.channel.send(data.date+' '+data.slp+' '+data.cant)
-				if(!chart_data[data.type])chart_data[data.type]={days:[],slp:[],cant:[]}
-				chart_data[data.type].days.push(data.date)
-				chart_data[data.type].slp.push(data.slp)
-				chart_data[data.type].cant.push(data.cant)
+				for(let j in data_por_dia[i]){
+					let data=data_por_dia[i][j]
+					console.log(data)
+					texto+='El dia '+data.date+' se realizaron '+data.cant+' pagos por un total de '+data.slp+' SLP a '+data.type +'\n'
+				}
 			}
-			console.log(chart_data)
-			let chart = new QuickChart().setConfig({
-				type: 'bar',
-				data: { 
-					labels: chart_data['slp_jugador'].days,
-					datasets:[
-						{label: 'Jugador',backgroundColor:'#6F9CF1',  data: chart_data['slp_jugador'].slp},
-						{label: 'Ronimate', backgroundColor: '#F8D978', data: chart_data['slp_ronimate'].slp},
-					] 
-				},
-			}).setWidth(800).setHeight(400);
-			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
-
+			let embed = new MessageEmbed().setTitle('Reporte').setDescription(texto).setColor('GREEN').setTimestamp()
+			message.channel.send({content: ` `,embeds: [embed]})
 			
-			chart = new QuickChart().setConfig({
-				type: 'bar',
-				data: { 
-					labels: chart_data['slp_ronimate'].days,
-					datasets:[
-						{label: 'Jugador',backgroundColor:'#6F9CF1',  data: chart_data['slp_jugador'].cant},
-						{label: 'Ronimate', backgroundColor: '#F8D978', data: chart_data['slp_ronimate'].cant},
-					] 
-				},
-			}).setWidth(800).setHeight(400);
-			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
-
 
 		}else if(args[1]=='estados'){
 			let query={type:'status_change'}
@@ -80,6 +57,7 @@ module.exports = new Command({
 			let chart_data={days:[],aprobado:[],entrevista:[],retiro:[],aspirante:[]}
 			for(let i in data_por_dia){
 				let data=data_por_dia[i]
+
 				chart_data.days.push(data.fecha)
 				chart_data.aprobado.push(data.aprobado)
 				chart_data.entrevista.push(data.entrevista)
@@ -104,7 +82,7 @@ module.exports = new Command({
 		
 		}else if(args[1]=='aspirante'){
 			
-			await utils.cambiarEstado(null,null,'aspirante',message)
+			await utils.cambiarEstado(null,'aspirante',message)
 			utils.log('exito')
 		}
 

@@ -88,7 +88,7 @@ module.exports = {
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',date:this.timestamp_log(),date:this.date_log(), slp:slp_claim,num:num,from_acc:from_acc})
+				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',timestamp:this.timestamp_log(),date:this.date_log(), slp:slp_claim,num:num,from_acc:from_acc})
                 return true
             }  
         }catch(e){
@@ -142,7 +142,7 @@ module.exports = {
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',date:this.timestamp_log(),date:this.date_log(), slp:data.unclaimed,num:data.num,from_acc:from_acc})
+				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',timestamp:this.timestamp_log(),date:this.date_log(), slp:data.unclaimed,num:data.num,from_acc:from_acc})
             }  
             
             let roni_slp=data.unclaimed-data.recibe
@@ -161,7 +161,7 @@ module.exports = {
                 if(tx){
                     let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
                     message.channel.send({content: ` `,embeds: [embed]})
-                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
+                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
                 }
             }catch(e){
                 fallo=true
@@ -173,7 +173,7 @@ module.exports = {
                 if(tx){
                     let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
                     message.channel.send({content: ` `,embeds: [embed]})
-                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),date:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
+                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
                 }
             }catch(e){
                 fallo=true
@@ -196,7 +196,7 @@ module.exports = {
         if(estado.includes('retir'))obj['discord']=null
         await db.collection("users").updateOne({ num:num},{ $set: obj } )
         message.channel.send('El estado del jugador fue cambiado a ***'+estado+'*** con exito')
-        await db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), old_status:old_estado, status:estado,num:num})
+        await db.collection('log').insertOne({type:'status_change',timestamp:this.timestamp_log(),date:this.date_log(), old_status:old_estado, status:estado,num:num})
         
         if(num){
             let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
@@ -231,7 +231,7 @@ module.exports = {
             
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
-				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'axie_transfer',date:this.timestamp_log(),date:this.date_log(), axie_id:axie_id,num_from:num_from,num_to:num_to,from_acc:from_acc,to_acc:to_acc})
+				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'axie_transfer',timestamp:this.timestamp_log(),date:this.date_log(), axie_id:axie_id,num_from:num_from,num_to:num_to,from_acc:from_acc,to_acc:to_acc})
                 return message.channel.send({content: ` `,embeds: [embed]})
             }        
             else message.channel.send("ERROR Status False");

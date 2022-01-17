@@ -51,7 +51,7 @@ module.exports = new Command({
                         if(tx){
                             let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
                             message.channel.send({content: ` `,embeds: [embed]})
-                            await db.collection('log').insertOne({tx:tx,type:'flush_ronimate',date:utils.timestamp_log(),date:utils.date_log(), slp:data.ronin_slp,num:num,from_acc:from_acc,wallet:roni_wallet})
+                            await db.collection('log').insertOne({tx:tx,type:'flush_ronimate',timestamp:utils.timestamp_log(),date:utils.date_log(), slp:data.ronin_slp,num:num,from_acc:from_acc,wallet:roni_wallet})
 
                         }
                     }else{
