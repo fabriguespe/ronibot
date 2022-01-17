@@ -47,7 +47,7 @@ module.exports = new Command({
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 
                 let discord_id=ingreso.id
-                await utils.cambiarEstado(new_account.num,'entrevista',message)
+                await utils.cambiarEstado(new_account.num,'aspirante','entrevista',message)
                 await utils.ingresar(new_account.num,username,discord_id)
                 
                 let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones <@"+discord_id+">\nAhora debes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()

@@ -36,7 +36,7 @@ module.exports = new Command({
             
                     //Retirar
                 }
-                await utils.cambiarEstado(user_from.num,'retiro',message)
+                await utils.cambiarEstado(user_from.num,user_from.nota,'retiro',message)
                 utils.log("Listo!",message);
             }else{
                 utils.log(`not a valid command!`);

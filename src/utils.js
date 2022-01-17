@@ -190,13 +190,13 @@ module.exports = {
     },date_log:function(){
         return new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
     },
-    cambiarEstado:async function(num,estado,message){
+    cambiarEstado:async function(num,old_estado,estado,message){
         let db = await DbConnection.Get();
         let obj={nota:estado}
         if(estado.includes('retir'))obj['discord']=null
         await db.collection("users").updateOne({ num:num},{ $set: obj } )
         message.channel.send('El estado del jugador fue cambiado a ***'+estado+'*** con exito')
-        await db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), status:estado,num:num})
+        await db.collection('log').insertOne({type:'status_change',date:this.timestamp_log(),date:this.date_log(), old_status:old_estado, status:estado,num:num})
         
         if(num){
             let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
