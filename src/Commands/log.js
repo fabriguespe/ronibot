@@ -80,9 +80,9 @@ module.exports = new Command({
 			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 		
 		}else if(args[1]=='aspirante'){
-			
 			await utils.cambiarEstado(null,null,'aspirante',message)
-			utils.log('exito')
+            let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
+            rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Aspirante').setDescription("Se agrego un nuevo aspirante").setColor('GREEN').setTimestamp()]})
 		}
 
 	}
