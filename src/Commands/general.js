@@ -16,16 +16,16 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
-			console.log(users.length)
 			let data_users=[]
 			let limit_prom=args[1]?parseInt(args[1]):30
 			let count_users=0
 			for(let ii in users){
 				let eluser=users[ii]				
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(limit_prom).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } })./*limit(limit_prom).*/toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				let data=[]
-				if(stats.length>=limit_prom)count_users++
+				//if(stats.length>=limit_prom)
+				count_users++
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
@@ -39,6 +39,7 @@ module.exports = new Command({
 							data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName("15/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 						}
 						data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
+					
 					}
 				}
 				//if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
@@ -78,24 +79,6 @@ module.exports = new Command({
 				chart_data.prom_mmr.push(data_por_dia[i].mmr/count_users)
 			}
 
-			let exampleEmbed = new MessageEmbed().setColor('#0099ff')
-			exampleEmbed = exampleEmbed.addFields(
-				{ name: 'Precio SLP', value: ''+slp_price,inline:true},
-				{ name: 'Jugadores', value: ''+count_users,inline:true},
-				{ name: 'Axies', value: ''+(count_users*3),inline:true},
-				{ name: 'Copas Promedio', value: ''+Math.round((utils.getArrSum(chart_data.prom_mmr)/chart_data.prom_mmr.length)),inline:true},
-				{ name: 'SLP Promedio', value: ''+Math.round((utils.getArrSum(chart_data.prom_slp)/chart_data.prom_slp.length)),inline:true},
-				{ name: 'SLP día', value: ''+Math.round((utils.getArrSum(chart_data.slp)/chart_data.slp.length)),inline:true},
-			)
-			if(utils.esFabri(message) ){
-				exampleEmbed = exampleEmbed.addFields(
-					{ name: 'USD por dia', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)),inline:true},
-					{ name: 'USD semana', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*7),inline:true},
-					{ name: 'USD mes', value: ''+Math.round((utils.getArrSum(chart_data.usd)/chart_data.usd.length)*30),inline:true},
-				)
-			}
-			message.channel.send({ embeds: [exampleEmbed] });
-			
 			
 			let chart = new QuickChart().setConfig({
 				type: 'bar',

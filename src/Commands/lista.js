@@ -52,11 +52,17 @@ module.exports = new Command({
 			users=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
 			let colores={GREEN:'',YELLOW:'',ORANGE:'',RED:'',BLACK:''}
 			let numcolores={GREEN:0,YELLOW:0,ORANGE:0,RED:0,BLACK:0}
+			let proms={slp_sum:0,mmr_sum:0,cant:0}
 			for(let ii in users){
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
 				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')\n'
 				if(user.nota && (user.nota.toLowerCase().includes('retir') || user.nota.toLowerCase().includes('vac') || user.nota.toLowerCase().includes('entrevist')))continue
+				
+				proms.slp_sum+=user.slp_prom
+				proms.mmr_sum+=user.mmr
+				proms.cant+=1
+
 				
 				if(user.slp_prom>=130)colores['GREEN']+=value
 				else if(user.slp_prom>=100 && user.slp_prom<130)colores['YELLOW']+=value
@@ -88,6 +94,27 @@ module.exports = new Command({
 				pie_chart[(color=='GREEN')?'Generando 60%':(color=='YELLOW')?'Generando 50%':(color=='ORANGE')?'Generando 40%':(color=='RED')?'Alerta 30%':(color=='BLACK')?'Retiro':'']=numcolores[color]
 
 			}
+			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
+			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
+
+			let exampleEmbed = new MessageEmbed().setColor('#0099ff')
+			exampleEmbed = exampleEmbed.addFields(
+				{ name: 'Precio SLP', value: ''+slp_price,inline:true},
+				{ name: 'Jugadores', value: ''+proms.cant,inline:true},
+				{ name: 'Axies', value: ''+(proms.cant*3),inline:true},
+				{ name: 'Copas Promedio', value: ''+Math.round(proms.mmr_sum/proms.cant),inline:true},
+				{ name: 'SLP Promedio', value: ''+Math.round(proms.slp_sum/proms.cant),inline:true},
+				{ name: 'SLP día', value: ''+Math.round(proms.slp_sum),inline:true},
+			)
+			if(utils.esFabri(message) ){
+				exampleEmbed = exampleEmbed.addFields(
+					{ name: 'USD por dia', value: ''+Math.round(proms.slp_sum*slp_price),inline:true},
+					{ name: 'USD semana', value: ''+Math.round(proms.slp_sum*7*slp_price),inline:true},
+					{ name: 'USD mes', value: ''+Math.round(proms.slp_sum*30*slp_price),inline:true},
+				)
+			}
+			message.channel.send({ embeds: [exampleEmbed] });
+
 			if(!tipo){
 
 				let chart = new QuickChart().setConfig({

@@ -558,6 +558,7 @@ module.exports = {
         
         var initial =dateStr.split(/\//);
         let final=[ initial[1], initial[0], initial[2] ].join('/'); 
+        var date = new Date(final);
         return initial[0]+'-'+date.toLocaleDateString(locale, { weekday: 'long' });        
     }
 }

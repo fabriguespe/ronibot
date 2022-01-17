@@ -45,7 +45,7 @@ module.exports = new Command({
 			let data_por_dia=[]
 			for(let i in stats){
 				let undia=stats[i]
-				let fecha=fecha
+				let fecha=undia.date
 				if(!data_por_dia[fecha])data_por_dia[fecha]={fecha:fecha,aprobado:0,aspirante:0,entrevista:0,retiro:0}
 				if(undia.status=='aprobado')data_por_dia[fecha]={fecha:fecha,aprobado:data_por_dia[fecha].aprobado+=1,entrevista:data_por_dia[fecha].entrevista,retiro:data_por_dia[fecha].retiro,aspirante:data_por_dia[fecha].aspirante,}
 				if(undia.status=='retiro')data_por_dia[fecha]={fecha:fecha,retiro:data_por_dia[fecha].retiro+=1,entrevista:data_por_dia[fecha].entrevista,aprobado:data_por_dia[fecha].aprobado,aspirante:data_por_dia[fecha].aspirante,}

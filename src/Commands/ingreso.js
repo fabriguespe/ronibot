@@ -24,16 +24,13 @@ module.exports = new Command({
         try{
             if(args[2].includes('"') || args[2].includes("'")){
                 let completo=args.join(" ")
-                console.log(completo)
                 completo=completo.replaceAll("'",'"')
                 let nombre=completo.split('"')[1]
                 nombre=nombre.replaceAll('"','')
-                console.log(nombre)
                 let uno=args[1]
                 let dos=nombre
                 args=['ingreso',uno,dos]
             }
-            console.log(args)
             if(args.length==3){
                 
                 let new_account=await utils.getUserByNum(args[1])
@@ -43,7 +40,7 @@ module.exports = new Command({
                 let username=args[2].split('#')[0]
                 let discriminator=args[2].split('#')[1]
                 await message.guild.members.fetch()
-                let ingreso=message.guild.members.cache.find(c => { return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) || c.user.username.toLowerCase() == username.toLowerCase()  || c.user.discriminator.toLowerCase() == discriminator.toLowerCase() });
+                let ingreso=message.guild.members.cache.find(c => {return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) || c.user.username.toLowerCase() == username.toLowerCase()  || c.user.discriminator.toLowerCase() == discriminator.toLowerCase() });
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 
                 let discord_id=ingreso.id
