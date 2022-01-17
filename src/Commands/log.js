@@ -29,7 +29,7 @@ module.exports = new Command({
 			let chart_data={}
 			for(let i in data_por_dia){
 				let data=data_por_dia[i]
-				message.channel.send(data.date+' '+data.slp+' '+data.cant)
+				if(data.type=='slp_jugador')message.channel.send(data.date+' '+data.slp+' '+data.cant)
 				if(!chart_data[data.type])chart_data[data.type]={days:[],slp:[],cant:[]}
 				chart_data[data.type].days.push(data.date)
 				chart_data[data.type].slp.push(data.slp)
