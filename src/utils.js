@@ -263,8 +263,6 @@ module.exports = {
                 data:myData
             }
     
-        
-            //TRANSFER
             let breed=await this.getWalletByNum("BREED")
             breed=breed.replace('ronin:','0x')
             if(to_acc==breed)message.channel.send("Estamos procesando la transacción....");
