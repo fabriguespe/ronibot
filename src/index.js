@@ -51,6 +51,14 @@ client.on("ready", message => {
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 
+	scheduledMessage = new cron.CronJob('20 0 * * *', () => {
+		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
+		rCanal.send("@here" + "Seguimos con el ranking del día")
+		rCanal.send('!log estados')
+
+	}, null, true, 'UTC');
+	scheduledMessage.start()
+
 	scheduledMessage = new cron.CronJob('30 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
 		rCanal.send("@here" + " Por último veamos quienes estan con bajo promedio y en riesgo a ser retirados")
@@ -61,7 +69,7 @@ client.on("ready", message => {
 
 
 client.on("messageCreate", message => {
-	if (message.author.bot && !message.content=='!diario'  && !message.content=='!log aspirante' && !message.content=='!lista 7 Retiro' && !message.content=='!entrevista') return;
+	if (message.author.bot && !message.channel.name.includes('chat') ) return;
 
 	if (!message.content.startsWith(config.prefix)) return;
 	const args = message.content.substring(config.prefix.length).split(/ +/);
