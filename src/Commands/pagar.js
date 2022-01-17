@@ -12,7 +12,7 @@ module.exports = new Command({
         let slp=args[1]
         let from_acc=''
         let to_acc=''
-        if(args.length==3 /*&& (args[2]=='amaloa' || args[2]=='jeisson' || args[2]=='pablo')*/){
+        if(args.length==4 /*&& (args[2]=='amaloa' || args[2]=='jeisson' || args[2]=='pablo')*/){
                 from_acc=await utils.getWalletByNum()
                 from_acc=!args[2]?await utils.getWalletByNum("BREED"):args[2].length<=10?await utils.getWalletByNum(args[2]):args[2]
                 args[3]=='amaloa'?args[3]='ronin:9a9dc8ab2474625cb58bca01beb72759e2c7efaa':args[3]=='pablo'?args[3]='ronin:f0c889583622f97c67e2fc4cf2a5ce214f7eee8c':args[3]=='jeisson'?args[3]='ronin:9f1c0c36728b3341084adaad489a651394c9e40a':args[3]
