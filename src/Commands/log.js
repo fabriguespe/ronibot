@@ -81,7 +81,7 @@ module.exports = new Command({
 		
 		}else if(args[1]=='aspirante'){
 			
-			await utils.cambiarEstado(null,'aspirante',message)
+			await utils.cambiarEstado(null,null,'aspirante',message)
 			utils.log('exito')
 		}
 
