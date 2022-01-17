@@ -35,6 +35,7 @@ module.exports = new Command({
 				chart_data[data.type].slp.push(data.slp)
 				chart_data[data.type].cant.push(data.cant)
 			}
+			console.log(chart_data)
 			let chart = new QuickChart().setConfig({
 				type: 'bar',
 				data: { 

@@ -30,7 +30,7 @@ logger.level = "debug";
 
 module.exports = {
     esFechaCobros(){
-        var today = new Date();
+        var today = new Date(Date.UTC(0, 0, 0, 0, 0, 0));
         let diadelmes=today.getDate()
         var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
         if((diadelmes>=(lastDayOfMonth-2) &&  diadelmes<=lastDayOfMonth) || diadelmes>=15 &&  diadelmes<=16) return true
