@@ -80,7 +80,6 @@ module.exports = new Command({
 			let chart_data={days:[],aprobado:[],entrevista:[],retiro:[],aspirante:[]}
 			for(let i in data_por_dia){
 				let data=data_por_dia[i]
-
 				chart_data.days.push(data.fecha)
 				chart_data.aprobado.push(data.aprobado)
 				chart_data.entrevista.push(data.entrevista)
