@@ -537,7 +537,6 @@ module.exports = {
         let final=[ initial[1], initial[0], initial[2] ].join('/'); 
         var date = new Date(final);
 
-        let help=''
         Date.prototype.monthNames = [
             "January", "February", "March",
             "April", "May", "June",
