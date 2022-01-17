@@ -279,8 +279,8 @@ module.exports = {
             if(tr_raw.status)return tr_raw.transactionHash
             else return false          
         }catch(e){
-            console.log(e)
-            this.log("ERROR:"+from_acc,message)
+            if(e.message.includes('ERROR:Transaction has been reverted by the EVM'))e.message='Transaction has been reverted by the EVM'
+            this.log("ERROR:"+e.message,message)
         }
     },
     getSLP:async function(currentUser,message){
