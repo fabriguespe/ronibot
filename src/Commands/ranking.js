@@ -12,14 +12,14 @@ var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 module.exports = new Command({
 	name: "ranking"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		//if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
+		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
 			let limit_prom=args[1]?parseInt(args[1]):3
 			let users = await db.collection('users').find().toArray()
 			for(let ii in users){
 				let eluser=users[ii]
-				if(utils.esPro(eluser.num))continue
+				if(!utils.esFabri(message) && utils.esPro(eluser.num))continue
 				users[ii]['mmr_sum']=0
 				users[ii]['slp_sum']=0
 				users[ii]['slp_prom']=0
@@ -53,7 +53,7 @@ module.exports = new Command({
 
 			}
 			users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
-
+			
 			//Top 10 SLP
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(0, 10);
 			let help=''
@@ -86,7 +86,6 @@ module.exports = new Command({
 			embed = new MessageEmbed().setTitle("ULTIMOS 10 SLP").setDescription(help).setColor('#574760').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 			
-
 
 			//Ultimos 20 copas
 			if(utils.esManager(message)){

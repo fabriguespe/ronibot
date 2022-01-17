@@ -19,7 +19,7 @@ module.exports = new Command({
 			let limit_prom=args[1]?parseInt(args[1]):3
 			for(let ii in users){
 				let eluser=users[ii]
-				if(utils.esPro(eluser.num))continue
+				if(!utils.esFabri(message) && utils.esPro(eluser.num))continue
 				users[ii]['mmr_sum']=0
 				users[ii]['slp_sum']=0
 				users[ii]['slp_prom']=0

@@ -16,14 +16,16 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
+			console.log(users.length)
 			let data_users=[]
+			let limit_prom=args[1]?parseInt(args[1]):30
 			let count_users=0
 			for(let ii in users){
 				let eluser=users[ii]				
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
+				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(limit_prom).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				let data=[]
-				
+				if(stats)count_users++
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
@@ -39,7 +41,7 @@ module.exports = new Command({
 						data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 					}
 				}
-				if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
+				//if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
 				data_users.push(data)
 			}
 			let data_por_dia=[]
