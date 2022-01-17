@@ -80,38 +80,40 @@ module.exports = new Command({
 			}
 
 			
-			let chart = new QuickChart().setConfig({
-				type: 'bar',
-				data: { 
-					labels: chart_data.days,
-					datasets:[
-						{type: 'bar',"yAxisID": "y1",label: '0 > < 50', data: chart_data.grupo1,"fill": false,backgroundColor: 'black'},
-						{type: 'bar',"yAxisID": "y1",label: '50 > < 80', data: chart_data.grupo2,"fill": false,backgroundColor: '#D55040'},
-						{type: 'bar',"yAxisID": "y1",label: '80 > < 100', data: chart_data.grupo3,"fill": false,backgroundColor: '#F8D978'},
-						{type: 'bar',"yAxisID": "y1",label: '100 > < 130', data: chart_data.grupo4,"fill": false,backgroundColor: '#9EC284'},
-						{type: 'bar',"yAxisID": "y1",label: '130 > < ...', data: chart_data.grupo5,"fill": false,backgroundColor: '#9EC284'}
-					] 
-				},
-				"options": {
-					"scales": {
-					  "xAxes": [{
-						"stacked": true
-					  }],
-					  "yAxes": [
-						{
-						  "id": "y1",
-						  "display": true,
-						  "position": "left",
-						  "stacked": true
-						}
-					  ]
-					}
-				  }
-			}).setWidth(800).setHeight(400);
-			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
-			
+			let chart = ''
 			
 			if(utils.esFabri(message)){
+				chart=new QuickChart().setConfig({
+					type: 'bar',
+					data: { 
+						labels: chart_data.days,
+						datasets:[
+							{type: 'bar',"yAxisID": "y1",label: '0 > < 50', data: chart_data.grupo1,"fill": false,backgroundColor: 'black'},
+							{type: 'bar',"yAxisID": "y1",label: '50 > < 80', data: chart_data.grupo2,"fill": false,backgroundColor: '#D55040'},
+							{type: 'bar',"yAxisID": "y1",label: '80 > < 100', data: chart_data.grupo3,"fill": false,backgroundColor: '#F8D978'},
+							{type: 'bar',"yAxisID": "y1",label: '100 > < 130', data: chart_data.grupo4,"fill": false,backgroundColor: '#9EC284'},
+							{type: 'bar',"yAxisID": "y1",label: '130 > < ...', data: chart_data.grupo5,"fill": false,backgroundColor: '#9EC284'}
+						] 
+					},
+					"options": {
+						"scales": {
+						"xAxes": [{
+							"stacked": true
+						}],
+						"yAxes": [
+							{
+							"id": "y1",
+							"display": true,
+							"position": "left",
+							"stacked": true
+							}
+						]
+						}
+					}
+				}).setWidth(800).setHeight(400);
+				message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+				
+				
 				chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 

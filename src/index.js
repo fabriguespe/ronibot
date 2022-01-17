@@ -51,10 +51,12 @@ client.on("ready", message => {
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 
-	scheduledMessage = new cron.CronJob('20 0 * * *', () => {
+	scheduledMessage = new cron.CronJob('0 0 * * 0', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
-		rCanal.send("@here" + "Seguimos con el ranking del día")
+		rCanal.send("<@867081447633190946>" + " este es nuestra proporción de aspirantes y aprobados")
 		rCanal.send('!log estados')
+		rCanal.send("<@485351070596595714>" + " este es el rendimiento de la academia")
+		rCanal.send('!general')
 
 	}, null, true, 'UTC');
 	scheduledMessage.start()
