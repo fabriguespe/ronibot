@@ -498,8 +498,6 @@ module.exports = {
     getUserByDiscord:async function(ID){
         let db = await DbConnection.Get();
 		return await db.collection('users').find({discord:""+ID.toString()}).toArray()
-        //return user
-        
     },
     getUserByNum:async function(num){
         if(num=='BREED' || num=='breed')return 'ronin:b1c0e5cb955ac17d9cb42fb4ee6b6ae01b5a9c82'

@@ -11,15 +11,14 @@ module.exports = new Command({
 		let temporal=false
 		
 		let esPagos=(utils.esJeissonPagos(message) || utils.esFabri(message) && args[1])
-		if(args[1] && !esPagos)return message.channel.send('No tienes permiso s para correr este comando')
+		if(args[1] && !esPagos)return message.channel.send('No tienes permisos para correr este comando')
 		let currentUsers=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		if(!Array.isArray(currentUsers))currentUsers=[currentUsers]
-		if(currentUsers.length==0 || !currentUsers)return message.channel.send('No tienes permiso s para correr este comando')
+		if(currentUsers.length==0 || !currentUsers)return message.channel.send('No tienes permisos para correr este comando')
 		for(let i in currentUsers){
 			let currentUser=currentUsers[i]
 			if(!temporal && (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
-			if(!temporal && (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario no validado')
-			
+			if(!temporal && (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario invalido')
 
 			let ticket_name=(!esPagos?'ticket':'pagos')+(currentUser?"-"+currentUser.num:"")+"-"+(esPagos?'':message.author.username)
 			try{
