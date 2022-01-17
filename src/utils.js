@@ -422,6 +422,7 @@ module.exports = {
         return message.author.id==877625345996632095 && message.channel.name.includes('comandos') 
     },
     esIngresos:function(message){
+        console.log(this.esFabri(message))
         if(this.esFabri(message))return true
         return message.channel.id==909165024642203658//canal entrevistas
     },

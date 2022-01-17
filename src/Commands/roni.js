@@ -8,12 +8,12 @@ const jsid=877625345996632095//jeisson
 module.exports = new Command({
 	name: "roni"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		let temporal=false
 		
 		let esPagos=(utils.esJeissonPagos(message) || utils.esFabri(message) && args[1])
 		if(args[1] && !esPagos)return message.channel.send('No tienes permisos para correr este comando')
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		
+		let temporal=false
 		if(!temporal && (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
 		if(!temporal && (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario invalido')
 
@@ -25,21 +25,16 @@ module.exports = new Command({
 			console.log("ERROR",e.message)
 		}
 		
-		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
 		//909634641030426674 INGRESOS //866879155350143006 COMUNIDAD //921106145811263499 PAGOS
+		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
 		let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
-	
 		let thread=await message.guild.channels.create(ticket_name, { 
 		type: 'GUILD_TEXT',
 		parent:rCategoria?rCategoria.id:null,
-		permissionOverwrites: [
-			{id: message.author.id,allow: ['VIEW_CHANNEL']},
-			{id: rSoporte.id,allow: ['VIEW_CHANNEL']},
-			{id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
+		permissionOverwrites: [{id: message.author.id,allow: ['VIEW_CHANNEL']},{id: rSoporte.id,allow: ['VIEW_CHANNEL']},{id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
 		]}).then(chan=>{return chan})
 		let embed = new MessageEmbed().setTitle('Nuevo Ticket')
 		.setDescription(`CLICK AQUI PARA CONTINUAR ----->>> <#${thread.id}>`).setColor('GREEN').setTimestamp()
-
 		await message.channel.send({content: ` `, embeds: [embed]})
 
 		let row=new MessageActionRow()
