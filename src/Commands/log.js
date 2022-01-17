@@ -82,7 +82,7 @@ module.exports = new Command({
 		}else if(args[1]=='aspirante'){
 			await utils.cambiarEstado(null,null,'aspirante',message)
             let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
-            rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Aspirante').setDescription("Se agrego un nuevo aspirante").setColor('GREEN').setTimestamp()]})
+            rCanal.send("Se agrego un nuevo aspirante")
 		}
 
 	}
