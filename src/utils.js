@@ -532,10 +532,33 @@ module.exports = {
         let final=[ initial[1], initial[0], initial[2] ].join('/'); 
         return new Date(final);     
     },
-    getDayName:function(dateStr, locale){
+    getPaymentName:function(dateStr, locale){
         var initial =dateStr.split(/\//);
         let final=[ initial[1], initial[0], initial[2] ].join('/'); 
         var date = new Date(final);
+
+        let help=''
+        Date.prototype.monthNames = [
+            "January", "February", "March",
+            "April", "May", "June",
+            "July", "August", "September",
+            "October", "November", "December"
+        ];
+        Date.prototype.getMonthName = function() {
+            return this.monthNames[this.getMonth()];
+        };
+        Date.prototype.getShortMonthName = function () {
+            return this.getMonthName().substr(0, 3);
+        };
+        console.log(date.getDate(),date.getDate()>=27 && date.getDate()<=2)
+        if(date.getDate()>=14 && date.getDate()<=17)return "Mid-"+date.getShortMonthName()
+        else if(date.getDate()>=27 || date.getDate()<=2)return "End-"+date.getShortMonthName()
+        else return dateStr        
+    },
+    getDayName:function(dateStr, locale){
+        
+        var initial =dateStr.split(/\//);
+        let final=[ initial[1], initial[0], initial[2] ].join('/'); 
         return initial[0]+'-'+date.toLocaleDateString(locale, { weekday: 'long' });        
     }
 }

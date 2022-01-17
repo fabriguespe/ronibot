@@ -22,17 +22,16 @@ module.exports = new Command({
 			
 			for(let i in stats){
 				let undia=stats[i]
-				let fecha=undia.date
+				let fecha=utils.getPaymentName(undia.date)
 				if(!data_por_dia[fecha])data_por_dia[fecha]={}
-				if(!data_por_dia[fecha][undia.type])data_por_dia[fecha][undia.type]={date:undia.date,slp:0,cant:0}
-				data_por_dia[fecha][undia.type]={type:undia.type,date:undia.date,slp:data_por_dia[fecha][undia.type].slp+=undia.slp,cant:data_por_dia[fecha][undia.type].cant+=1}
+				if(!data_por_dia[fecha][undia.type])data_por_dia[fecha][undia.type]={date:fecha,slp:0,cant:0}
+				data_por_dia[fecha][undia.type]={type:undia.type,date:fecha,slp:data_por_dia[fecha][undia.type].slp+=undia.slp,cant:data_por_dia[fecha][undia.type].cant+=1}
 			}
 			let texto=''
 			for(let i in data_por_dia){
 				for(let j in data_por_dia[i]){
 					let data=data_por_dia[i][j]
-					console.log(data)
-					texto+='El dia '+data.date+' se realizaron '+data.cant+' pagos por un total de '+data.slp+' SLP a '+data.type +'\n'
+					texto+='El pago '+data.date+' se realizaron '+data.cant+' pagos por un total de '+data.slp+' SLP a '+data.type +'\n'
 				}
 			}
 			let embed = new MessageEmbed().setTitle('Reporte').setDescription(texto).setColor('GREEN').setTimestamp()
@@ -46,7 +45,7 @@ module.exports = new Command({
 			let data_por_dia=[]
 			for(let i in stats){
 				let undia=stats[i]
-				let fecha=undia.date
+				let fecha=fecha
 				if(!data_por_dia[fecha])data_por_dia[fecha]={fecha:fecha,aprobado:0,aspirante:0,entrevista:0,retiro:0}
 				if(undia.status=='aprobado')data_por_dia[fecha]={fecha:fecha,aprobado:data_por_dia[fecha].aprobado+=1,entrevista:data_por_dia[fecha].entrevista,retiro:data_por_dia[fecha].retiro,aspirante:data_por_dia[fecha].aspirante,}
 				if(undia.status=='retiro')data_por_dia[fecha]={fecha:fecha,retiro:data_por_dia[fecha].retiro+=1,entrevista:data_por_dia[fecha].entrevista,aprobado:data_por_dia[fecha].aprobado,aspirante:data_por_dia[fecha].aspirante,}
