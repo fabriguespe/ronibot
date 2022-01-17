@@ -43,7 +43,7 @@ module.exports = new Command({
                 let username=args[2].split('#')[0]
                 let discriminator=args[2].split('#')[1]
                 await message.guild.members.fetch()
-                let ingreso=message.guild.members.cache.find(c => { return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) || c.user.username.toLowerCase() == username.toLowerCase() });
+                let ingreso=message.guild.members.cache.find(c => { return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) || c.user.username.toLowerCase() == username.toLowerCase()  || c.user.discriminator.toLowerCase() == discriminator.toLowerCase() });
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 
                 let discord_id=ingreso.id
