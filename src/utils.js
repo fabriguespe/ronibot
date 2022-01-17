@@ -495,9 +495,13 @@ module.exports = {
         axies={count:axies.data.axies.total,axies:axies.data.axies.results}
         return axies
     },
-    getUserByDiscord:async function(ID){
+    getUsersByDiscord:async function(ID){
         let db = await DbConnection.Get();
 		return await db.collection('users').find({discord:""+ID.toString()}).toArray()
+    },
+    getUserByDiscord:async function(ID){
+        let db = await DbConnection.Get();
+		return await db.collection('users').findOne({discord:""+ID.toString()})
     },
     getUserByNum:async function(num){
         if(num=='BREED' || num=='breed')return 'ronin:b1c0e5cb955ac17d9cb42fb4ee6b6ae01b5a9c82'
