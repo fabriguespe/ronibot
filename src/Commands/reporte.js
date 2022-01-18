@@ -63,16 +63,21 @@ module.exports = new Command({
 				for(let i in axiesdata)exampleEmbed.addFields({ name: axiesdata[i].tipo, value: axiesdata[i].partes.cola+'\n'+axiesdata[i].partes.espalda+'\n'+axiesdata[i].partes.cuerno+'\n'+axiesdata[i].partes.boca+'\n'+'[Link]('+axiesdata[i].url+")",inline:true})
 				
 
-				if(utils.esManager(message)){
-					exampleEmbed.addFields(
-						{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
-						{ name: 'JSON', value: '[Link](https://game-api.axie.technology/api/v1/'+eluser.accountAddress+")",inline:true},
-						{ name: 'Axies', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
-						/*{ name: 'Pass', value: ''+eluser.pass,inline:true},
-						{ name: 'Email', value: ''+eluser.correo,inline:true},*/
-						{ name: 'Binance', value: ''+eluser.scholarPayoutAddress},
-					)
+				let stats = await db.collection('log').find({num:eluser.num},  { sort: { timestamp: -1 } }).toArray();
+				let help=''
+				for(let j in stats){
+					let log=stats[j]
+					help+=log.date+' '+log.status
 				}
+				exampleEmbed.addFields(
+					{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
+					{ name: 'JSON', value: '[Link](https://game-api.axie.technology/api/v1/'+eluser.accountAddress+")",inline:true},
+					{ name: 'Axies', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
+					/*{ name: 'Pass', value: ''+eluser.pass,inline:true},
+					{ name: 'Email', value: ''+eluser.correo,inline:true},*/
+					{ name: 'Binance', value: ''+eluser.scholarPayoutAddress},
+					{ name: 'Estados', value: ''+help},
+				)
 				message.channel.send({ embeds: [exampleEmbed] });
 
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
