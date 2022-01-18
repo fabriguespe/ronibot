@@ -52,7 +52,7 @@ module.exports = new Command({
 				
 
 			}
-			users=users.filter(u => u.slp_prom>0 && (u.nota == 'aprobado'))
+			users=users.filter( (u.nota == 'aprobado'))
 			
 			//Top 10 SLP
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom}).slice(0, 10);

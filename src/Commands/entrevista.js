@@ -46,7 +46,7 @@ module.exports = new Command({
 				let divisor=users[ii]['days']>=limit_prom?limit_prom:users[ii]['days']
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/divisor)
 			}
-			users=users.filter(u => u.slp_prom>0 && (u.nota == 'entrevista'))
+			users=users.filter((u.nota == 'entrevista'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
 			let aprobar=''
 			let nuevos=''
