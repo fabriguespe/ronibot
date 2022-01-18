@@ -24,7 +24,7 @@ module.exports = new Command({
 				armado[key]=value
 				let values={ $set: armado }
 				await db.collection("users").updateOne({ accountAddress:quien},values )
-				message.channel.send('El jugador fue actualizado con exito')
+				message.channel.send('El jugador ***#'+elnum+'*** fue actualizado con exito')
 				
 			}
 		}else if(args[1]=='all'){
