@@ -19,11 +19,11 @@ module.exports = new Command({
 				await utils.cambiarEstado(quien.num,quien.nota,'aprobado',message)
 				if(!quien.discord){//old auth
 					let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
-					let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a "+quien.name+"(#"+quien.num+")\nYa puedes escribir !roni para validarte").setColor('GREEN').setTimestamp()
+					let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a <@"+quien.discord+"> "+quien.name+"(#"+quien.num+")\nYa puedes escribir !roni para validarte").setColor('GREEN').setTimestamp()
 					rCanal.send({content: ` `,embeds: [embed]})
 				}else{//new auth	
 					let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal general
-					let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a "+quien.name+"(#"+quien.num+")\nYa eres parte de la academia").setColor('GREEN').setTimestamp()
+					let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a <@"+quien.discord+"> "+quien.name+"(#"+quien.num+")\nYa eres parte de la academia").setColor('GREEN').setTimestamp()
 					rCanal.send({content: ` `,embeds: [embed]})
 				}
 			}
