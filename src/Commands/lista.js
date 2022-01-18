@@ -19,6 +19,7 @@ module.exports = new Command({
 			let limit_prom=args[1]?parseInt(args[1]):3
 			for(let ii in users){
 				let eluser=users[ii]
+				console.log(eluser.num,eluser.nota)
 				if(!utils.esFabri(message) && utils.esPro(eluser.num))continue
 				users[ii]['mmr_sum']=0
 				users[ii]['slp_sum']=0
@@ -56,7 +57,7 @@ module.exports = new Command({
 			for(let ii in users){
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
-				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')\n'
+				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')'+user.nota+'\n'
 				if(user.nota && (user.nota.toLowerCase().includes('retir') || user.nota.toLowerCase().includes('vac') || user.nota.toLowerCase().includes('entrevist')))continue
 				
 				proms.slp_sum+=user.slp_prom

@@ -11,18 +11,22 @@ module.exports = new Command({
 	
 		let db = await DbConnection.Get();
 		if(args.length==4){	
-            let quien=await utils.getWalletByNum(args[1])
-			let key=args[2]
-			if(key=='wallet')key='scholarPayoutAddress'
-			let value=args[3]
-			if(value=='nota')return message.channel.send('El estado debe actualizarse con los procesos')
-			let armado={}
-			armado[key]=value
-			let values={ $set: armado }
-			await db.collection("users").updateOne({ accountAddress:quien},values )
-			message.channel.send('El jugador fue actualizado con exito')
-			//let rCanal = message.guild.channels.cache.find(c => c.id == 917380557099380816);//canal ingresos
-			//if(value=='aprobada')rCanal.send('El jugador fue actualizado con exito')
+			
+			let ids=args[1].split(",");
+			for(let i in ids){
+				let elnum=ids[i]
+				let quien=await utils.getWalletByNum(elnum)
+				let key=args[2]
+				if(key=='wallet')key='scholarPayoutAddress'
+				let value=args[3]
+				if(!utils.esFabri(message) && value=='nota')return message.channel.send('El estado debe actualizarse con los procesos')
+				let armado={}
+				armado[key]=value
+				let values={ $set: armado }
+				await db.collection("users").updateOne({ accountAddress:quien},values )
+				message.channel.send('El jugador fue actualizado con exito')
+				
+			}
 		}else if(args[1]=='all'){
 			if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
 			let users=await db.collection('users-db').find({}).toArray()
