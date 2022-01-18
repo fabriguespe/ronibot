@@ -277,7 +277,6 @@ module.exports = {
             if(tr_raw.status)return tr_raw.transactionHash
             else return false          
         }catch(e){
-            if(e.message.includes('ERROR:Transaction has been reverted by the EVM'))e.message='Transaction has been reverted by the EVM'
             this.log("ERROR:"+e.message,message)
         }
     },
@@ -441,6 +440,7 @@ module.exports = {
         return false
     },
     log:function (log,message=null){
+        if(message.includes('ERROR:Transaction has been reverted by the EVM'))message='Transaction has been reverted by the EVM')
         logger.debug(log)
         console.log(log)
         if(message)message.channel.send(log)
