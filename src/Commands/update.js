@@ -6,10 +6,12 @@ var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 var utils = require(path.resolve(__dirname, "../utils.js"));
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
+const spawn = require('child_process').spawn;
 module.exports = new Command({
 	name: "update"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.channel.send('No tienes permisos para correr este comando')
+		console.log(args)
 		if(args.length==4){	
             let quien=await utils.getWalletByNum(args[1])
 			let key=args[2]
@@ -36,18 +38,7 @@ module.exports = new Command({
 					let db = await DbConnection.Get();
 					var myquery = { num:user.num };
 					let find=await db.collection("users").findOne(myquery)
-					if(find){
-						var newvalues = { $set: {
-							name: user.name,
-							scholarPayoutAddress: user.scholarPayoutAddress,
-							/*nota: user.nota,*/
-							pass: user.pass,
-							ingreso: user.ingreso,
-							referido: user.referido,
-							estado: user.estado
-						}};
-						await db.collection("users").updateOne(myquery, newvalues)
-					}else{
+					if(!find){
 						await db.collection("users").insertOne(user)
 					}
 					console.log(user.num)
