@@ -70,6 +70,8 @@ module.exports = new Command({
 					let log=stats[j]
 					console.log(log)
 					if(log.type=='status_change')help+='El '+log.date+' se cambio el estado a ***'+log.status+'***\n'
+					else if(log.type=='slp_claim')help+='El '+log.date+' se hizo un claim de ***'+log.slp+'*** SLP\n'
+					else if(log.type=='slp_jugador')help+='El '+log.date+' se retiraron ***'+log.slp+'*** SLP\n'
 				}
 				exampleEmbed.addFields(
 					{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
