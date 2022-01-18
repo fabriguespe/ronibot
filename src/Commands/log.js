@@ -17,7 +17,7 @@ module.exports = new Command({
 			
 		if(args[1]=='pagos'){
 			let query=args[2]?{type:args[2]}:{$or:[{type:'slp_jugador'},{type:'slp_ronimate'}]}
-			let stats = await db.collection('log').find(query,  { sort: { timestamp: -1 } }).toArray();
+			let stats = await db.collection('log').find(query,  { sort: { timestamp: 1 } }).toArray();
 			let data_por_dia=[]
 			
 			for(let i in stats){
