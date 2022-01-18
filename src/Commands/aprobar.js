@@ -11,16 +11,21 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
 		if(args.length==2){	
-            let quien=await utils.getUserByNum(args[1])
-			await utils.cambiarEstado(quien.num,quien.nota,'aprobado',message)
-			if(!quien.discord){//old auth
-				let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
-				let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a "+quien.name+"(#"+quien.num+")\nYa puedes escribir !roni para validarte").setColor('GREEN').setTimestamp()
-				rCanal.send({content: ` `,embeds: [embed]})
-			}else{//new auth	
-				let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal general
-				let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a "+quien.name+"(#"+quien.num+")\nYa eres parte de la academia").setColor('GREEN').setTimestamp()
-				rCanal.send({content: ` `,embeds: [embed]})
+			
+			let ids=args[1].split(",");
+			for(let i in ids){
+				let el_num=ids[i]
+				let quien=await utils.getUserByNum(el_num)
+				await utils.cambiarEstado(quien.num,quien.nota,'aprobado',message)
+				if(!quien.discord){//old auth
+					let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
+					let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a "+quien.name+"(#"+quien.num+")\nYa puedes escribir !roni para validarte").setColor('GREEN').setTimestamp()
+					rCanal.send({content: ` `,embeds: [embed]})
+				}else{//new auth	
+					let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal general
+					let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a "+quien.name+"(#"+quien.num+")\nYa eres parte de la academia").setColor('GREEN').setTimestamp()
+					rCanal.send({content: ` `,embeds: [embed]})
+				}
 			}
 		}
 	}
