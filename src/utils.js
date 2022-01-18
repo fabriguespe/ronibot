@@ -440,7 +440,7 @@ module.exports = {
         return false
     },
     log:function (log,message=null){
-        if(message.includes('ERROR:Transaction has been reverted by the EVM'))message='Transaction has been reverted by the EVM')
+        if(message && message.includes('ERROR:Transaction has been reverted by the EVM'))message='Transaction has been reverted by the EVM'
         logger.debug(log)
         console.log(log)
         if(message)message.channel.send(log)
