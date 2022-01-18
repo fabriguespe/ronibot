@@ -44,7 +44,7 @@ client.on("ready", message => {
 	scheduledMessage.start()
 
 	scheduledMessage = new cron.CronJob('20 0 * * *', () => {
-		let rCanal = message.channels.cache.find(c => c.id == 867150874912882688);//ranking en anuncios
+		let rCanal = message.channels.cache.find(c => c.id == 904491832556265502);//ranking en anuncios
 		rCanal.send("@here" + "Hola a todos! Este es el ranking el día")
 		rCanal.send('!diario')
 
