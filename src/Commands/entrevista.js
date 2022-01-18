@@ -46,7 +46,7 @@ module.exports = new Command({
 				let divisor=users[ii]['days']>=limit_prom?limit_prom:users[ii]['days']
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/divisor)
 			}
-			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
+			users=users.filter(u => u.slp_prom>0 && (u.nota == 'entrevista'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
 			let aprobar=''
 			let nuevos=''
@@ -57,25 +57,23 @@ module.exports = new Command({
 			
 			for(let ii in top){
 				let user=top[ii]
-				if(user.nota && user.nota.toLowerCase().includes('entrevist')){
-					if(user.name)user.name=user.name.replaceAll('*','')
-					let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')'+'('+user.days+')\n'
-					let aprobado=85
-					if(user.days<3){//FASE 1
-						nuevos+=value
-					}else if(user.days==3){//FASE 1
-						if(user.slp_prom<50)retirar+=value
-						else if(user.slp_prom>=50 && user.slp_prom<=aprobado)evaluar+=value
-						else if(user.slp_prom>aprobado)aprobar+=value
-					}else if(user.days<=7){//FASE 2
-						if(user.slp_prom<75)retirar+=value
-						else if(user.slp_prom>=75 && user.slp_prom<=aprobado)evaluar+=value
-						else if(user.slp_prom>aprobado)aprobar+=value
-					}else if(user.days<=14){// FASE 3
-						if(user.slp_prom<aprobado)retirar+=value
-						else if(user.slp_prom>=aprobado)aprobar+=value
-					}else fin+=value
-				}
+				if(user.name)user.name=user.name.replaceAll('*','')
+				let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')'+'('+user.days+')\n'
+				let aprobado=85
+				if(user.days<3){//FASE 1
+					nuevos+=value
+				}else if(user.days==3){//FASE 1
+					if(user.slp_prom<50)retirar+=value
+					else if(user.slp_prom>=50 && user.slp_prom<=aprobado)evaluar+=value
+					else if(user.slp_prom>aprobado)aprobar+=value
+				}else if(user.days<=7){//FASE 2
+					if(user.slp_prom<75)retirar+=value
+					else if(user.slp_prom>=75 && user.slp_prom<=aprobado)evaluar+=value
+					else if(user.slp_prom>aprobado)aprobar+=value
+				}else if(user.days<=14){// FASE 3
+					if(user.slp_prom<aprobado)retirar+=value
+					else if(user.slp_prom>=aprobado)aprobar+=value
+				}else fin+=value
 			}
 			embed = new MessageEmbed().setTitle("Nuevos").setDescription(nuevos).setColor('WHITE').setFooter( 'PROM SLP - COPAS - DIAS')
 			message.channel.send({content: ` `,embeds: [embed]})

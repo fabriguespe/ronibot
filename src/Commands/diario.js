@@ -52,7 +52,8 @@ module.exports = new Command({
 				users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
 			}
 
-			users=users.filter(u => u.slp>0 && (u.nota == 'aprobado'))
+
+			users=users.filter(u => u.slp_prom>0 && (u.nota == 'aprobado'))
 
 			//Top 10 SLP
 			let top=users.sort(function(a, b) {return b.slp - a.slp})/*.slice(0, 10);*/
