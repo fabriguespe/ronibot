@@ -80,7 +80,7 @@ module.exports = new Command({
 				)
 				message.channel.send({ embeds: [exampleEmbed] });
 
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
+				stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 				
 				data={days:[],slp:[],mmr:[]}
