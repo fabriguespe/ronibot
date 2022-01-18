@@ -22,7 +22,6 @@ module.exports = new Command({
 			
 			for(let i in stats){
 				let undia=stats[i]
-				if(!undia.timestamp)continue
 				let fecha=utils.getPaymentName(undia.date)
 				if(!data_por_dia[fecha])data_por_dia[fecha]={}
 				if(!data_por_dia[fecha][undia.type])data_por_dia[fecha][undia.type]={date:fecha,slp:0,cant:0}
