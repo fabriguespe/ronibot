@@ -64,9 +64,11 @@ module.exports = new Command({
 				
 
 				let stats = await db.collection('log').find({num:eluser.num},  { sort: { timestamp: -1 } }).toArray();
-				let help=''
+				let help='No hay'
 				for(let j in stats){
+					if(j==0)help=''
 					let log=stats[j]
+					console.log(log)
 					help+=log.date+' '+log.status
 				}
 				exampleEmbed.addFields(
@@ -76,7 +78,7 @@ module.exports = new Command({
 					/*{ name: 'Pass', value: ''+eluser.pass,inline:true},
 					{ name: 'Email', value: ''+eluser.correo,inline:true},*/
 					{ name: 'Binance', value: ''+eluser.scholarPayoutAddress},
-					{ name: 'Estados', value: ''+help},
+					{ name: 'Registros', value: ''+help},
 				)
 				message.channel.send({ embeds: [exampleEmbed] });
 
