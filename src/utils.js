@@ -195,12 +195,13 @@ module.exports = {
         let obj={nota:estado}
         if(estado.includes('retir'))obj['discord']=null
         await db.collection("users").updateOne({ num:num},{ $set: obj } )
-        message.channel.send('El estado del jugador fue cambiado a ***'+estado+'*** con exito')
         await db.collection('log').insertOne({type:'status_change',timestamp:this.timestamp_log(),date:this.date_log(), old_status:old_estado, status:estado,num:num})
         
         if(num){
+            let help="El estado del jugador #"+num+" fue cambiado a ***"+estado+"***"
+            message.channel.send(help)
             let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
-            rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription("El estado del jugador #"+num+" fue cambiado a ***"+estado+"***").setColor('GREEN').setTimestamp()]})
+            rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription(help).setColor('GREEN').setTimestamp()]})
         }
     },
     transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
