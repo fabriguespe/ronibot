@@ -69,7 +69,7 @@ module.exports = new Command({
 					if(j==0)help=''
 					let log=stats[j]
 					console.log(log)
-					help+='El '+log.date+' se cambio el estado a ***'+log.status+'***'
+					if(log.type=='status_change')help+='El '+log.date+' se cambio el estado a ***'+log.status+'***\n'
 				}
 				exampleEmbed.addFields(
 					{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
