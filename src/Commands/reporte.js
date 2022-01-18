@@ -68,7 +68,6 @@ module.exports = new Command({
 				for(let j in stats){
 					if(j==0)help=''
 					let log=stats[j]
-					console.log(log)
 					if(log.type=='status_change')help+='El '+log.date+' se cambio el estado a ***'+log.status+'***\n'
 					else if(log.type=='slp_claim')help+='El '+log.date+' se hizo un claim de ***'+log.slp+'*** SLP\n'
 					else if(log.type=='slp_jugador')help+='El '+log.date+' se retiraron ***'+log.slp+'*** SLP\n'
