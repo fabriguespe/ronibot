@@ -19,7 +19,7 @@ module.exports = new Command({
 			let users = await db.collection('users').find().toArray()
 			for(let ii in users){
 				let eluser=users[ii]
-				//if(!utils.esFabri(message) && utils.esPro(eluser.num))continue
+				if(!utils.esFabri(message) && utils.esPro(eluser.num))continue
 				users[ii]['mmr_sum']=0
 				users[ii]['slp_sum']=0
 				users[ii]['slp_prom']=0
@@ -52,7 +52,7 @@ module.exports = new Command({
 				users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
 			}
 
-			users=users.filter(u => u.slp>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
+			users=users.filter(u => u.slp>0 && (u.nota == 'aprobado'))
 
 			//Top 10 SLP
 			let top=users.sort(function(a, b) {return b.slp - a.slp})/*.slice(0, 10);*/
