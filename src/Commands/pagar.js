@@ -18,6 +18,8 @@ module.exports = new Command({
             to_acc=!args[3]?await utils.getWalletByNum("BREED"):args[3].length<=15?await utils.getWalletByNum(args[3]):args[3]
                 
             from_acc=from_acc.replace('ronin:','0x')
+            to_acc=from_acc.replace('ronin:','0x')
+            
             let t1=await utils.transfer(from_acc,to_acc,slp,message)
             if(t1){
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
