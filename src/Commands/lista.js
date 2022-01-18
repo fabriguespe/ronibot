@@ -58,7 +58,7 @@ module.exports = new Command({
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
 				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')\n'
-				if(args[1]!='all' && !user.nota || !user.nota.toLowerCase().includes('aprobado'))continue
+				if(args[1]!='all' || !user.nota || !user.nota.toLowerCase().includes('aprobado'))continue
 				
 				proms.slp_sum+=user.slp_prom
 				proms.mmr_sum+=user.mmr
