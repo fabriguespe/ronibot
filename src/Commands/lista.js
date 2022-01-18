@@ -49,7 +49,6 @@ module.exports = new Command({
 
 			}
 			let tipo=args[2]
-			//users=users.filter(u => u.slp_prom>0 && (u.nota == null || u.nota == undefined || u.nota == 'aprobada'))
 			users=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
 			let colores={GREEN:'',YELLOW:'',ORANGE:'',RED:'',BLACK:''}
 			let numcolores={GREEN:0,YELLOW:0,ORANGE:0,RED:0,BLACK:0}
