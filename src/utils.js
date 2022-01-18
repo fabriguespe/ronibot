@@ -183,7 +183,7 @@ module.exports = {
             return fallo
              
         }catch(e){
-            this.log("ERROR: "+e.message,message)
+            if(e.message.includes('ERROR:Transaction has been reverted by the EVM'))e.message='Transaction has been reverted by the EVM'
         }
     },timestamp_log:function(){
         return new Date(Date.now())
@@ -285,8 +285,7 @@ module.exports = {
 
             let from_acc=currentUser.accountAddress
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
-            from_acc=from_acc.replace('ronin:','0x')
-            let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
+            from_acc=from_acc.replace('ronin:','0x')  
 
             let data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
             let ronin_slp= data.ronin_slp
@@ -440,7 +439,7 @@ module.exports = {
         return false
     },
     log:function (log,message=null){
-        if(message && message.includes('ERROR:Transaction has been reverted by the EVM'))message='Transaction has been reverted by the EVM'
+        if(log && log.includes('ERROR:Transaction has been reverted by the EVM'))log='ERROR: Transaction has been reverted by the EVM'
         logger.debug(log)
         console.log(log)
         if(message)message.channel.send(log)
