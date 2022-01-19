@@ -17,6 +17,8 @@ module.exports = new Command({
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find().toArray()
 			let limit_prom=args[1]?parseInt(args[1]):3
+			let tipo=args[2]
+			
 			for(let ii in users){
 				let eluser=users[ii]
 				console.log(eluser.num,eluser.nota)
@@ -48,7 +50,6 @@ module.exports = new Command({
 				if(users[ii]['mmr_sum']>0 && users[ii]['stat_count']>0)users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
 
 			}
-			let tipo=args[2]
 			users=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
 			let colores={GREEN:'',YELLOW:'',ORANGE:'',RED:'',BLACK:''}
 			let numcolores={GREEN:0,YELLOW:0,ORANGE:0,RED:0,BLACK:0}
@@ -97,6 +98,8 @@ module.exports = new Command({
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
 
+			if(tipo)return //vuelve si no tiene nada mas
+			
 			let exampleEmbed = new MessageEmbed().setColor('#0099ff')
 			exampleEmbed = exampleEmbed.addFields(
 				{ name: 'Precio SLP', value: ''+slp_price,inline:true},
@@ -115,17 +118,16 @@ module.exports = new Command({
 			}
 			message.channel.send({ embeds: [exampleEmbed] });
 
-			if(!tipo){
 
-				let chart = new QuickChart().setConfig({
-					type: 'pie',
-					data: { 
-						labels: Object.keys(pie_chart),
-						datasets:[{label: 'SLP', data: Object.values(pie_chart)}] 
-					},
-				}).setWidth(800).setHeight(400);
-				message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
-			}
+			let chart = new QuickChart().setConfig({
+				type: 'pie',
+				data: { 
+					labels: Object.keys(pie_chart),
+					datasets:[{label: 'SLP', data: Object.values(pie_chart)}] 
+				},
+			}).setWidth(800).setHeight(400);
+			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+			
 
 
 

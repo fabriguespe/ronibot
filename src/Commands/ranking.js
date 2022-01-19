@@ -49,8 +49,6 @@ module.exports = new Command({
 				
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])
 				users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
-				
-
 			}
 			users=users.filter(u => /*u.slp_prom>0 &&*/ (u.nota == 'aprobado'))
 			
