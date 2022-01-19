@@ -15,6 +15,8 @@ module.exports = new Command({
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
+			let query={nota:'aprobado'}
+			if(args[1]='all')query={}
 			let users = await db.collection('users').find({nota:'aprobado'}).toArray()
 			let limit_prom=args[1]?parseInt(args[1]):3
 			let tipo=args[2]
@@ -58,7 +60,6 @@ module.exports = new Command({
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
 				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')'+(args[1]=='all'?user.nota:'')+'\n'
-				//if(args[1]!='all' && (!user.nota || !user.nota == 'aprobado'))continue
 				
 				proms.slp_sum+=user.slp_prom
 				proms.mmr_sum+=user.mmr
