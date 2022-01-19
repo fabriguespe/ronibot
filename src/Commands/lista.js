@@ -16,7 +16,7 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let query={nota:'aprobado'}
-			if(args[1]='all')query={}
+			if(args[1]=='all')query={}
 			let users = await db.collection('users').find({nota:'aprobado'}).toArray()
 			let limit_prom=args[1]?parseInt(args[1]):3
 			let tipo=args[2]
