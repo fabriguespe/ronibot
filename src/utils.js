@@ -431,7 +431,7 @@ module.exports = {
     esManager:function(message){
         if(message.author.bot)return true
         let r1=message.guild.roles.cache.find(r => r.name === "Manager")
-        if(r1 && message.member.roles.cache.has(r1.id))return true
+        if(r1 && message.member.roles.cache.has(r1.id) && message.channel.name.includes('comandos'))return true
         return false
     },
     esJugador:function(message){
