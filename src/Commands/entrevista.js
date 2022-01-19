@@ -58,7 +58,9 @@ module.exports = new Command({
 			for(let ii in top){
 				let user=top[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
-				let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+'('+user.mmr+')'+'('+user.days+')\n'
+				let valores=user.slp_prom+'('+user.mmr+')'+'('+user.days
+				if(!user.slp_prom)valores=' No empezó'
+				let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+valores+')\n'
 				let aprobado=85
 				if(user.days<3){//FASE 1
 					nuevos+=value
