@@ -53,7 +53,7 @@ module.exports = new Command({
 			}
 
 
-			users=users.filter(u => (utils.esFabri(message) && !utils.esPro(u.num)) ||  (u.nota == 'aprobado'))
+			users=users.filter(u => (!utils.esPro(u.num)) ||  (u.nota == 'aprobado'))
 
 			//Top 10 SLP
 			let top=users.sort(function(a, b) {return b.slp - a.slp})/*.slice(0, 10);*/
