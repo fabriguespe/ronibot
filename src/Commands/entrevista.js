@@ -77,6 +77,7 @@ module.exports = new Command({
 					else if(user.slp_prom>=aprobado)aprobar+=value
 				}else fin+=value
 			}
+			
 			embed = new MessageEmbed().setTitle("Nuevos").setDescription(nuevos).setColor('WHITE').setFooter( 'PROM SLP - COPAS - DIAS')
 			message.channel.send({content: ` `,embeds: [embed]})
 			embed = new MessageEmbed().setTitle("Aprobar").setDescription(aprobar).setColor('GREEN').setFooter( 'PROM SLP - COPAS - DIAS')
