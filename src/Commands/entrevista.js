@@ -15,7 +15,7 @@ module.exports = new Command({
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
-			let users = await db.collection('users').find().toArray()
+			let users = await db.collection('users').find({nota:'entrevista'}).toArray()
 			let limit_prom=args[1]?parseInt(args[1]):3
 			for(let ii in users){
 				let eluser=users[ii]
@@ -46,7 +46,6 @@ module.exports = new Command({
 				let divisor=users[ii]['days']>=limit_prom?limit_prom:users[ii]['days']
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/divisor)
 			}
-			users=users.filter(u => /*u.slp_prom>0 &&*/ u.nota && u.nota.includes('entrevist'))
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
 			let aprobar=''
 			let nuevos=''
