@@ -344,9 +344,9 @@ module.exports = {
             let bono=20
             let min=15/2/slp_price*(1+(bono/100))
             if(arecibir<min)bono=30
-            let min=15/2/slp_price*(1+(bono/100))
+            min=15/2/slp_price*(1+(bono/100))
             if(arecibir<min)bono=40
-            let min=15/2/slp_price*(1+(bono/100))
+            min=15/2/slp_price*(1+(bono/100))
             if(arecibir<min)bono=50
             
             if(bono>0){
