@@ -21,7 +21,10 @@ module.exports = new Command({
                 let to_acc=(user_to && user_to.accountAddress?user_to.accountAddress:user_to)
                 let num_from=(user_from && user_from.num)?user_from.num:args[1]
                 let num_to=(user_to && user_to.num)?user_to.num:args[2]
-
+                
+                //build
+                let axies_to=await utils.getAxiesIds(from_acc)
+                if(axies_to.length>0)return message.channel.send(`La cuenta destino ya tiene axies!`);
                 //Data
                 if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
                 from_acc=from_acc.replace('ronin:','0x')
