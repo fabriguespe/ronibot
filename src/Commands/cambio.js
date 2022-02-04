@@ -21,14 +21,19 @@ module.exports = new Command({
             let num_from=(user_from && user_from.num)?user_from.num:args[2]
             let num_to=(user_to && user_to.num)?user_to.num:args[3]
 
-            let axie_id=args[1]
-            //Data
-            console.log(from_acc,to_acc)
+            
             if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
+            
+            
+            let axies_ids=args[1].split(",");
+            for(let i in axies_ids){
+                let axie_id=axies_ids[i]
+                await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
+            }
+            utils.log("Listo!",message);
 
-            await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
            
         }else{
 
