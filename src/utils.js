@@ -322,7 +322,7 @@ module.exports = {
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
             let prom=Math.round(unclaimed/days)
             let porcetage=prom<=50?20:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
-            
+            let arecibir=Math.round(unclaimed/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             embed.addFields(
                 //{ name: 'Precio', value: ''+slp+'USD'},
@@ -336,10 +336,19 @@ module.exports = {
                 { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Dias', value: ''+days,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
-                { name: 'A recibir', value: ''+Math.round(unclaimed/(100/porcetage)),inline:true},
+                { name: 'A recibir', value: ''+arecibir,inline:true},
             )
 
-            let bono=10
+			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
+			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
+            let bono=20
+            let min=15/2/slp_price*(1+(bono/100))
+            if(arecibir<min)bono=30
+            let min=15/2/slp_price*(1+(bono/100))
+            if(arecibir<min)bono=40
+            let min=15/2/slp_price*(1+(bono/100))
+            if(arecibir<min)bono=50
+            
             if(bono>0){
                 embed.addFields(
                     { name: 'Gracias!', value: '😀',inline:true},

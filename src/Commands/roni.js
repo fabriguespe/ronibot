@@ -45,7 +45,7 @@ module.exports = new Command({
 			if(temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
-			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
+			//row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
 		}else if(currentUser && currentUser.nota.includes('entrevist')){
 			row.addComponents(new MessageButton().setCustomId('ver_datos').setLabel('🔑 Ver mis datos').setStyle('SUCCESS'));
 		} else{
