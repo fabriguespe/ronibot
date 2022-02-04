@@ -37,7 +37,7 @@ module.exports = new Command({
            
         }else{
 
-            return message.channel.send(`${args[0]} is not a valid command!`);
+            return message.channel.send(`${args[0]} incorrectos parametros, se requieren 4!`);
         }
 
 	}
