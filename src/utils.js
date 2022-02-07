@@ -383,8 +383,6 @@ module.exports = {
         setTimeout(() => { message.channel.delete()}, 3000)
     },
     ver_datos:async function(currentUser,message){
-        //let embed = new MessageEmbed().setTitle('Datos de acceso').setDescription("Email: manager+"+currentUser.num+"@ronimate.xyz\nPassword: "+currentUser.pass+"\nEste canal se cerrara en 20 segundos.").setColor('GREEN').setTimestamp()
-        //message.channel.send({content: ` `,embeds: [embed]})
         message.channel.send('Datos de acceso')
         message.channel.send("Email: manager+"+currentUser.num+"@ronimate.xyz")
         message.channel.send("Password: "+currentUser.pass)
