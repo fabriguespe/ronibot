@@ -38,7 +38,7 @@ module.exports = new Command({
 					pushed.url= 'https://marketplace.axieinfinity.com/axie/'+axie.id
 					pushed.hijos=axie.breedCount
 					pushed.image=axie.image
-					pushed.tipo=axie.class=='Aquatic'?"Pez":axie.class=='Beast'?"Bestia":axie.class=='Plant'?"Planta":"Otro"
+					pushed.tipo=axie.class
 					let espalda=axie.parts.find(x => x.type == "Back").name
 					let boca=axie.parts.find(x => x.type == "Mouth").name
 					let cuerno=axie.parts.find(x => x.type == "Horn").name
