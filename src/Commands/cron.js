@@ -28,44 +28,43 @@ module.exports = new Command({
 				utils.log(e.message,message)
 			}
 
-		}if(args[1]=='stats'){
+		}else if(args[1]=='stats'){
 			let db = await DbConnection.Get();
+			let new_data=[]
 			let users=await db.collection('users').find({}).toArray()
+			
+			message.channel.send('Se empezara a procesar')
 			try{
-				message.channel.send('Se empezara a procesar')
-				for( let ii in [13,14,15]){
-
-					for(let i in users){
-						let user=users[i]
-						if(user.num!="43")continue
-						url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
-						let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-						data.accountAddress=user.accountAddress
-						data.user_id=user._id
-						
-						data.timestamp = new Date("12/"+[13,14,15][ii]+"/2021");
-						data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
-						
-						let stats = await db.collection('stats').find({accountAddress:user.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
-						stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
-						let ultimo=stats[stats.length-1]
-						let ante=stats[stats.length-2]
-						let anteante=stats[stats.length-3]
-						if(anteante && ante){
-							let dif=ante.in_game_slp-anteante.in_game_slp
-							data.in_game_slp=ultimo.in_game_slp+dif
-							console.log(dif,data.in_game_slp)
-							await db.collection('stats').insertOne(data)
-						}
-					}
+				for(let i in users){
+					let user=users[i]
+					url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
+					let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+					data.accountAddress=user.accountAddress
+					data.user_id=user._id
+					data.last_updated=user.last_updated
+					data.num=user.num
+					console.log(data.num)
+					data.timestamp = new Date();
+					data.timestamp.setDate(data.timestamp.getDate() - 1)
+					data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
+					new_data.push(data)
+		
+					
+					await db.collection('stats').insertOne(data)
 				}
-				
 			}catch (e) {
 				utils.log(e)
 			}
+				
 		
 			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 	
+		}else if(args[1]=='jeje'){
+			let msg=''
+			for(let i=32;i<=307;i++){
+				msg+=i+','
+			}
+			return message.channel.send(msg);
 		}
 	}
 });

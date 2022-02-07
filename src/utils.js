@@ -343,12 +343,12 @@ module.exports = {
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
             let bono=10
             let min=15/2/slp_price*(1+(bono/100))
-            if(arecibir<min)bono=30
+            /*if(arecibir<min)bono=30
             min=15/2/slp_price*(1+(bono/100))
             if(arecibir<min)bono=40
             min=15/2/slp_price*(1+(bono/100))
             if(arecibir<min)bono=50
-            
+            */
             if(bono>0){
                 embed.addFields(
                     { name: 'Gracias!', value: '😀',inline:true},
@@ -449,6 +449,7 @@ module.exports = {
         return false
     },
     log:function (log,message=null){
+        console.log(log)
         if(log && log.includes('ERROR:Transaction has been reverted by the EVM'))log='ERROR: Transaction has been reverted by the EVM'
         logger.debug(log)
         console.log(log)
