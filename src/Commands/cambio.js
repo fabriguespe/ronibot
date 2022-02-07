@@ -10,9 +10,8 @@ module.exports = new Command({
 	name: "cambio"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
-        if(args.length==3){
-
-        //IDs
+        console.log(args.length)
+        if(args.length==4){
             let user_from=await utils.getUserByNum(args[2])
             let user_to=await utils.getUserByNum(args[3])
             
@@ -35,9 +34,6 @@ module.exports = new Command({
             utils.log("Listo!",message);
 
            
-        }else{
-
-            return message.channel.send(`${args[0]} incorrectos parametros, se requieren 4!`);
         }
 
 	}
