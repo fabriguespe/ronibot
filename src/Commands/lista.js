@@ -15,7 +15,7 @@ module.exports = new Command({
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
-			let query={nota:'aprobado'}
+			let query={nota:args[1]=='pro'?'pro':'aprobado'}
 			if(args[1]=='all')query={}
 			let users = await db.collection('users').find(query).toArray()
 			let limit_prom=args[1]?parseInt(args[1]):3
@@ -23,8 +23,6 @@ module.exports = new Command({
 			
 			for(let ii in users){
 				let eluser=users[ii]
-				console.log(eluser.num,eluser.nota)
-				if(!utils.esFabri(message) && utils.esPro(eluser.num))continue
 				users[ii]['mmr_sum']=0
 				users[ii]['slp_sum']=0
 				users[ii]['slp_prom']=0

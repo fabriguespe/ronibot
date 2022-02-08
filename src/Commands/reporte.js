@@ -15,14 +15,19 @@ module.exports = new Command({
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
 			let db = await DbConnection.Get();
+			let data=''
 			let eluser = await db.collection('users').findOne({num:args[1]})
 			if(!eluser)return utils.log('usuario no encontrado',message)
 			
 
 			if(args.length==2){
-				url = "https://game-api.axie.technology/api/v1/"+eluser.accountAddress;
-				let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-			
+				try{
+					url = "https://game-api.axie.technology/api/v1/"+eluser.accountAddress;
+					let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+				}catch(e){
+					utils.log(e)
+				}
+				
 				url = `https://graphql-gateway.axieinfinity.com/graphql`;
 				query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
 				"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
