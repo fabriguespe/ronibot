@@ -277,22 +277,16 @@ module.exports = {
             this.log("ERROR:"+e.message,message)
         }
     },
+
     getSLP:async function(currentUser,message){
         try{
 
             let from_acc=currentUser.accountAddress
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')  
+            let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});            let unclaimed=jdata.total
 
-            let data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-            let ronin_slp= data.ronin_slp
-            //let random_msg=await this.create_random_msg()
-            //let jwt=await this.get_jwt(from_acc,random_msg,from_private)
-            let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});
-
-            let unclaimed=jdata.total
-
-            return {ronin_slp:ronin_slp,unclaimed:unclaimed}
+            return jdata.total
 
         }catch(e){
             this.log("ERROR: "+e.message,message)

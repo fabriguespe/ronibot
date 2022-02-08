@@ -28,6 +28,12 @@ module.exports = new Command({
 				utils.log(e.message,message)
 			}
 
+		}else if(args[1]=='api'){
+
+			let currentUser=await utils.getUserByNum(args[2])
+			let slp=await utils.getSLP(currentUser,message)
+			console.log(slp)
+
 		}else if(args[1]=='stats'){
 			let db = await DbConnection.Get();
 			let new_data=[]
@@ -37,6 +43,7 @@ module.exports = new Command({
 			try{
 				for(let i in users){
 					let user=users[i]
+					
 					url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
 					let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
 					data.accountAddress=user.accountAddress
