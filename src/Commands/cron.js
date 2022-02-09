@@ -29,17 +29,17 @@ module.exports = new Command({
 			}
 
 		}else if(args[1]=='api'){
-
 			let currentUser=await utils.getUserByNum(args[2])
-			let slp=await utils.getSLP(currentUser,message)
-			console.log(slp)
-
+			let slp=await utils.getSLP(currentUser.accountAddress,message)
+			let balance=await utils.balance(currentUser.accountAddress,'slp')
+			console.log(slp,balance)
 		}else if(args[1]=='stats'){
+
 			let db = await DbConnection.Get();
 			let new_data=[]
 			let users=await db.collection('users').find({}).toArray()
-			
 			message.channel.send('Se empezara a procesar')
+			
 			try{
 				for(let i in users){
 					let user=users[i]

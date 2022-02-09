@@ -3,6 +3,7 @@ const path = require('path');
 var secrets = require(path.resolve(__dirname, "./Data/secrets"));
 const fetch = require( "node-fetch")
 var slp_abi = require(path.resolve(__dirname, "./Data/slp_abi.json"));
+var balance_abi = require(path.resolve(__dirname, "./Data/balance_abi.json"));
 var DbConnection = require(path.resolve(__dirname, "./Data/db.js"));
 const Web3 = require('web3');
 var axie_abi = require(path.resolve(__dirname, "./Data/axie_abi.json"));
@@ -17,6 +18,7 @@ SLP_CONTRACT = "0xa8754b9fa15fc18bb59458815510e40a12cd2014"
 WETH_CONTRACT = "0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5"
 RONIN_PROVIDER_FREE = "https://proxy.roninchain.com/free-gas-rpc"
 RONIN_PROVIDER = "https://api.roninchain.com/rpc"
+
 
 
 var log4js = require("log4js");
@@ -277,11 +279,22 @@ module.exports = {
             this.log("ERROR:"+e.message,message)
         }
     },
-
-    getSLP:async function(currentUser,message){
+    balance:async function(from_acc, token='slp'){
+        let contract = SLP_CONTRACT
+        /*if(token == 'slp') contract = SLP_CONTRACT
+        else if(token == 'axs') contract = AXS_CONTRACT
+        else if(token == "axies")contract = AXIE_CONTRACT
+        else if(token == "weth")contract = WETH_CONTRACT
+        else return 0
+        console.log(token,contract)*/
+        const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER));
+        contract = new web3.eth.Contract(balance_abi,web3.utils.toChecksumAddress(contract))
+        let balance = await  contract.methods.balanceOf( web3.utils.toChecksumAddress(from_acc.replace("ronin:", "0x"))).call()
+        console.log(balance)
+        return balance
+    },
+    getSLP:async function(from_acc,message){
         try{
-
-            let from_acc=currentUser.accountAddress
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')  
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});            let unclaimed=jdata.total
