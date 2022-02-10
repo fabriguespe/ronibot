@@ -49,7 +49,7 @@ client.on("ready", message => {
 		rCanal.send('!diario')
 
 	}, null, true, 'UTC');
-	scheduledMessage.start()
+	//scheduledMessage.start()
 
 	scheduledMessage = new cron.CronJob('0 0 * * 0', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios

@@ -298,8 +298,11 @@ module.exports = {
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')  
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});            let unclaimed=jdata.total
-
-            return jdata.total
+            
+            let balance=jdata.blockchain_related.balance
+            let total=jdata.total-jdata.blockchain_related.balance
+            let obj= {total:total,balance:balance,last_claim:jdata.last_claimed_item_at}
+            return obj
 
         }catch(e){
             this.log("ERROR: "+e.message,message)
@@ -344,7 +347,7 @@ module.exports = {
 
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
-            let bono=10
+            let bono=0
             let min=15/2/slp_price*(1+(bono/100))
             /*if(arecibir<min)bono=30
             min=15/2/slp_price*(1+(bono/100))

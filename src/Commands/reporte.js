@@ -21,12 +21,6 @@ module.exports = new Command({
 			
 
 			if(args.length==2){
-				try{
-					url = "https://game-api.axie.technology/api/v1/"+eluser.accountAddress;
-					let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-				}catch(e){
-					utils.log(e)
-				}
 				
 				url = `https://graphql-gateway.axieinfinity.com/graphql`;
 				query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
@@ -56,12 +50,14 @@ module.exports = new Command({
 				.setColor('#0099ff')
 				.setTitle('Jugador #'+args[1])
 				
+				let slp=await utils.getSLP(currentUser.accountAddress,message)
+
 				exampleEmbed.addFields(
 					//{ name: 'Precio', value: ''+slp+'USD'},
-					{ name: 'SLP Total', value: ''+data.in_game_slp,inline:true},
+					{ name: 'SLP Total', value: ''+slp.total,inline:true},
 					{ name: 'Nombre', value: ''+eluser.name,inline:true},
-					{ name: 'Copas', value: ''+data.mmr,inline:true},
-					{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(data.last_claim),inline:true},
+					/*{ name: 'Copas', value: ''+data.mmr,inline:true},*/
+					{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(slp.last_claim),inline:true},
 					{ name: 'Estado', value: ''+eluser.nota,inline:true},
 					{ name: 'Vacio', value: 'Vacio',inline:true},
 				)
