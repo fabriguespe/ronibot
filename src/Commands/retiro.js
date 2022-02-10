@@ -32,6 +32,7 @@ module.exports = new Command({
 
                 //build
                 let axies=await utils.getAxiesIds(from_acc)
+                if(axies)return message.channel.send(`Failed to get axies!`);
                 for(let i in axies.axies){
                     let axie_id=axies.axies[i].id
                     //Transfer

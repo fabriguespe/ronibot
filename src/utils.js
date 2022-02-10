@@ -314,21 +314,17 @@ module.exports = {
             let from_acc=currentUser.accountAddress
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
 
-            let data= await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1", { method: "Get" }).then(res => res.json()).then((json) => { return json});
-            let unclaimed=data.total
-
-            data= await fetch("https://game-api.axie.technology/api/v1/"+from_acc, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-            unclaimed=data.total>=0?data.total:data.in_game_slp
-
+            let slp=await utils.getSLP(currentUser.accountAddress,message)
+            
             let ahora=new Date().getTime()
             let date_ahora=this.FROM_UNIX_EPOCH(ahora/1000)
-            let date_last_claim=this.FROM_UNIX_EPOCH(data.last_claim)
+            let date_last_claim=this.FROM_UNIX_EPOCH(slp.last_claim)
             let date_next_claim=this.FROM_UNIX_EPOCH(data.next_claim)
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
-            let prom=Math.round(unclaimed/days)
+            let prom=Math.round(slp.total/days)
             let porcetage=prom<=50?20:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
-            let arecibir=Math.round(unclaimed/(100/porcetage))
+            let arecibir=Math.round(slp.total/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             embed.addFields(
                 //{ name: 'Precio', value: ''+slp+'USD'},
@@ -336,9 +332,9 @@ module.exports = {
                 { name: 'Comprobantes', value: 'https://explorer.roninchain.com/address/'+currentUser.accountAddress},
                 { name: 'Fecha actual', value: ''+date_ahora,inline:true},
                 { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
-                { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
+                /*{ name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},*/
                 { name: 'ID', value: ''+currentUser.num,inline:true},
-                { name: 'SLP Unclaimed', value: ''+unclaimed,inline:true},
+                { name: 'SLP Unclaimed', value: ''+slp.total,inline:true},
                 { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Dias', value: ''+days,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
@@ -371,7 +367,7 @@ module.exports = {
 
             porcetage+=bono
             let recibe=Math.round(unclaimed/(100/porcetage))
-            return {unix_ahora:(ahora/1000),unix_prox:data.next_claim,next_claim:data.next_claim,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
+            return {unix_ahora:(ahora/1000),next_claim:data.next_claim,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
 
         }catch(e){
             this.log("ERROR: "+e.message,message)
