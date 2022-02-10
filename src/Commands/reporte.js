@@ -26,7 +26,6 @@ module.exports = new Command({
 				query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
 				"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
 				}`
-				
 				let axies=await fetch(url, { credentials: 'include',method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
 				axies={count:axies.data.axies.total,axies:axies.data.axies.results}
 				let axiesdata=[]
@@ -46,20 +45,19 @@ module.exports = new Command({
 					axiesdata.push(pushed)
 				}
 				
-				const exampleEmbed = new MessageEmbed()
-				.setColor('#0099ff')
-				.setTitle('Jugador #'+args[1])
-				
+				const exampleEmbed = new MessageEmbed().setColor('#0099ff').setTitle('Jugador #'+args[1])
 				let slp=await utils.getSLP(eluser.accountAddress,message)
+
 				exampleEmbed.addFields(
 					//{ name: 'Precio', value: ''+slp+'USD'},
-					{ name: 'SLP Total', value: ''+slp.total,inline:true},
+					{ name: 'SLP Total', value: ''+slp.in_game_slp,inline:true},
 					{ name: 'Nombre', value: ''+eluser.name,inline:true},
-					{ name: 'Copas', value: ''+slp.mmr?slp.mmr:'Error',inline:true},
+					{ name: 'Copas', value: ''+(slp.mmr?slp.mmr:'Error'),inline:true},
 					{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(slp.last_claim),inline:true},
 					{ name: 'Estado', value: ''+eluser.nota,inline:true},
 					{ name: 'Vacio', value: 'Vacio',inline:true},
 				)
+
 				for(let i in axiesdata)exampleEmbed.addFields({ name: axiesdata[i].tipo, value: axiesdata[i].partes.cola+'\n'+axiesdata[i].partes.espalda+'\n'+axiesdata[i].partes.cuerno+'\n'+axiesdata[i].partes.boca+'\n'+'[Link]('+axiesdata[i].url+")",inline:true})
 				
 

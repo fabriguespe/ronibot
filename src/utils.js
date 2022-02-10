@@ -297,20 +297,20 @@ module.exports = {
         try{
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')  
+            let data={}
+           /* if(!cache){
+                let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});           
+                let balance=jdata.blockchain_related.balance
+                let total=jdata.total-jdata.blockchain_related.balance
+                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,next_claim:jdata.last_claimed_item_at}
+            }else{*/
 
-            let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});           
-            let balance=jdata.blockchain_related.balance
-            let total=jdata.total-jdata.blockchain_related.balance
-            let data= {total:total,balance:balance,last_claim:jdata.last_claimed_item_at}
+            url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
+            data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
 
-            /*
-            try{
-                url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
-                data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+             console.log(data)
+           /* }*/
 
-            }catch(e){
-                utils.log(e)
-            }*/
             return data
 
         }catch(e){
@@ -323,17 +323,17 @@ module.exports = {
             let from_acc=currentUser.accountAddress
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
 
-            let slp=await utils.getSLP(currentUser.accountAddress,message)
+            let data=await utils.getSLP(currentUser.accountAddress,message)
             
             let ahora=new Date().getTime()
             let date_ahora=this.FROM_UNIX_EPOCH(ahora/1000)
-            let date_last_claim=this.FROM_UNIX_EPOCH(slp.last_claim)
+            let date_last_claim=this.FROM_UNIX_EPOCH(data.last_claim)
             let date_next_claim=this.FROM_UNIX_EPOCH(data.next_claim)
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
-            let prom=Math.round(slp.total/days)
+            let prom=Math.round(data.in_game_slp/days)
             let porcetage=prom<=50?20:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
-            let arecibir=Math.round(slp.total/(100/porcetage))
+            let arecibir=Math.round(data.in_game_slp/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             embed.addFields(
                 //{ name: 'Precio', value: ''+slp+'USD'},
@@ -341,9 +341,9 @@ module.exports = {
                 { name: 'Comprobantes', value: 'https://explorer.roninchain.com/address/'+currentUser.accountAddress},
                 { name: 'Fecha actual', value: ''+date_ahora,inline:true},
                 { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
-                /*{ name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},*/
+                { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
                 { name: 'ID', value: ''+currentUser.num,inline:true},
-                { name: 'SLP Unclaimed', value: ''+slp.total,inline:true},
+                { name: 'SLP Unclaimed', value: ''+data.in_game_slp,inline:true},
                 { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Dias', value: ''+days,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},

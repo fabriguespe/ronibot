@@ -28,7 +28,6 @@ module.exports = new Command({
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
-					
 					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined && stat.total_slp>0){
 						if(i>=(stats.length-limit_prom)){
 							if(stat.in_game_slp<anteultimo.in_game_slp )users[ii]['slp_sum']+=stat.in_game_slp
@@ -37,8 +36,6 @@ module.exports = new Command({
 						
 						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp']=stat.in_game_slp
 						else users[ii]['slp']=stat.in_game_slp-anteultimo.in_game_slp
-
-						
 						users[ii]['mmr']=stat['mmr']
 						users[ii]['days']+=1
 					}
