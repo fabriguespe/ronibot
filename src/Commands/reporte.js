@@ -50,13 +50,13 @@ module.exports = new Command({
 				.setColor('#0099ff')
 				.setTitle('Jugador #'+args[1])
 				
-				let slp=await utils.getSLP(currentUser.accountAddress,message)
+				let slp=await utils.getSLP(eluser.accountAddress,message)
 
 				exampleEmbed.addFields(
 					//{ name: 'Precio', value: ''+slp+'USD'},
 					{ name: 'SLP Total', value: ''+slp.total,inline:true},
 					{ name: 'Nombre', value: ''+eluser.name,inline:true},
-					/*{ name: 'Copas', value: ''+data.mmr,inline:true},*/
+					{ name: 'Copas', value: 'ERROR',inline:true},
 					{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(slp.last_claim),inline:true},
 					{ name: 'Estado', value: ''+eluser.nota,inline:true},
 					{ name: 'Vacio', value: 'Vacio',inline:true},
