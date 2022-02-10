@@ -503,6 +503,7 @@ module.exports = {
         }`
 
         let axies=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
+        if(!axies)return null
         axies={count:axies.data.axies.total,axies:axies.data.axies.results}
         return axies
     },
