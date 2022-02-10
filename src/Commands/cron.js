@@ -29,6 +29,7 @@ module.exports = new Command({
 			}
 
 		}else if(args[1]=='api'){
+			
 		}else if(args[1]=='stats'){
 
 			let db = await DbConnection.Get();

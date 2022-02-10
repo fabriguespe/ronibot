@@ -57,7 +57,10 @@ module.exports = new Command({
 			for(let ii in top){
 				let user=top[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
-				let valores=user.slp_prom+'('+user.mmr+')'+'('+user.days+')'
+				
+				let slp=await utils.getSLP(user.accountAddress,message)
+				
+				let valores=user.slp_prom+'('+user.mmr+')'+'('+user.days+')'+'--> ('+slp.total+')'
 				if(!user.slp_prom)valores=' No empezó'
 				let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+valores+'\n'
 				let aprobado=85
