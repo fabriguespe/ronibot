@@ -47,7 +47,7 @@ module.exports = new Command({
 				
 				const exampleEmbed = new MessageEmbed().setColor('#0099ff').setTitle('Jugador #'+args[1])
 				let slp=await utils.getSLP(eluser.accountAddress,message)
-
+				console.log(slp)
 				exampleEmbed.addFields(
 					//{ name: 'Precio', value: ''+slp+'USD'},
 					{ name: 'SLP Total', value: ''+slp.in_game_slp,inline:true},
