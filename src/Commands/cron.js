@@ -30,36 +30,39 @@ module.exports = new Command({
 
 		}else if(args[1]=='api'){
 			
-		}else if(args[1]=='stats'){
+		}else if(args[1]=='stat'){
 
 			let db = await DbConnection.Get();
 			let new_data=[]
 			let users=await db.collection('users').find({}).toArray()
+			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
+			let data={}
 			message.channel.send('Se empezara a procesar')
-			
-			try{
+		
 				for(let i in users){
 					let user=users[i]
-					
-					url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
-					let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+					if(!user.accountAddress || user.accountAddress.length!=46)continue
+					if(args[2] && user.num!=args[2])continue
+					try{
+						url = "https://game-api.axie.technology/api/v1/"+user.accountAddress;
+						console.log(url)
+						data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+					}catch (e) {
+						utils.log(e)
+					}
 					data.accountAddress=user.accountAddress
 					data.user_id=user._id
 					data.last_updated=user.last_updated
 					data.num=user.num
-					console.log(data.num)
 					data.timestamp = new Date();
 					data.timestamp.setDate(data.timestamp.getDate() - 1)
 					data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
 					new_data.push(data)
-		
 					
+		
 					await db.collection('stats').insertOne(data)
 				}
-			}catch (e) {
-				utils.log(e)
-			}
-				
+			
 		
 			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 	
