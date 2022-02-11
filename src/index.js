@@ -33,7 +33,7 @@ client.on("ready", message => {
 		});
 
 	}, null, true, 'UTC');
-	scheduledMessage.start()
+	//scheduledMessage.start()
 
 	scheduledMessage = new cron.CronJob('15 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
@@ -41,7 +41,7 @@ client.on("ready", message => {
 		rCanal.send('!entrevista')
 
 	}, null, true, 'UTC');
-	scheduledMessage.start()
+	//scheduledMessage.start()
 
 	scheduledMessage = new cron.CronJob('20 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 904491832556265502);//ranking en anuncios
@@ -49,7 +49,7 @@ client.on("ready", message => {
 		rCanal.send('!diario')
 
 	}, null, true, 'UTC');
-	scheduledMessage.start()
+	//scheduledMessage.start()
 
 	scheduledMessage = new cron.CronJob('0 0 * * 0', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
@@ -59,14 +59,14 @@ client.on("ready", message => {
 		rCanal.send('!general')
 
 	}, null, true, 'UTC');
-	scheduledMessage.start()
+	//scheduledMessage.start()
 
 	scheduledMessage = new cron.CronJob('30 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
 		rCanal.send("@here" + " Por último veamos quienes estan con bajo promedio y en riesgo a ser retirados")
 		rCanal.send('!lista 7 Retiro')
 	}, null, true, 'UTC');
-	scheduledMessage.start()
+	//scheduledMessage.start()
 })
 
 
