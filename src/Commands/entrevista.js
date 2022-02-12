@@ -25,6 +25,7 @@ module.exports = new Command({
 				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
 
+
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
@@ -36,9 +37,9 @@ module.exports = new Command({
 						
 						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp']=stat.in_game_slp
 						else users[ii]['slp']=stat.in_game_slp-anteultimo.in_game_slp
-						users[ii]['mmr']=stat['mmr']
-						users[ii]['days']+=1
 					}
+					users[ii]['mmr']=stat['mmr']
+					users[ii]['days']+=1
 				}
 				let divisor=users[ii]['days']>=limit_prom?limit_prom:users[ii]['days']
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/divisor)

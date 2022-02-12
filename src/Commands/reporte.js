@@ -96,7 +96,7 @@ module.exports = new Command({
 						stat['slp']=stat.in_game_slp
 					}
 					//if(stat['mmr']!=1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue me saca los dias vacios...
-					if(stat.date=='16/12/2021'){
+					/*if(stat.date=='16/12/2021'){
 						stat['slp']=stat['slp']/3
 						data['days'].push(utils.getDayName("14/12/2021", "es-ES"))
 						data.slp.push(stat['slp'])
@@ -104,7 +104,7 @@ module.exports = new Command({
 						data['days'].push(utils.getDayName("15/12/2021", "es-ES"))
 						data.slp.push(stat['slp'])
 						data.mmr.push(stat['mmr'])
-					}
+					}*/
 					data.slp.push(stat['slp'])
 					data.mmr.push(stat['mmr'])
 					data['days'].push(utils.getDayName(stat.date, "es-ES"))
