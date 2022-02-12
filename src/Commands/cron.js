@@ -58,23 +58,26 @@ module.exports = new Command({
 					data.last_updated=user.last_updated
 					data.num=user.num
 					data.timestamp = new Date();
-					data.timestamp.setDate(data.timestamp.getDate() - 1)
+					data.timestamp.setDate(data.timestamp.getDate() - 2)
 					data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
 					new_data.push(data)
 					await db.collection('stats').insertOne(data)
 				}
+				utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
 				utils.log(e)
 			}	
-			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			//cd /node/ronicron;git pull;forever restart 0
-			
+
 		}else if(args[1]=='jeje'){
 			let msg=''
 			for(let i=32;i<=307;i++){
 				msg+=i+','
 			}
 			return message.channel.send(msg);
+		}else{
+			return message.channel.send("Comando incorrecto");
+
 		}
 	}
 });
