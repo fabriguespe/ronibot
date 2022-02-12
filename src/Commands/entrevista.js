@@ -37,6 +37,9 @@ module.exports = new Command({
 						
 						if(stat.in_game_slp<anteultimo.in_game_slp)users[ii]['slp']=stat.in_game_slp
 						else users[ii]['slp']=stat.in_game_slp-anteultimo.in_game_slp
+					}else{
+						users[ii]['slp_sum']=stat.in_game_slp
+						users[ii]['slp']=stat.in_game_slp
 					}
 					users[ii]['mmr']=stat['mmr']
 					users[ii]['days']+=1
