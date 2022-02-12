@@ -40,12 +40,11 @@ module.exports = new Command({
 						users[ii]['slp_sum']=stat.in_game_slp
 						users[ii]['slp']=stat.in_game_slp
 					}
-						
-					if(users[ii]['slp']>0 )users[ii]['stat_count']+=1
+
 					users[ii]['mmr_sum']+=stat['mmr']
 					users[ii]['mmr']=stat['mmr']
+					if(users[ii]['slp']>0)users[ii]['stat_count']+=1
 					
-					//if(users[ii]['stat_count']>=limit_prom)break
 				}
 				
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])

@@ -41,8 +41,11 @@ module.exports = new Command({
 						users[ii]['slp_sum']=stat.in_game_slp
 						users[ii]['slp']=stat.in_game_slp
 					}
+
+					users[ii]['mmr_sum']+=stat['mmr']
 					users[ii]['mmr']=stat['mmr']
-					users[ii]['days']+=1
+					if(users[ii]['slp']>0)users[ii]['stat_count']+=1
+					
 				}
 				let divisor=users[ii]['days']>=limit_prom?limit_prom:users[ii]['days']
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/divisor)
