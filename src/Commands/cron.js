@@ -30,12 +30,11 @@ module.exports = new Command({
 
 		}else if(args[1]=='api'){
 			
-		}else if(args[1]=='slp'){
+		}else if(args[1]=='stats'){
 
-			utils.log('Timezone!')
-			//Ojo con message o args
+			//cd /node/ronicron;git pull;forever restart 0
+			//Copiar desde aca
 			try{
-				//Copiar desde aca
 				let db = await DbConnection.Get();
 				let new_data=[]
 				let users=await db.collection('users').find({}).toArray()
@@ -55,7 +54,6 @@ module.exports = new Command({
 
 					data.accountAddress=user.accountAddress
 					data.user_id=user._id
-					data.last_updated=user.last_updated
 					data.num=user.num
 					data.timestamp = new Date();
 					data.timestamp.setDate(data.timestamp.getDate() - 2)
@@ -63,15 +61,16 @@ module.exports = new Command({
 					new_data.push(data)
 					await db.collection('slp').insertOne(data)
 				}
-				utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+				utils.log('Proceso corrido a las ' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
 				utils.log(e)
 			}	
-			//cd /node/ronicron;git pull;forever restart 0
+			//hasta aca
 
 		}else if(args[1]=='slp'){
-			utils.log('SLP!')
-			//Ojo con message o args
+
+			//cd /node/ronicron;git pull;forever restart 0
+			//DESDE ACA
 			try{
 				//Copiar desde aca
 				let db = await DbConnection.Get();
@@ -84,19 +83,17 @@ module.exports = new Command({
 					let user=users[i]
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
-					
 					let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});           
 					let balance=jdata.blockchain_related.balance
 					let total=jdata.total-jdata.blockchain_related.balance
 					let unclaimed=jdata.claimable_total-jdata.blockchain_related.balance
-					data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,unclaimed:unclaimed}
+					data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at,unclaimed:unclaimed}
 
 					data.accountAddress=user.accountAddress
 					data.user_id=user._id
-					data.last_updated=user.last_updated
 					data.num=user.num
 					data.timestamp = new Date();
-					data.timestamp.setDate(data.timestamp.getDate() - 2)
+					data.timestamp.setDate(data.timestamp.getDate() - 1)
 					data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
 					new_data.push(data)
 					console.log(data)
@@ -107,7 +104,7 @@ module.exports = new Command({
 			}catch (e) {
 				utils.log(e)
 			}	
-			//cd /node/ronicron;git pull;forever restart 0
+			//HASTA ACA
 
 		}else if(args[1]=='jeje'){
 			let msg=''
