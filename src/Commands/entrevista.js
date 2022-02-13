@@ -17,11 +17,15 @@ module.exports = new Command({
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find({nota:'entrevista'}).toArray()
 			let limit_prom=args[1]?parseInt(args[1]):3
+
+			let num_aprobado=50
+			let num_retirar=30	
+
 			for(let ii in users){
 				let eluser=users[ii]
 				users[ii]['slp_sum']=0
 				users[ii]['slp_prom']=0
-				users[ii]['days']=0
+				users[ii]['stat_count']=0
 				let stats = await db.collection('slp').find({accountAddress:eluser.accountAddress},  { sort: { timestamp: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.timestamp - b.timestamp});
 
@@ -47,7 +51,7 @@ module.exports = new Command({
 					if(users[ii]['slp']>0)users[ii]['stat_count']+=1
 					
 				}
-				let divisor=users[ii]['days']>=limit_prom?limit_prom:users[ii]['days']
+				let divisor=users[ii]['stat_count']>=limit_prom?limit_prom:users[ii]['stat_count']
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/divisor)
 			}
 			let top=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
@@ -57,27 +61,28 @@ module.exports = new Command({
 			let retirar=''
 			let fin=''
 			let embed=''
-			
+			console.log(users)
 			for(let ii in top){
 				let user=top[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
-				let valores=user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+'('+user.days+')'
+				let valores=user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+'('+user.stat_count+')'
+				console.log(valores)
 				if(!user.slp_prom)valores=' No empezó'
 				let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+valores+'\n'
-				let aprobado=85
-				if(user.days<3){//FASE 1
+				
+				if(user.stat_count<3){//FASE 1
 					nuevos+=value
-				}else if(user.days==3){//FASE 1
-					if(user.slp_prom<50)retirar+=value
-					else if(user.slp_prom>=50 && user.slp_prom<=aprobado)evaluar+=value
-					else if(user.slp_prom>aprobado)aprobar+=value
-				}else if(user.days<=7){//FASE 2
-					if(user.slp_prom<75)retirar+=value
-					else if(user.slp_prom>=75 && user.slp_prom<=aprobado)evaluar+=value
-					else if(user.slp_prom>aprobado)aprobar+=value
-				}else if(user.days<=14){// FASE 3
-					if(user.slp_prom<aprobado)retirar+=value
-					else if(user.slp_prom>=aprobado)aprobar+=value
+				}else if(user.stat_count==3){//FASE 1
+					if(user.slp_prom<num_retirar)retirar+=value
+					else if(user.slp_prom>=num_retirar && user.slp_prom<=num_aprobado)evaluar+=value
+					else if(user.slp_prom>num_aprobado)aprobar+=value
+				}else if(user.stat_count<=7){//FASE 2
+					if(user.slp_prom<num_retirar)retirar+=value
+					else if(user.slp_prom>=num_retirar && user.slp_prom<=num_aprobado)evaluar+=value
+					else if(user.slp_prom>num_aprobado)aprobar+=value
+				}else if(user.stat_count<=14){// FASE 3
+					if(user.slp_prom<num_aprobado)retirar+=value
+					else if(user.slp_prom>=num_aprobado)aprobar+=value
 				}else fin+=value
 			}
 			
