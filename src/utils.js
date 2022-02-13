@@ -106,7 +106,8 @@ module.exports = {
             this.log(e.message,message)
             return false
         }
-    },claim:async function(data,message){
+    },
+    claim:async function(data,message){
 
         try{
             
@@ -162,11 +163,10 @@ module.exports = {
             let roniPrimero=(roni_slp>=jugador_slp)
 
             let player_wallet=data.scholarPayoutAddress
-            let roni_wallet=await this.getWalletByNum("BREED")
+            let roni_wallet=(data.num=='43' || data.num=='186' || data.num=='187')?this.getWalletByNum("PRO"):this.getWalletByNum("BREED")
             roni_wallet=roni_wallet.replace('ronin:','0x')
             
             let fallo=false
-
             try{
                 let tx=await this.transfer(from_acc,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
                 if(tx){
@@ -541,6 +541,7 @@ module.exports = {
     },
     getUserByNum:async function(num){
         if(num=='BREED' || num=='breed')return 'ronin:b1c0e5cb955ac17d9cb42fb4ee6b6ae01b5a9c82'
+        if(num=='PRO' || num=='pro')return 'ronin:bfc07b770a4bfab0e9ac114ae2ca8275c701c28e'
         if(num=='VENTA' || num=='venta')return 'ronin:29e29959cbb316923e57238467e14135d19c16f9'
         let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({num:num.toString()})
@@ -549,6 +550,7 @@ module.exports = {
     },
     getWalletByNum:async function(num){
         if(num=='BREED' || num=='breed')return 'ronin:b1c0e5cb955ac17d9cb42fb4ee6b6ae01b5a9c82'
+        if(num=='PRO' || num=='pro')return 'ronin:bfc07b770a4bfab0e9ac114ae2ca8275c701c28e'
         if(num=='VENTA' || num=='venta')return 'ronin:29e29959cbb316923e57238467e14135d19c16f9'
         let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({num:num.toString()})

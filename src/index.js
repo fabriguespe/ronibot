@@ -21,7 +21,7 @@ fs.readdirSync(__dirname+"/Commands")
 });
 
 client.on("ready", message => {
-	utils.log('List1o!')
+	utils.log('Listo!')
 	let scheduledMessage=''
 	/*
 	scheduledMessage = new cron.CronJob('10 0 * * *', () => {
