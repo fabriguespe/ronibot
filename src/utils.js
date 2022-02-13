@@ -319,8 +319,8 @@ module.exports = {
                 let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});           
                 let balance=jdata.blockchain_related.balance
                 let total=jdata.total-jdata.blockchain_related.balance
-                console.log(jdata)
-                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,unclaimed:jdata.claimable_total}
+                let unclaimed=jdata.claimable_total-jdata.blockchain_related.balance
+                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,unclaimed:unclaimed}
             }else{
                 url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
                 data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
@@ -350,12 +350,14 @@ module.exports = {
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             embed.addFields(
                 //{ name: 'Precio', value: ''+slp+'USD'},
+               
+                { name: 'ID', value: ''+currentUser.num,inline:true},
                 { name: 'Wallet', value: ''+currentUser.scholarPayoutAddress},
                 { name: 'Comprobantes', value: 'https://explorer.roninchain.com/address/'+currentUser.accountAddress},
                 { name: 'Fecha actual', value: ''+date_ahora,inline:true},
                 { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
                 { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
-                { name: 'ID', value: ''+currentUser.num,inline:true},
+                { name: 'SLP Total', value: ''+data.in_game_slp,inline:true},
                 { name: 'SLP Disponible', value: ''+data.unclaimed,inline:true},
                 { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Dias', value: ''+days,inline:true},
@@ -381,7 +383,7 @@ module.exports = {
             }
             embed.addFields(
                 { name: 'Información', value: 'Revisa que tu wallet sea correcta\nTu promedio de SLP se baso en el calculo de los dias y el total acumulado. Si estas de acuerdo escribe "si" para poder cobrar, de lo contrario, "no"'},
-                { name: 'IMPORTANTE', value: 'Dado que sabemos que la situacion esta dificil Ronimate va a estar haciendose cargo de un 10% extra para cada jugador. \nEstamos orgullosos de contar con gente comprometida y responsable como vos en la academia.'},
+              //  { name: 'IMPORTANTE', value: 'Dado que sabemos que la situacion esta dificil Ronimate va a estar haciendose cargo de un 10% extra para cada jugador. \nEstamos orgullosos de contar con gente comprometida y responsable como vos en la academia.'},
             )
             message.channel.send({content: ` `,embeds: [embed]})
 
