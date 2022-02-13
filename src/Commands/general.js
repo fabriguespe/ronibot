@@ -33,8 +33,8 @@ module.exports = new Command({
 						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
 						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
 					}else{
-						users[ii]['slp_sum']=stat.in_game_slp
-						users[ii]['slp']=stat.in_game_slp
+						stat['slp_sum']=stat.in_game_slp
+						stat['slp']=stat.in_game_slp
 					}
 					if(stat['mmr']!=1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue
 					/*if(stat.date=='16/12/2021'){
