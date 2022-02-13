@@ -19,6 +19,11 @@ fs.readdirSync(__dirname+"/Commands")
 	console.log(`Command ${command.name} loaded`);
 	client.commands.set(command.name, command);
 });
+Date.prototype.addDays = function (days) {
+	const date = new Date(this.valueOf());
+	date.setDate(date.getDate() + days);
+	return date;
+};
 
 client.on("ready", message => {
 	utils.log('Listo!')

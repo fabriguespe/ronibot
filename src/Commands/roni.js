@@ -80,10 +80,8 @@ module.exports = new Command({
 				if(!(data.unclaimed>=0)){
 					interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 20 segundos.') 
 					setTimeout(() => { interaction.channel.delete()}, 2000*10)
-				}else if(data.unix_ahora<data.unix_prox){
-					let diffInMilliSeconds=(data.unix_prox)-(data.unix_ahora)
-					let hours = (diffInMilliSeconds / 3600).toFixed(2)
-					interaction.channel.send('Faltan '+hours+' hs para que puedas reclamar\nEste canal se cerrara en 20 segundos.') 
+				}else if(data.hours>0){
+					interaction.channel.send('Faltan '+data.hours+' hs para que puedas reclamar\nEste canal se cerrara en 20 segundos.') 
 					setTimeout(() => { interaction.channel.delete()}, 2000*10)
 				}else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20){
 					thread.send(`La cuenta no tiene wallet para depositar.\nNotificale cual a <@${jsid}>\nEste canal se cerrara en 20 segundos.`) 

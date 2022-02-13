@@ -47,20 +47,21 @@ module.exports = new Command({
 				
 				const exampleEmbed = new MessageEmbed().setColor('#0099ff').setTitle('Jugador #'+args[1])
 				let slp=await utils.getSLP(eluser.accountAddress,message)
-	
+				
+
 				exampleEmbed.addFields(
 					//{ name: 'Precio', value: ''+slp+'USD'},
 					{ name: 'SLP Total', value: ''+slp.in_game_slp,inline:true},
 					{ name: 'Nombre', value: ''+eluser.name,inline:true},
 					{ name: 'Copas', value: ''+(slp.mmr?slp.mmr:'Error'),inline:true},
 					{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(slp.last_claim),inline:true},
+					{ name: 'Proximo', value: ''+utils.ADD_DAYS_TO_UNIX(slp.last_claim,15),inline:true},
 					{ name: 'Estado', value: ''+eluser.nota,inline:true},
-					{ name: 'Vacio', value: 'Vacio',inline:true},
 				)
 
 				for(let i in axiesdata)exampleEmbed.addFields({ name: axiesdata[i].tipo, value: axiesdata[i].partes.cola+'\n'+axiesdata[i].partes.espalda+'\n'+axiesdata[i].partes.cuerno+'\n'+axiesdata[i].partes.boca+'\n'+'[Link]('+axiesdata[i].url+")",inline:true})
 				
-
+					
 				let stats = await db.collection('log').find({num:eluser.num},  { sort: { timestamp: -1 } }).toArray();
 				let help='No hay'
 				for(let j in stats){
@@ -87,7 +88,6 @@ module.exports = new Command({
 				data={days:[],slp:[],mmr:[]}
 				for(let i in stats){
 					let stat=stats[i]
-					console.log(stat)
 					let anteultimo=stats[i-1]
 					if(stat && anteultimo){
 						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp

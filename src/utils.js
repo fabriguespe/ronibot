@@ -32,14 +32,27 @@ logger.level = "debug";
 
 module.exports = {
     esFechaCobros(){
-        var today = new Date(Date.UTC(0, 0, 0, 0, 0, 0));
+        let today = new Date(Date.UTC(0, 0, 0, 0, 0, 0));
         let diadelmes=today.getDate()
-        var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
+        let lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
         if((diadelmes>=(lastDayOfMonth-2) &&  diadelmes<=lastDayOfMonth) || diadelmes>=15 &&  diadelmes<=16) return true
         return false
     },
+    HOURS_NEXT_CLAIM:function(epoch_in_secs){
+        let today = new Date();
+        let next_claim = new Date(epoch_in_secs * 1000)
+        next_claim.setDate(next_claim.getDate() + 15)
+        let diffInMilliSeconds=next_claim.getTime()-today.getTime()
+        let hours = (diffInMilliSeconds /1000 / 3600).toFixed(2)
+        return hours
+    },
     FROM_UNIX_EPOCH:function(epoch_in_secs){
         return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
+    },
+    ADD_DAYS_TO_UNIX:function(epoch_in_secs,days){
+        let last_claim = new Date(epoch_in_secs * 1000)
+        last_claim.setDate(last_claim.getDate() + days)
+        return last_claim.toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
     claim2:async function(num,from_acc,message){
         try{
@@ -293,20 +306,24 @@ module.exports = {
         console.log(balance)
         return balance
     },
-    getSLP:async function(from_acc,message){
+    getSLP:async function(from_acc,message,cache=false){
         try{
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')  
-            let data={}
+            let data=null
 
-            url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
-            data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-
-            if(!data || !data.in_game_slp) {
+            //url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
+            //data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+            
+            if(!cache) {
                 let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});           
                 let balance=jdata.blockchain_related.balance
                 let total=jdata.total-jdata.blockchain_related.balance
-                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,next_claim:jdata.last_claimed_item_at}
+                console.log(jdata)
+                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,unclaimed:jdata.claimable_total}
+            }else{
+                url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
+                data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
             }
             return data
 
@@ -320,17 +337,16 @@ module.exports = {
             let from_acc=currentUser.accountAddress
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
 
-            let data=await utils.getSLP(currentUser.accountAddress,message)
-            
+            let data=await this.getSLP(currentUser.accountAddress,message,false)
             let ahora=new Date().getTime()
             let date_ahora=this.FROM_UNIX_EPOCH(ahora/1000)
             let date_last_claim=this.FROM_UNIX_EPOCH(data.last_claim)
-            let date_next_claim=this.FROM_UNIX_EPOCH(data.next_claim)
+            let date_next_claim=this.ADD_DAYS_TO_UNIX(data.last_claim,15)
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
-            let prom=Math.round(data.in_game_slp/days)
+            let prom=Math.round(data.unclaimed/days)
             let porcetage=prom<=50?20:prom<80?30:prom<100?40:prom<130?50:prom>=130?60:0;
-            let arecibir=Math.round(data.in_game_slp/(100/porcetage))
+            let arecibir=Math.round(data.unclaimed/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             embed.addFields(
                 //{ name: 'Precio', value: ''+slp+'USD'},
@@ -340,16 +356,15 @@ module.exports = {
                 { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
                 { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
                 { name: 'ID', value: ''+currentUser.num,inline:true},
-                { name: 'SLP Unclaimed', value: ''+data.in_game_slp,inline:true},
+                { name: 'SLP Disponible', value: ''+data.unclaimed,inline:true},
                 { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Dias', value: ''+days,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
                 { name: 'A recibir', value: ''+arecibir,inline:true},
             )
 
-			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
-			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
-            let bono=10
+			let bono=10
+            //let slp_price= await fetch("https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd", { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
             //let min=15/2/slp_price*(1+(bono/100))
             /*if(arecibir<min)bono=30
             min=15/2/slp_price*(1+(bono/100))
@@ -361,7 +376,7 @@ module.exports = {
                 embed.addFields(
                     { name: 'Gracias!', value: '😀',inline:true},
                     { name: 'Bono', value: bono+'%',inline:true},
-                    { name: 'A recibir', value: ''+Math.round(unclaimed/(100/bono)),inline:true}
+                    { name: 'A recibir', value: ''+Math.round(data.unclaimed/(100/bono)),inline:true}
                 )
             }
             embed.addFields(
@@ -372,8 +387,11 @@ module.exports = {
 
 
             porcetage+=bono
-            let recibe=Math.round(unclaimed/(100/porcetage))
-            return {unix_ahora:(ahora/1000),next_claim:data.next_claim,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,date_next_claim:date_next_claim,days:days,porcetage:porcetage,recibe:recibe,unclaimed:unclaimed}
+            let recibe=Math.round(data.unclaimed/(100/porcetage))
+            
+            let hours=this.HOURS_NEXT_CLAIM(data.last_claim)
+            console.log('hours',hours)
+            return {unclaimed:data.unclaimed,hours:hours,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,days:days,porcetage:porcetage,recibe:recibe}
 
         }catch(e){
             this.log("ERROR: "+e.message,message)

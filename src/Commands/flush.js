@@ -45,7 +45,7 @@ module.exports = new Command({
                     if(!utils.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
                    
                     let unclaimed=await utils.getSLP(currentUser.accountAddress,message)
-                    unclaimed=unclaimed.ronin_slp
+                    unclaimed=unclaimed.unclaimed
                     if(unclaimed>0){
                         let tx=await utils.transfer(from_acc,roni_wallet,unclaimed,message)
                         if(tx){
