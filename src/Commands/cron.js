@@ -90,6 +90,7 @@ module.exports = new Command({
 					data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at,unclaimed:unclaimed}
 
 					data.accountAddress=user.accountAddress
+					data.nota=user.nota
 					data.user_id=user._id
 					data.num=user.num
 					data.timestamp = new Date();

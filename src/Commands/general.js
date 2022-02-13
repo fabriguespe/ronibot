@@ -138,6 +138,7 @@ module.exports = new Command({
 			}).setWidth(800).setHeight(400);
 			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 
+			
 			chart = new QuickChart().setConfig({
 				type: 'bar',
 				data: { 
