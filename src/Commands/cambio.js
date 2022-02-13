@@ -10,7 +10,7 @@ module.exports = new Command({
 	name: "cambio"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
-        console.log(args.length)
+     
         if(args.length==4){
             let user_from=await utils.getUserByNum(args[2])
             let user_to=await utils.getUserByNum(args[3])

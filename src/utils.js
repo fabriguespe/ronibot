@@ -62,9 +62,9 @@ module.exports = {
 
             let random_msg=await this.create_random_msg()
             let jwt=await this.get_jwt(from_acc,random_msg,from_private)
-            console.log(from_acc)
+           
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
-            console.log(jdata)
+         
             let slp_claim=jdata.total
             if(slp_claim<=0) return message.channel.send('No hay slp')
 
@@ -392,7 +392,6 @@ module.exports = {
             let recibe=Math.round(data.unclaimed/(100/porcetage))
             
             let hours=this.HOURS_NEXT_CLAIM(data.last_claim)
-            console.log('hours',hours)
             return {unclaimed:data.unclaimed,hours:hours,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,days:days,porcetage:porcetage,recibe:recibe}
 
         }catch(e){
@@ -456,7 +455,6 @@ module.exports = {
         return message.author.id==877625345996632095 && message.channel.name.includes('comandos') 
     },
     esIngresos:function(message){
-        console.log(this.esFabri(message))
         if(this.esFabri(message))return true
         return message.channel.id==909165024642203658//canal entrevistas
     },
