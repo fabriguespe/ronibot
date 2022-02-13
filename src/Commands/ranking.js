@@ -56,7 +56,7 @@ module.exports = new Command({
 			let help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp_prom+'('+user.mmr+')\n'
+				help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+'\n'
 			}	
 			let embed = new MessageEmbed().setTitle("MEJORES 10 SLP").setDescription(help).setColor('#3C5D74').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
@@ -67,7 +67,7 @@ module.exports = new Command({
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp_prom+'('+user.mmr+')\n'
+				help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+'\n'
 			}	
 			embed = new MessageEmbed().setTitle("TOP 10 COPAS").setDescription(help).setColor('#3C5D74').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
@@ -78,7 +78,7 @@ module.exports = new Command({
 			help=''
 			for(let ii in top){
 				let user=top[ii]
-				help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp_prom+'('+user.mmr+')\n'
+				help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+'\n'
 			}	
 			embed = new MessageEmbed().setTitle("ULTIMOS 10 SLP").setDescription(help).setColor('#574760').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
@@ -90,7 +90,7 @@ module.exports = new Command({
 				help=''
 				for(let ii in top){
 					let user=top[ii]
-					help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp_prom+'('+user.mmr+')\n'
+					help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+'\n'
 				}	
 				embed = new MessageEmbed().setTitle("ULTIMOS 20 COPAS").setDescription(help).setColor('#574760').setTimestamp()
 				message.channel.send({content: ` `,embeds: [embed]})
