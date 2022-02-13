@@ -21,8 +21,8 @@ module.exports = new Command({
 			let count_users=0
 			for(let ii in users){
 				let eluser=users[ii]				
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } })./*limit(limit_prom).*/toArray();
-				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
+				let stats = await db.collection('slp').find({accountAddress:eluser.accountAddress},  { sort: { timestamp: -1 } })./*limit(limit_prom).*/toArray();
+				stats=stats.sort(function(a, b) {return a.timestamp - b.timestamp});
 				let data=[]
 				//if(stats.length>=limit_prom)
 				count_users++
@@ -39,10 +39,10 @@ module.exports = new Command({
 					if(stat['mmr']!=1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue
 					/*if(stat.date=='16/12/2021'){
 						stat['slp']=(stat['slp']/3)
-						data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName("14/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
-						data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName("15/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
+						data.push({timestamp:stat.timestamp,date:utils.getDayName("14/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
+						data.push({timestamp:stat.timestamp,date:utils.getDayName("15/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 					}*/
-					data.push({cache_last_updated:stat.cache_last_updated,date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
+					data.push({timestamp:stat.timestamp,date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 					
 					
 				}
@@ -55,14 +55,14 @@ module.exports = new Command({
 				for(let j in dias_del_user){
 					let undia=dias_del_user[j]
 					let fecha=undia.date
-					if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,cache_last_updated:undia.cache_last_updated,slp:0,players:0,mmr:0,grupo1:0,grupo2:0,grupo3:0,grupo4:0,grupo5:0,grupo6:0}
-					data_por_dia[fecha]={date:undia.date,cache_last_updated:undia.cache_last_updated,players:data_por_dia[fecha].players+(undia.slp>0?1:0),slp:data_por_dia[fecha].slp+=undia.slp,mmr:data_por_dia[fecha].mmr+=undia.mmr,grupo1:data_por_dia[fecha].grupo1+(undia.slp>0 && undia.slp<=50?1:0),grupo2:data_por_dia[fecha].grupo2+(undia.slp<80 && undia.slp>=50?1:0),grupo3:data_por_dia[fecha].grupo3+(undia.slp<100 && undia.slp>=80?1:0),grupo4:data_por_dia[fecha].grupo4+(undia.slp<130 && undia.slp>=100?1:0),grupo5:data_por_dia[fecha].grupo5+(undia.slp>=130?1:0)}
+					if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,slp:0,players:0,mmr:0,grupo1:0,grupo2:0,grupo3:0,grupo4:0,grupo5:0,grupo6:0}
+					data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,players:data_por_dia[fecha].players+(undia.slp>0?1:0),slp:data_por_dia[fecha].slp+=undia.slp,mmr:data_por_dia[fecha].mmr+=undia.mmr,grupo1:data_por_dia[fecha].grupo1+(undia.slp>0 && undia.slp<=50?1:0),grupo2:data_por_dia[fecha].grupo2+(undia.slp<80 && undia.slp>=50?1:0),grupo3:data_por_dia[fecha].grupo3+(undia.slp<100 && undia.slp>=80?1:0),grupo4:data_por_dia[fecha].grupo4+(undia.slp<130 && undia.slp>=100?1:0),grupo5:data_por_dia[fecha].grupo5+(undia.slp>=130?1:0)}
 
 				}
 			}
 
 			data_por_dia=Object.values(data_por_dia)
-			data_por_dia=data_por_dia.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
+			data_por_dia=data_por_dia.sort(function(a, b) {return a.timestamp - b.timestamp});
 
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});

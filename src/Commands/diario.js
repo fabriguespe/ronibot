@@ -25,8 +25,8 @@ module.exports = new Command({
 				users[ii]['mmr_prom']=0
 				users[ii]['stat_count']=0
 
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).limit(limit_prom).toArray();
-				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
+				let stats = await db.collection('slp').find({accountAddress:eluser.accountAddress},  { sort: { timestamp: -1 } }).limit(limit_prom).toArray();
+				stats=stats.sort(function(a, b) {return a.timestamp - b.timestamp});
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]

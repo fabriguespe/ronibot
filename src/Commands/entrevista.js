@@ -22,8 +22,8 @@ module.exports = new Command({
 				users[ii]['slp_sum']=0
 				users[ii]['slp_prom']=0
 				users[ii]['days']=0
-				let stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
-				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
+				let stats = await db.collection('slp').find({accountAddress:eluser.accountAddress},  { sort: { timestamp: -1 } }).toArray();
+				stats=stats.sort(function(a, b) {return a.timestamp - b.timestamp});
 
 
 				for(let i in stats){

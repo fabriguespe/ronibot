@@ -30,7 +30,7 @@ module.exports = new Command({
 
 		}else if(args[1]=='api'){
 			
-		}else if(args[1]=='stats'){
+		}else if(args[1]=='slp'){
 
 			utils.log('Timezone!')
 			//Ojo con message o args
@@ -61,7 +61,7 @@ module.exports = new Command({
 					data.timestamp.setDate(data.timestamp.getDate() - 2)
 					data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
 					new_data.push(data)
-					await db.collection('stats').insertOne(data)
+					await db.collection('slp').insertOne(data)
 				}
 				utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
@@ -69,9 +69,8 @@ module.exports = new Command({
 			}	
 			//cd /node/ronicron;git pull;forever restart 0
 
-		}else if(args[1]=='stats2'){
-
-			utils.log('Stat2!')
+		}else if(args[1]=='slp'){
+			utils.log('SLP!')
 			//Ojo con message o args
 			try{
 				//Copiar desde aca
@@ -86,12 +85,11 @@ module.exports = new Command({
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
 					
-					
 					let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});           
 					let balance=jdata.blockchain_related.balance
 					let total=jdata.total-jdata.blockchain_related.balance
-					data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at}
-
+					let unclaimed=jdata.claimable_total-jdata.blockchain_related.balance
+					data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,unclaimed:unclaimed}
 
 					data.accountAddress=user.accountAddress
 					data.user_id=user._id
@@ -102,8 +100,8 @@ module.exports = new Command({
 					data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
 					new_data.push(data)
 					console.log(data)
-					//await db.collection('slp').insertOne(data)
-					break
+					await db.collection('slp').insertOne(data)
+					
 				}
 				utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {

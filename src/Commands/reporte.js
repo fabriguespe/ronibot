@@ -82,8 +82,8 @@ module.exports = new Command({
 				)
 				message.channel.send({ embeds: [exampleEmbed] });
 
-				stats = await db.collection('stats').find({accountAddress:eluser.accountAddress},  { sort: { cache_last_updated: -1 } }).toArray();
-				stats=stats.sort(function(a, b) {return a.cache_last_updated - b.cache_last_updated});
+				stats = await db.collection('slp').find({accountAddress:eluser.accountAddress},  { sort: { timestamp: -1 } }).toArray();
+				stats=stats.sort(function(a, b) {return a.timestamp - b.timestamp});
 				
 				data={days:[],slp:[],mmr:[]}
 				for(let i in stats){
@@ -110,7 +110,7 @@ module.exports = new Command({
 					data['days'].push(utils.getDayName(stat.date, "es-ES"))
 					
 				}
-				console.log(data)
+				
 				let chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
