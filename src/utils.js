@@ -348,9 +348,9 @@ module.exports = {
             let porcetage=prom<=25?20:prom<35?30:prom<45?40:prom<50?50:prom>=60?60:0;
             let arecibir=Math.round(data.unclaimed/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
+            
             embed.addFields(
                 //{ name: 'Precio', value: ''+slp+'USD'},
-               
                 { name: 'ID', value: ''+currentUser.num,inline:true},
                 { name: 'Wallet', value: ''+currentUser.scholarPayoutAddress},
                 { name: 'Comprobantes', value: 'https://explorer.roninchain.com/address/'+currentUser.accountAddress},
