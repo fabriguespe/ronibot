@@ -340,7 +340,8 @@ module.exports = {
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
             if(days<1 && data.in_game_slp>0)days=15
             let prom = Math.round(data.in_game_slp/days)
-            let porcetage=prom<=25?20:prom<35?30:prom<45?40:prom<50?50:prom>=60?60:0;
+            let tabs={uno:75,dos:60,tres:50,cuatro:40}
+            let porcetage=prom<=tabs.cuatro?20:prom<tabs.tres?30:prom<tabs.dos?40:prom<tabs.uno?50:prom>=tabs.uno?60:0;
             let arecibir=Math.round(data.in_game_slp/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             
