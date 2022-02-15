@@ -9,7 +9,7 @@ DISCORD_FABRI=533994454391062529
 module.exports = new Command({
 	name: "roni"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		//if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
+		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		let esPagos=(utils.esJeissonPagos(message) || utils.esFabri(message) && args[1])
 		if(args[1] && !esPagos)return message.channel.send('No tienes permisos para correr este comando')
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
