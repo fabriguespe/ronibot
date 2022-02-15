@@ -49,63 +49,15 @@ module.exports = {
     FROM_UNIX_EPOCH:function(epoch_in_secs){
         return new Date(epoch_in_secs * 1000).toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
+    ADD_DAYS_TO_UNIX_DATE:function(epoch_in_secs,days){
+        let last_claim = new Date(epoch_in_secs * 1000)
+        last_claim.setDate(last_claim.getDate() + days)
+        return last_claim
+    },
     ADD_DAYS_TO_UNIX:function(epoch_in_secs,days){
         let last_claim = new Date(epoch_in_secs * 1000)
         last_claim.setDate(last_claim.getDate() + days)
         return last_claim.toLocaleString("es-ES", {timeZone: "America/Caracas"})
-    },
-    claim2:async function(num,from_acc,message){
-        try{
-            let db = await DbConnection.Get();
-            let from_private = secrets[(from_acc)]    
-            from_acc=from_acc.replace('ronin:','0x')
-
-            let random_msg=await this.create_random_msg()
-            let jwt=await this.get_jwt(from_acc,random_msg,from_private)
-           
-            let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
-         
-            let slp_claim=jdata.total
-            if(slp_claim<=0) return message.channel.send('No hay slp')
-
-            let signature=jdata.blockchain_related.signature
-            const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
-            let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
-            let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
-            
-            //build
-            
-            let myData=contract.methods.checkpoint(
-                (web3.utils.toChecksumAddress(from_acc)),
-                signature['amount'],
-                signature['timestamp'],
-                signature['signature']).encodeABI()
-            
-            let trans={
-                    "chainId": 2020,
-                    "gas": 492874,
-                    "from": from_acc,
-                    "gasPrice": 0,
-                    "value": 0,
-                    "to": SLP_CONTRACT,
-                    "nonce": nonce,
-                    data:myData
-            }
-            message.channel.send(num+" Realizando el claim de "+slp_claim+" SLP...");
-            let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
-            let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
-
-            
-            if(tr_raw.status){            
-                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
-                message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',timestamp:this.timestamp_log(),date:this.date_log(), slp:slp_claim,num:num,from_acc:from_acc})
-                return true
-            }  
-        }catch(e){
-            this.log(e.message,message)
-            return false
-        }
     },
     claim:async function(data,message){
 
@@ -120,6 +72,7 @@ module.exports = {
             let random_msg=await this.create_random_msg()
             let jwt=await this.get_jwt(from_acc,random_msg,from_private)
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
+            console.log(jdata)
             let signature=jdata.blockchain_related.signature
             
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
@@ -312,6 +265,8 @@ module.exports = {
             
             if(!cache) {
                 let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});   
+                console.log(this.FROM_UNIX_EPOCH(jdata.last_claimed_item_at))
+
                 let balance=jdata.blockchain_related.balance
                 let total=jdata.total-jdata.blockchain_related.balance
                 data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,has_to_claim:(jdata.claimable_total>0)}
@@ -338,7 +293,8 @@ module.exports = {
             let date_next_claim=this.ADD_DAYS_TO_UNIX(data.last_claim,15)
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
-            if(days<1 && data.in_game_slp>0)days=15
+            console.log(days)
+            //if(days<1 && data.in_game_slp>0)days=15
             let prom = Math.round(data.in_game_slp/days)
             let tabs={uno:75,dos:60,tres:50,cuatro:40}
             //uno 60%
