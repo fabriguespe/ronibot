@@ -359,7 +359,7 @@ module.exports = {
                 { name: 'A recibir', value: ''+arecibir,inline:true},
             )
 
-			let bono=10
+			//let bono=10
             //let slp_price= await fetch("https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd", { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
             //let min=15/2/slp_price*(1+(bono/100))
             /*if(arecibir<min)bono=30
