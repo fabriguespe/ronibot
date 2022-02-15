@@ -338,7 +338,6 @@ module.exports = {
             let date_next_claim=this.ADD_DAYS_TO_UNIX(data.last_claim,15)
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
-            if(days==0 && data.in_game_slp>0)days=15
             let prom = Math.round(data.in_game_slp/days)
             let porcetage=prom<=25?20:prom<35?30:prom<45?40:prom<50?50:prom>=60?60:0;
             let arecibir=Math.round(data.in_game_slp/(100/porcetage))
