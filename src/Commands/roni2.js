@@ -87,11 +87,10 @@ module.exports = new Command({
 				}else if( customId=='cobros'){
 					interaction.channel.send('Aguarde un momento...') 
 					let data=await utils.claimData(currentUser,interaction.message)
-					if(!(data.unclaimed>=0)){
+					if(data.recibe==0){
 						interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 20 segundos.') 
 						setTimeout(() => { interaction.channel.delete()}, 2000*10)
 					}else if(data.unix_ahora<data.next_claim){
-					
 						let diffInMilliSeconds=(data.next_claim)-(data.unix_ahora)
 						let hours = (diffInMilliSeconds / 3600).toFixed(2)
 						interaction.channel.send('Faltan '+hours+' hs para que puedas reclamar\nEste canal se cerrara en 20 segundos.') 

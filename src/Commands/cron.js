@@ -86,8 +86,7 @@ module.exports = new Command({
 					let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});           
 					let balance=jdata.blockchain_related.balance
 					let total=jdata.total-jdata.blockchain_related.balance
-					let unclaimed=jdata.claimable_total-jdata.blockchain_related.balance
-					data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at,unclaimed:unclaimed}
+					data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at}
 
 					data.accountAddress=user.accountAddress
 					data.nota=user.nota

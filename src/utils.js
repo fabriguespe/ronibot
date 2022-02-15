@@ -146,7 +146,7 @@ module.exports = {
                     data:myData
             }
             //CLAIM
-            message.channel.send("Realizando el claim de "+data.unclaimed+" SLP...");
+            message.channel.send("Realizando el claim de "+data.in_game_slp+" SLP...");
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
@@ -154,10 +154,10 @@ module.exports = {
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',timestamp:this.timestamp_log(),date:this.date_log(), slp:data.unclaimed,num:data.num,from_acc:from_acc})
+				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',timestamp:this.timestamp_log(),date:this.date_log(), slp:data.in_game_slp,num:data.num,from_acc:from_acc})
             }  
             
-            let roni_slp=data.unclaimed-data.recibe
+            let roni_slp=data.in_game_slp-data.recibe
             let jugador_slp=data.recibe
             if(roni_slp==jugador_slp)roni_slp-=1
             let roniPrimero=(roni_slp>=jugador_slp)
@@ -317,11 +317,9 @@ module.exports = {
             
             if(!cache) {
                 let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});   
-                console.log(jdata)
                 let balance=jdata.blockchain_related.balance
                 let total=jdata.total-jdata.blockchain_related.balance
-                
-                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,unclaimed:total}
+                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,has_to_claim:(jdata.claimable_total>0)}
             }else{
                 url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
                 data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
@@ -345,9 +343,10 @@ module.exports = {
             let date_next_claim=this.ADD_DAYS_TO_UNIX(data.last_claim,15)
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
-            let prom=Math.round(data.unclaimed/days)
+            if(days==0 && data.in_game_slp>0)days=15
+            let prom = Math.round(data.in_game_slp/days)
             let porcetage=prom<=25?20:prom<35?30:prom<45?40:prom<50?50:prom>=60?60:0;
-            let arecibir=Math.round(data.unclaimed/(100/porcetage))
+            let arecibir=Math.round(data.in_game_slp/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             
             embed.addFields(
@@ -359,7 +358,7 @@ module.exports = {
                 { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
                 { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
                 { name: 'SLP Total', value: ''+data.in_game_slp,inline:true},
-                { name: 'SLP Disponible', value: ''+data.unclaimed,inline:true},
+                { name: 'SLP Disponible', value: ''+data.in_game_slp,inline:true},
                 { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Dias', value: ''+days,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
@@ -379,21 +378,19 @@ module.exports = {
                 embed.addFields(
                     { name: 'Gracias!', value: '😀',inline:true},
                     { name: 'Bono', value: bono+'%',inline:true},
-                    { name: 'A recibir', value: ''+Math.round(data.unclaimed/(100/bono)),inline:true}
+                    { name: 'A recibir', value: ''+Math.round(data.in_game_slp/(100/bono)),inline:true}
                 )
             }
             embed.addFields(
                 { name: 'Información', value: 'Revisa que tu wallet sea correcta\nTu promedio de SLP se baso en el calculo de los dias y el total acumulado. Si estas de acuerdo escribe "si" para poder cobrar, de lo contrario, "no"'},
-              //  { name: 'IMPORTANTE', value: 'Dado que sabemos que la situacion esta dificil Ronimate va a estar haciendose cargo de un 10% extra para cada jugador. \nEstamos orgullosos de contar con gente comprometida y responsable como vos en la academia.'},
             )
             message.channel.send({content: ` `,embeds: [embed]})
 
 
             porcetage+=bono
-            let recibe=Math.round(data.unclaimed/(100/porcetage))
-            
-            let hours=this.HOURS_NEXT_CLAIM(data.last_claim)
-            return {unclaimed:data.unclaimed,hours:hours,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,ahora:ahora,date_ahora:date_ahora,date_last_claim:date_last_claim,days:days,porcetage:porcetage,recibe:recibe}
+            let recibe=Math.round(data.in_game_slp/(100/porcetage))
+            //let hours=this.HOURS_NEXT_CLAIM(data.last_claim)
+            return {hours:days*24,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,recibe:recibe,has_to_claim:data.has_to_claim}
 
         }catch(e){
             this.log("ERROR: "+e.message,message)
