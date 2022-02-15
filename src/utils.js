@@ -316,11 +316,11 @@ module.exports = {
             //data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
             
             if(!cache) {
-                let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});           
+                let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});   
+                console.log(jdata)        
                 let balance=jdata.blockchain_related.balance
                 let total=jdata.total-jdata.blockchain_related.balance
-                let unclaimed=jdata.claimable_total-jdata.blockchain_related.balance
-                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,unclaimed:unclaimed}
+                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,unclaimed:total}
             }else{
                 url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
                 data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
