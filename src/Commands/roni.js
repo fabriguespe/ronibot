@@ -70,7 +70,7 @@ module.exports = new Command({
 			let customId=interaction.customId
 			lascomnd=interaction.customId
 			if( customId=='ticket_soporte'){
-				interaction.channel.send(`Hola! <@${jsid}>, necesito de tu ayuda`)
+				interaction.channel.send(`Hola! <@${DISCORD_JSON}>, necesito de tu ayuda`)
 			}else if( customId=='ver_datos'){
 				return utils.ver_datos(currentUser,interaction.message)
 			}else if( customId=='asociar' || customId=='desasociar'){
@@ -85,7 +85,7 @@ module.exports = new Command({
 					interaction.channel.send('Faltan '+data.hours+' hs para que puedas reclamar\nEste canal se cerrara en 20 segundos.') 
 					setTimeout(() => { interaction.channel.delete()}, 2000*10)
 				}else if( data.scholarPayoutAddress==null ||  data.scholarPayoutAddress==undefined || data.scholarPayoutAddress.length<=20){
-					thread.send(`La cuenta no tiene wallet para depositar.\nNotificale cual a <@${jsid}>\nEste canal se cerrara en 20 segundos.`) 
+					thread.send(`La cuenta no tiene wallet para depositar.\nNotificale cual a <@${DISCORD_JSON}>\nEste canal se cerrara en 20 segundos.`) 
 					setTimeout(() => { interaction.channel.delete()}, 2000*10)
 				}else{
 					interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {

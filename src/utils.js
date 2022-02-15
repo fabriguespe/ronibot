@@ -9,6 +9,7 @@ const Web3 = require('web3');
 var axie_abi = require(path.resolve(__dirname, "./Data/axie_abi.json"));
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
+DISCORD_JSON=877625345996632095//jeisson
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36"
 TIMEOUT_MINS = 5
@@ -347,8 +348,8 @@ module.exports = {
 
             porcetage+=bono
             let recibe=Math.round(data.in_game_slp/(100/porcetage))
-            //let hours=this.HOURS_NEXT_CLAIM(data.last_claim)
-            return {hours:days*24,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,in_game_slp:data.in_game_slp,recibe:recibe,has_to_claim:data.has_to_claim}
+            let hours=this.HOURS_NEXT_CLAIM(data.last_claim)
+            return {hours:hours,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,in_game_slp:data.in_game_slp,recibe:recibe,has_to_claim:data.has_to_claim}
 
         }catch(e){
             this.log("ERROR: "+e.message,message)
