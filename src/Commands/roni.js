@@ -3,7 +3,8 @@ const path = require('path');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 const Command = require("../Structures/Command.js");
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
-const jsid=877625345996632095//jeisson
+DISCORD_JSON=877625345996632095//jeisson
+DISCORD_FABRI=533994454391062529
 
 module.exports = new Command({
 	name: "roni"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
@@ -77,7 +78,6 @@ module.exports = new Command({
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
-				console.log(data)
 				if(data.recibe==0){
 					interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 20 segundos.') 
 					setTimeout(() => { interaction.channel.delete()}, 2000*10)
@@ -92,12 +92,14 @@ module.exports = new Command({
 						const filter = m => m.author.id === message.author.id;
 						const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
 						collector.on('collect',async m => {
-							if(m.author.id==908739379059626094 || (!esPagos && (m.author.id==877625345996632095  || m.author.id==533994454391062529)))return //ronibot
+							if(m.author.id==908739379059626094 || (!esPagos && (m.author.id==DISCORD_JSON  || m.author.id==DISCORD_FABRI)))return
 							if (m.content.toLowerCase() == "si") {
 								let fallo=await utils.claim(data,message)
 								if(!fallo && !args[1]){
 									message.channel.send('Exito!\nEste canal se cerrara en 30 segundos.')
 									setTimeout(() => { message.channel.delete()}, 3000*10)
+								}else{
+									//return interaction.channel.send('Hubo un error!')
 								}
 							} else if (m.content.toLowerCase() == "no") {
 								message.channel.send('Este canal se cerrara en 3 segundos.')

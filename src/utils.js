@@ -18,7 +18,7 @@ SLP_CONTRACT = "0xa8754b9fa15fc18bb59458815510e40a12cd2014"
 WETH_CONTRACT = "0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5"
 RONIN_PROVIDER_FREE = "https://proxy.roninchain.com/free-gas-rpc"
 RONIN_PROVIDER = "https://api.roninchain.com/rpc"
-
+DISCORD_FABRI=533994454391062529
 
 
 var log4js = require("log4js");
@@ -115,10 +115,8 @@ module.exports = {
             let from_acc=data.from_acc
             from_acc=from_acc.replace('ronin:','0x')
             data.scholarPayoutAddress=data.scholarPayoutAddress.replace('ronin:','0x')
-            
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
 
-            //random message
             let random_msg=await this.create_random_msg()
             let jwt=await this.get_jwt(from_acc,random_msg,from_private)
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
@@ -154,18 +152,16 @@ module.exports = {
             if(tr_raw.status){            
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
-				await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',timestamp:this.timestamp_log(),date:this.date_log(), slp:data.in_game_slp,num:data.num,from_acc:from_acc})
+                await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',timestamp:this.timestamp_log(),date:this.date_log(), slp:data.in_game_slp,num:data.num,from_acc:from_acc})
             }  
-            
             let roni_slp=data.in_game_slp-data.recibe
             let jugador_slp=data.recibe
             if(roni_slp==jugador_slp)roni_slp-=1
             let roniPrimero=(roni_slp>=jugador_slp)
 
             let player_wallet=data.scholarPayoutAddress
-            let roni_wallet=(data.num=='43' || data.num=='186' || data.num=='187')?this.getWalletByNum("PRO"):this.getWalletByNum("BREED")
+            let roni_wallet=(data.num=='43' || data.num=='186' || data.num=='187')?await this.getWalletByNum("PRO"):await this.getWalletByNum("BREED")
             roni_wallet=roni_wallet.replace('ronin:','0x')
-            
             let fallo=false
             try{
                 let tx=await this.transfer(from_acc,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
@@ -194,6 +190,7 @@ module.exports = {
             return fallo
              
         }catch(e){
+            this.log(e)
             if(e.message.includes('ERROR:Transaction has been reverted by the EVM'))e.message='Transaction has been reverted by the EVM'
         }
     },timestamp_log:function(){
@@ -253,7 +250,6 @@ module.exports = {
     },
     transfer:async function(from_acc,to_acc,balance,message){
         try{
-            console.log(from_acc,to_acc,balance)
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
 
@@ -303,7 +299,6 @@ module.exports = {
         const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER));
         contract = new web3.eth.Contract(balance_abi,web3.utils.toChecksumAddress(contract))
         let balance = await  contract.methods.balanceOf( web3.utils.toChecksumAddress(from_acc.replace("ronin:", "0x"))).call()
-        console.log(balance)
         return balance
     },
     getSLP:async function(from_acc,message,cache=false){
@@ -390,7 +385,7 @@ module.exports = {
             porcetage+=bono
             let recibe=Math.round(data.in_game_slp/(100/porcetage))
             //let hours=this.HOURS_NEXT_CLAIM(data.last_claim)
-            return {hours:days*24,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,recibe:recibe,has_to_claim:data.has_to_claim}
+            return {hours:days*24,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,in_game_slp:data.in_game_slp,recibe:recibe,has_to_claim:data.has_to_claim}
 
         }catch(e){
             this.log("ERROR: "+e.message,message)
@@ -587,7 +582,6 @@ module.exports = {
         Date.prototype.getShortMonthName = function () {
             return this.getMonthName().substr(0, 3);
         };
-        console.log(date.getDate(),date.getDate()>=27 && date.getDate()<=2)
         if(date.getDate()>=14 && date.getDate()<=17)return "Mid-"+date.getShortMonthName()
         else if(date.getDate()>=27 || date.getDate()<=2)return "End-"+date.getShortMonthName()
         else return dateStr        
