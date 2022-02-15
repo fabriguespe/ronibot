@@ -358,6 +358,7 @@ module.exports = {
                 { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
                 { name: 'A recibir', value: ''+arecibir,inline:true},
+                { name: 'Vacio', value: 'Vacio',inline:true},
             )
 
 			let bono=0
