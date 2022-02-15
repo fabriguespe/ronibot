@@ -338,6 +338,7 @@ module.exports = {
             let date_next_claim=this.ADD_DAYS_TO_UNIX(data.last_claim,15)
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
+            if(days<1 && data.in_game_slp>0)days=15
             let prom = Math.round(data.in_game_slp/days)
             let porcetage=prom<=25?20:prom<35?30:prom<45?40:prom<50?50:prom>=60?60:0;
             let arecibir=Math.round(data.in_game_slp/(100/porcetage))
@@ -352,9 +353,8 @@ module.exports = {
                 { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
                 { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
                 { name: 'SLP Total', value: ''+data.in_game_slp,inline:true},
-                { name: 'SLP Disponible', value: ''+data.in_game_slp,inline:true},
-                { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Dias', value: ''+days,inline:true},
+                { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
                 { name: 'A recibir', value: ''+arecibir,inline:true},
             )
