@@ -317,7 +317,7 @@ module.exports = {
             
             if(!cache) {
                 let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});   
-              
+                console.log(jdata)
                 let balance=jdata.blockchain_related.balance
                 let total=jdata.total-jdata.blockchain_related.balance
                 

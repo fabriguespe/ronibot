@@ -46,7 +46,7 @@ module.exports = new Command({
 				}
 				
 				const exampleEmbed = new MessageEmbed().setColor('#0099ff').setTitle('Jugador #'+args[1])
-				let slp=await utils.getSLP(eluser.accountAddress,message)
+				let slp=await utils.getSLP(eluser.accountAddress,message,false)
 				
 
 				exampleEmbed.addFields(
