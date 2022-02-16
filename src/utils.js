@@ -457,8 +457,9 @@ module.exports = {
             },
             "query":"mutation CreateAccessTokenWithSignature($input: SignatureInput!){createAccessTokenWithSignature(input: $input) {newAccount result accessToken __typename}}"
         }`
-        let axies=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json', 'User-Agent': USER_AGENT},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
-        return axies.data.createAccessTokenWithSignature.accessToken
+        let response=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json', 'User-Agent': USER_AGENT},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
+        if(!response || !response.data || !response.data.createAccessTokenWithSignature)return null
+        return response.data.createAccessTokenWithSignature.accessToken
     },
     create_random_msg:async function (){
         let url = `https://graphql-gateway.axieinfinity.com/graphql`;
@@ -469,8 +470,9 @@ module.exports = {
             "query": "mutation CreateRandomMessage{createRandomMessage}"
         }`
 
-        let axies=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
-        return axies.data.createRandomMessage
+        let response=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
+        if(!response || !response.data || !response.data.createRandomMessage)return null
+        return response.data.createRandomMessage
     },
     getAxiesIds:async function (wallet){
         wallet=wallet.replace('ronin:','0x')
