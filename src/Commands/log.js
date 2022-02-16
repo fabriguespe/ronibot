@@ -45,8 +45,8 @@ module.exports = new Command({
 				for(let j in data_por_dia[i]){
 					let data=data_por_dia[i][j]
 					if(data.type=='slp_jugador'){
-						texto+=''+data.date+': !pagar '+data.slp*0.06+' amaloa ('+(slp*0.06*slp_price)+'USD)\n'
-						texto+=''+data.date+': !pagar '+data.slp*0.02+' pablo ('+(slp*0.02*slp_price)+'USD)\n'
+						texto+=''+data.date+': !pagar '+data.slp*0.06+' amaloa ('+Math.round(data.slp*0.06*slp_price)+'USD)\n'
+						texto+=''+data.date+': !pagar '+data.slp*0.02+' pablo ('+Math.round(data.slp*0.02*slp_price)+'USD)\n'
 					}
 				}
 			}
