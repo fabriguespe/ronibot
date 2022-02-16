@@ -144,8 +144,7 @@ module.exports = {
             return fallo
              
         }catch(e){
-            this.log(e)
-            if(e.message.includes('ERROR:Transaction has been reverted by the EVM'))e.message='Transaction has been reverted by the EVM'
+            this.log(e,message)
         }
     },timestamp_log:function(){
         return new Date(Date.now())
