@@ -8,6 +8,7 @@ const QuickChart = require('quickchart-js');
 const { stat } = require('fs');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
+TABULADORES={uno:75,dos:60,tres:50,cuatro:40}
 
 module.exports = new Command({
 	name: "general"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
@@ -29,22 +30,12 @@ module.exports = new Command({
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
-					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined){
+					if(stat && anteultimo && anteultimo.in_game_slp!=undefined && stat.in_game_slp!=undefined){//esto es importante para las starts
 						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
 						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
-					}else{
-						stat['slp_sum']=stat.in_game_slp
-						stat['slp']=stat.in_game_slp
+						if(stat['mmr']!=1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue
+						data.push({timestamp:stat.timestamp,date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
 					}
-					if(stat['mmr']!=1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue
-					/*if(stat.date=='16/12/2021'){
-						stat['slp']=(stat['slp']/3)
-						data.push({timestamp:stat.timestamp,date:utils.getDayName("14/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
-						data.push({timestamp:stat.timestamp,date:utils.getDayName("15/12/2021", "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
-					}*/
-					data.push({timestamp:stat.timestamp,date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
-					
-					
 				}
 				//if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
 				data_users.push(data)
@@ -56,7 +47,7 @@ module.exports = new Command({
 					let undia=dias_del_user[j]
 					let fecha=undia.date
 					if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,slp:0,players:0,mmr:0,grupo1:0,grupo2:0,grupo3:0,grupo4:0,grupo5:0,grupo6:0}
-					data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,players:data_por_dia[fecha].players+(undia.slp>0?1:0),slp:data_por_dia[fecha].slp+=undia.slp,mmr:data_por_dia[fecha].mmr+=undia.mmr,grupo1:data_por_dia[fecha].grupo1+(undia.slp>0 && undia.slp<=50?1:0),grupo2:data_por_dia[fecha].grupo2+(undia.slp<80 && undia.slp>=50?1:0),grupo3:data_por_dia[fecha].grupo3+(undia.slp<100 && undia.slp>=80?1:0),grupo4:data_por_dia[fecha].grupo4+(undia.slp<130 && undia.slp>=100?1:0),grupo5:data_por_dia[fecha].grupo5+(undia.slp>=130?1:0)}
+					data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,players:data_por_dia[fecha].players+(undia.slp>0?1:0),slp:data_por_dia[fecha].slp+=undia.slp,mmr:data_por_dia[fecha].mmr+=undia.mmr,grupo1:data_por_dia[fecha].grupo1+(undia.slp>0 && undia.slp<=TABULADORES.cuatro?1:0),grupo2:data_por_dia[fecha].grupo2+(undia.slp<TABULADORES.tres && undia.slp>=TABULADORES.cuatro?1:0),grupo3:data_por_dia[fecha].grupo3+(undia.slp<TABULADORES.dos && undia.slp>=TABULADORES.tres?1:0),grupo4:data_por_dia[fecha].grupo4+(undia.slp<TABULADORES.uno && undia.slp>=TABULADORES.dos?1:0),grupo5:data_por_dia[fecha].grupo5+(undia.slp>=TABULADORES.uno?1:0)}
 
 				}
 			}
@@ -92,27 +83,14 @@ module.exports = new Command({
 					data: { 
 						labels: chart_data.days,
 						datasets:[
-							{type: 'bar',"yAxisID": "y1",label: '0 > < 50', data: chart_data.grupo1,"fill": false,backgroundColor: 'black'},
-							{type: 'bar',"yAxisID": "y1",label: '50 > < 80', data: chart_data.grupo2,"fill": false,backgroundColor: '#D55040'},
-							{type: 'bar',"yAxisID": "y1",label: '80 > < 100', data: chart_data.grupo3,"fill": false,backgroundColor: '#F8D978'},
-							{type: 'bar',"yAxisID": "y1",label: '100 > < 130', data: chart_data.grupo4,"fill": false,backgroundColor: '#9EC284'},
-							{type: 'bar',"yAxisID": "y1",label: '130 > < ...', data: chart_data.grupo5,"fill": false,backgroundColor: '#9EC284'}
+							{type: 'bar',"yAxisID": "y1",label: '0 > < 25', data: chart_data.grupo1,"fill": false,backgroundColor: 'black'},
+							{type: 'bar',"yAxisID": "y1",label: '25 > < 35', data: chart_data.grupo2,"fill": false,backgroundColor: '#D55040'},
+							{type: 'bar',"yAxisID": "y1",label: '35 > < 45', data: chart_data.grupo3,"fill": false,backgroundColor: '#F8D978'},
+							{type: 'bar',"yAxisID": "y1",label: '45 > < 60', data: chart_data.grupo4,"fill": false,backgroundColor: '#9EC284'},
+							{type: 'bar',"yAxisID": "y1",label: '60 > < ...', data: chart_data.grupo5,"fill": false,backgroundColor: '#9EC284'}
 						] 
 					},
-					"options": {
-						"scales": {
-						"xAxes": [{
-							"stacked": true
-						}],
-						"yAxes": [
-							{
-							"id": "y1",
-							"display": true,
-							"position": "left",
-							"stacked": true
-							}
-						]
-						}
+					"options": {"scales": {"xAxes": [{"stacked": true}],"yAxes": [	{"id": "y1","display": true,"position": "left","stacked": true}]}
 					}
 				}).setWidth(800).setHeight(400);
 				message.channel.send(`Grafico: ${await chart.getShortUrl()}`);

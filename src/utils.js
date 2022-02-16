@@ -9,6 +9,7 @@ const Web3 = require('web3');
 var axie_abi = require(path.resolve(__dirname, "./Data/axie_abi.json"));
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
+TABULADORES={uno:75,dos:60,tres:50,cuatro:40}
 DISCORD_JSON=877625345996632095//jeisson
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36"
@@ -296,13 +297,12 @@ module.exports = {
             console.log(days)
             //if(days<1 && data.in_game_slp>0)days=15
             let prom = Math.round(data.in_game_slp/days)
-            let tabs={uno:75,dos:60,tres:50,cuatro:40}
             //uno 60%
             //dos 50%
             //tres 40%
             //cuatro 30%
             //cinco 20%
-            let porcetage=prom<=tabs.cuatro?20:prom<tabs.tres?30:prom<tabs.dos?40:prom<tabs.uno?50:prom>=tabs.uno?60:0;
+            let porcetage=prom<=TABULADORES.cuatro?20:prom<TABULADORES.tres?30:prom<TABULADORES.dos?40:prom<TABULADORES.uno?50:prom>=TABULADORES.uno?60:0;
             
             let arecibir=Math.round(data.in_game_slp/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
