@@ -485,7 +485,9 @@ module.exports = {
 
         let response=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
         if(!response || !response.data || !response.data.axies)return null
-        return {count:response.data.axies.total,axies:response.data.axies.results}
+        let dev= {count:response.data.axies.total,axies:response.data.axies.results}
+        console.log(dev)
+        return dev
 
     },
     getUsersByDiscord:async function(ID){

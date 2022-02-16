@@ -27,11 +27,13 @@ module.exports = new Command({
 				query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
 				"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
 				}`
-				let axies=await fetch(url, { credentials: 'include',method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
-				axies={count:axies.data.axies.total,axies:axies.data.axies.results}
+				let response=await fetch(url, { credentials: 'include',method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
+				if(!response || !response.data || !response.data.axies)return message.channel.send("ERROR al traer los axies");
+				axies={count:response.data.axies.total,axies:response.data.axies.results}
+
 				let axiesdata=[]
-				for(let i in axies.axies){
-					let axie=axies.axies[i]
+				for(let i in response.axies){
+					let axie=response.axies[i]
 					let pushed={}
 					pushed.id=axie.id
 					pushed.url= 'https://marketplace.axieinfinity.com/axie/'+axie.id
