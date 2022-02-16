@@ -14,7 +14,6 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
-			message.channel.send("Aguarde un momento..")
 			let db = await DbConnection.Get();
 			let data=''
 			let eluser = await db.collection('users').findOne({num:args[1]})
@@ -23,15 +22,25 @@ module.exports = new Command({
 
 			if(args.length==2){
 				
-				url = `https://graphql-gateway.axieinfinity.com/graphql`;
-				query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
-				"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
-				}`
-				let response=await fetch(url, { credentials: 'include',method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
+				message.channel.send("Aguarde un momento..")
+				let axies={}
+				try{
+
+					url = `https://graphql-gateway.axieinfinity.com/graphql`;
+					query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
+					"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
+					}`
+					let response=await fetch(url, { credentials: 'include',method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
+					if(response && response.data && response.data.axies)axies=response.data.axies.results
+				}catch(e){
+					utils.log(e,message)
+				}
 				let axiesdata=[]
-				if(response.data.axies.results){
-					for(let i in response.data.axies.results){
-						let axie=response.data.axies.results[i]
+
+				
+				if(axies){
+					for(let i in axies){
+						let axie=axies[i]
 						let pushed={}
 						pushed.id=axie.id
 						pushed.url= 'https://marketplace.axieinfinity.com/axie/'+axie.id
