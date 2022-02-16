@@ -42,8 +42,8 @@ module.exports = new Command({
 				for(let j in data_por_dia[i]){
 					let data=data_por_dia[i][j]
 					if(data.type=='slp_jugador'){
-						texto+='La fecha '+data.date+' le corresponde a Amaloa de '+data.slp*0.06+'\n'
-						texto+='La fecha '+data.date+' le corresponde a Pablo de '+data.slp*0.02+'\n'
+						texto+=''+data.date+': !pagar '+data.slp*0.06+' amaloa\n'
+						texto+=''+data.date+': !pagar '+data.slp*0.02+' pablo\n'
 					}
 				}
 			}
