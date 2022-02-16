@@ -28,22 +28,23 @@ module.exports = new Command({
 				"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
 				}`
 				let response=await fetch(url, { credentials: 'include',method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
-				if(!response || !response.data || !response.data.axies)return message.channel.send("ERROR al traer los axies");
 				let axiesdata=[]
-				for(let i in response.data.axies.results){
-					let axie=response.data.axies.results[i]
-					let pushed={}
-					pushed.id=axie.id
-					pushed.url= 'https://marketplace.axieinfinity.com/axie/'+axie.id
-					pushed.hijos=axie.breedCount
-					pushed.image=axie.image
-					pushed.tipo=axie.class
-					let espalda=axie.parts.find(x => x.type == "Back").name
-					let boca=axie.parts.find(x => x.type == "Mouth").name
-					let cuerno=axie.parts.find(x => x.type == "Horn").name
-					let cola=axie.parts.find(x => x.type == "Tail").name
-					pushed.partes={espalda:espalda,boca:boca,cuerno:cuerno,cola:cola}
-					axiesdata.push(pushed)
+				if(response.data.axies.results){
+					for(let i in response.data.axies.results){
+						let axie=response.data.axies.results[i]
+						let pushed={}
+						pushed.id=axie.id
+						pushed.url= 'https://marketplace.axieinfinity.com/axie/'+axie.id
+						pushed.hijos=axie.breedCount
+						pushed.image=axie.image
+						pushed.tipo=axie.class
+						let espalda=axie.parts.find(x => x.type == "Back").name
+						let boca=axie.parts.find(x => x.type == "Mouth").name
+						let cuerno=axie.parts.find(x => x.type == "Horn").name
+						let cola=axie.parts.find(x => x.type == "Tail").name
+						pushed.partes={espalda:espalda,boca:boca,cuerno:cuerno,cola:cola}
+						axiesdata.push(pushed)
+					}
 				}
 				
 				const exampleEmbed = new MessageEmbed().setColor('#0099ff').setTitle('Jugador #'+args[1])
