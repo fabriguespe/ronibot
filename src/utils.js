@@ -304,6 +304,7 @@ module.exports = {
             //cuatro 30%
             //cinco 20%
             let porcetage=prom<=tabs.cuatro?20:prom<tabs.tres?30:prom<tabs.dos?40:prom<tabs.uno?50:prom>=tabs.uno?60:0;
+            if(currentUser.num=='43' || currentUser.num=='139')porcetage=100
             let arecibir=Math.round(data.in_game_slp/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             
