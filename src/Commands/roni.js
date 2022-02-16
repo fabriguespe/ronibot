@@ -49,10 +49,7 @@ module.exports = new Command({
 			//row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
 		}else if(currentUser && currentUser.nota.includes('entrevist')){
 			row.addComponents(new MessageButton().setCustomId('ver_datos').setLabel('🔑 Ver mis datos').setStyle('SUCCESS'));
-		} else{
-			//row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
-		}
-		
+		} 
 		embed = new MessageEmbed().setTitle('Ticket')
 		.setDescription(`Hola ${message.author}, soy Roni. \nPor favor seleccioná una opción tocando el boton correspondiente`).setColor('GREEN').setTimestamp()
 
