@@ -51,6 +51,25 @@ module.exports = new Command({
 					}
 				}
 			}
+			/*
+			//PAGOS RONIMATE
+pslp==0.028  = 0.028
+pvis=0.086 = 0.086
+
+cuenta1=1089 = 1 089
+cuenta2=529 = 529
+axie=(cuenta1 + cuenta2)*pslp = 45.304
+vis=924*pvis  = 79.464
+ronimate=556*pslp  = 15.568
+pablo=150-vis-ronimate-axie  = 9.664
+
+
+cuenta=350*pslp = 9.8
+ronimate=1697*pslp = 47.516
+vis=500*pvis = 43
+amaloa=150-vis-ronimate-axie  = 14.18
+
+*/
 			
 			embed = new MessageEmbed().setTitle('Managment').setDescription(texto).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})

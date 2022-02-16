@@ -13,8 +13,8 @@ module.exports = new Command({
         let from_acc=''
         let to_acc=''
         if(args.length==4 /*&& (args[2]=='amaloa' || args[2]=='jeisson' || args[2]=='pablo')*/){
-            from_acc=await utils.getWalletByNum(args[2])
-            to_acc=await utils.getWalletByNum(args[3])
+            from_acc=await utils.getPaymentWalletByNum(args[2])
+            to_acc=await utils.getPaymentWalletByNum(args[3])
             
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
@@ -26,9 +26,9 @@ module.exports = new Command({
             }
         }else if(args.length==3){//sale de breed
             
-            from_acc=await utils.getWalletByNum("BREED")
-            to_acc=await utils.getWalletByNum(args[2])
-            
+            from_acc=await utils.getPaymentWalletByNum("BREED")
+            to_acc=await utils.getPaymentWalletByNum(args[2])
+            console.log(to_acc)
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
 

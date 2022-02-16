@@ -513,6 +513,18 @@ module.exports = {
         if(user)return user
         else return null
     },
+    getPaymentWalletByNum:async function(num){
+        if(num=='amaloa' || num=='AMALOA')return 'ronin:9a9dc8ab2474625cb58bca01beb72759e2c7efaa'
+        if(num=='pablo' || num=='PABLO')return 'ronin:f0c889583622f97c67e2fc4cf2a5ce214f7eee8c'
+        if(num=='jeisson' || num=='JEISSON')return 'ronin:9f1c0c36728b3341084adaad489a651394c9e40a'
+        if(num=='BREED' || num=='breed')return 'ronin:b1c0e5cb955ac17d9cb42fb4ee6b6ae01b5a9c82'
+        if(num=='PRO' || num=='pro')return 'ronin:bfc07b770a4bfab0e9ac114ae2ca8275c701c28e'
+        if(num=='VENTA' || num=='venta')return 'ronin:29e29959cbb316923e57238467e14135d19c16f9'
+        let db = await DbConnection.Get();
+		let user = await db.collection('users').findOne({num:num.toString()})
+        if(user)return user.scholarPayoutAddress
+        else return null
+    },
     getWalletByNum:async function(num){
         if(num=='amaloa' || num=='AMALOA')return 'ronin:9a9dc8ab2474625cb58bca01beb72759e2c7efaa'
         if(num=='pablo' || num=='PABLO')return 'ronin:f0c889583622f97c67e2fc4cf2a5ce214f7eee8c'
