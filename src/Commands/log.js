@@ -38,6 +38,7 @@ module.exports = new Command({
 					texto+='El pago '+data.date+' se realizaron '+data.cant+' pagos por un total de '+data.slp+' SLP a '+data.type +'\n'
 				}
 			}
+
 			let embed = new MessageEmbed().setTitle('Reporte').setDescription(texto).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 			texto=''
@@ -45,12 +46,17 @@ module.exports = new Command({
 				for(let j in data_por_dia[i]){
 					let data=data_por_dia[i][j]
 					if(data.type=='slp_jugador'){
-						texto+=''+data.date+': !pagar '+data.slp*0.06+' amaloa ('+Math.round(data.slp*0.06*slp_price)+'USD)\n'
-						texto+=''+data.date+': !pagar '+data.slp*0.02+' pablo ('+Math.round(data.slp*0.02*slp_price)+'USD)\n'
+						texto+=''+data.date+': !pagar '+Math.round(data.slp*0.06)+' amaloa ('+Math.round(data.slp*0.06*slp_price)+'USD)\n'
+						texto+=''+data.date+': !pagar '+Math.round(data.slp*0.02)+' pablo ('+Math.round(data.slp*0.02*slp_price)+'USD)\n'
 					}
 				}
 			}
-			embed = new MessageEmbed().setTitle('Reporte').setDescription(texto).setColor('GREEN').setTimestamp()
+			
+			embed = new MessageEmbed().setTitle('Managment').setDescription(texto).setColor('GREEN').setTimestamp()
+			message.channel.send({content: ` `,embeds: [embed]})
+
+			texto='!pagar '+Math.round(80/slp_price)+' jeisson\n'
+			embed = new MessageEmbed().setTitle('Jeisson').setDescription(texto).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 			
 			
