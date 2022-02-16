@@ -14,6 +14,7 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		try{
+			message.channel.send("Aguarde un momento..")
 			let db = await DbConnection.Get();
 			let data=''
 			let eluser = await db.collection('users').findOne({num:args[1]})
