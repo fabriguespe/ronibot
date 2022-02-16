@@ -4,7 +4,6 @@ const Command = require("../Structures/Command.js");
 const path = require('path');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 
-const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
 module.exports = new Command({
 	name: "retiro"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
