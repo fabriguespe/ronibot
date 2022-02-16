@@ -13,6 +13,7 @@ module.exports = new Command({
 		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
 		
 		if(args[1]=='bk'){
+			// mongorestore --archive=archive
 			try{
 				let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
 	
