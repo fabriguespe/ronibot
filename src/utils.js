@@ -7,7 +7,7 @@ var balance_abi = require(path.resolve(__dirname, "./Data/balance_abi.json"));
 var DbConnection = require(path.resolve(__dirname, "./Data/db.js"));
 const Web3 = require('web3');
 var axie_abi = require(path.resolve(__dirname, "./Data/axie_abi.json"));
-const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
+const {MessageEmbed} = require('discord.js');
 
 TABULADORES={uno:60,dos:45,tres:35,cuatro:25}
 DISCORD_JSON=877625345996632095//jeisson
@@ -74,7 +74,7 @@ module.exports = {
             let random_msg=await this.create_random_msg()
             let jwt=await this.get_jwt(from_acc,random_msg,from_private)
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
-          
+            
             let signature=jdata.blockchain_related.signature
             
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
@@ -145,7 +145,7 @@ module.exports = {
             return fallo
              
         }catch(e){
-            this.log(e,message)
+            this.log("ERROR: "+e.message,message)
         }
     },timestamp_log:function(){
         return new Date(Date.now())

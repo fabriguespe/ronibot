@@ -40,7 +40,7 @@ module.exports = new Command({
 					if(!find)await db.collection("users").insertOne(user)
 				}
 			}catch (e) {
-				utils.log(e)
+				utils.log("ERROR: "+e.message,message)
 			}
 		
 			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);

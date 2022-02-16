@@ -8,7 +8,7 @@ const QuickChart = require('quickchart-js');
 const { stat } = require('fs');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
-TABULADORES={uno:75,dos:60,tres:50,cuatro:40}
+TABULADORES={uno:60,dos:45,tres:35,cuatro:25}
 
 module.exports = new Command({
 	name: "general"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),

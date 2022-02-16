@@ -50,7 +50,7 @@ module.exports = new Command({
 					try{
 						data= await fetch("https://game-api.axie.technology/api/v1/"+user.accountAddress, { method: "Get" }).then(res => res.json()).then((json) => { return json});
 					}catch (e) {
-						utils.log(e)
+						utils.log("ERROR: "+e.message,message)
 					}
 
 					data.accountAddress=user.accountAddress
@@ -64,7 +64,7 @@ module.exports = new Command({
 				}
 				utils.log('Proceso corrido a las ' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
-				utils.log(e)
+				utils.log("ERROR: "+e.message,message)
 			}	
 			//hasta aca
 
@@ -102,7 +102,7 @@ module.exports = new Command({
 				}
 				utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
-				utils.log(e)
+				utils.log("ERROR: "+e.message,message)
 			}	
 			//HASTA ACA
 
