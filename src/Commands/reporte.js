@@ -37,7 +37,7 @@ module.exports = new Command({
 				}
 				let axiesdata=[]
 
-				
+
 				if(axies){
 					for(let i in axies){
 						let axie=axies[i]
