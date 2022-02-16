@@ -10,8 +10,9 @@ module.exports = new Command({
 	name: "retiro"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
         if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
-        try{
-            if(args.length==3){
+        if(args.length==3){
+            try{
+           
 
                 //IDs
                 let user_from=await utils.getUserByNum(args[1])
@@ -23,14 +24,16 @@ module.exports = new Command({
                 let num_to=(user_to && user_to.num)?user_to.num:args[2]
                 
                 //build
-                let axies_to=await utils.getAxiesIds(from_acc)
-                if(axies_to.length>0)return message.channel.send(`La cuenta destino ya tiene axies!`);
+                let axies_to=await utils.getAxiesIds(to_acc)
+                console.log(axies_to)
+                if(!axies_to || axies_to.count>0)return message.channel.send(`La cuenta destino ya tiene axies!`);
                 //Data
                 if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
                 from_acc=from_acc.replace('ronin:','0x')
                 to_acc=to_acc.replace('ronin:','0x')
 
                 //build
+                console.log(from_acc)
                 let axies=await utils.getAxiesIds(from_acc)
                 if(!axies || !axies.axies)return message.channel.send(`Failed to get axies!`);
                 for(let i in axies.axies){
@@ -42,11 +45,12 @@ module.exports = new Command({
                 }
                 await utils.cambiarEstado(user_from.num,user_from.nota,'retiro',message)
                 utils.log("Listo!",message);
-            }else{
-                utils.log(`not a valid command!`);
-            }
+        
         }catch(e){
-            message.channel.send("ERROR: "+e.message);
-        }
+            utils.log(e,message)
+        }   
+     }else{
+            utils.log(`not a valid command!`);
+    }
 	}
 });
