@@ -6,6 +6,7 @@ const fetch = require( "node-fetch")
 const { MessageEmbed} = require('discord.js');
 const QuickChart = require('quickchart-js');
 const { stat } = require('fs');
+const { type } = require('os');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
@@ -36,6 +37,19 @@ module.exports = new Command({
 			}
 			let embed = new MessageEmbed().setTitle('Reporte').setDescription(texto).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
+			texto=''
+			for(let i in data_por_dia){
+				for(let j in data_por_dia[i]){
+					let data=data_por_dia[i][j]
+					if(data.type=='slp_jugador'){
+						texto+='La fecha '+data.date+' le corresponde a Amaloa de '+data.slp*0.06+'\n'
+						texto+='La fecha '+data.date+' le corresponde a Pablo de '+data.slp*0.02+'\n'
+					}
+				}
+			}
+			embed = new MessageEmbed().setTitle('Reporte').setDescription(texto).setColor('GREEN').setTimestamp()
+			message.channel.send({content: ` `,embeds: [embed]})
+			
 			
 
 		}else if(args[1]=='estados'){

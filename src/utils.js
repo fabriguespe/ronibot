@@ -546,10 +546,7 @@ module.exports = {
         var date = new Date(final);
 
         Date.prototype.monthNames = [
-            "January", "February", "March",
-            "April", "May", "June",
-            "July", "August", "September",
-            "October", "November", "December"
+            "January", "February", "March","April", "May", "June","July", "August", "September","October", "November", "December"
         ];
         Date.prototype.getMonthName = function() {
             return this.monthNames[this.getMonth()];
@@ -557,8 +554,8 @@ module.exports = {
         Date.prototype.getShortMonthName = function () {
             return this.getMonthName().substr(0, 3);
         };
-        if(date.getDate()>=14 && date.getDate()<=17)return "Mid-"+date.getShortMonthName()
-        else if(date.getDate()>=27 || date.getDate()<=2)return "End-"+date.getShortMonthName()
+        if(date.getDate()>=15 && date.getDate()<=16)return "Mid-"+date.getShortMonthName()
+        else if(date.getDate()>=27 )return "End-"+date.getShortMonthName()
         else return dateStr        
     },
     getDayName:function(dateStr, locale){
