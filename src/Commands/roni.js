@@ -50,7 +50,7 @@ module.exports = new Command({
 		}else if(currentUser && currentUser.nota.includes('entrevist')){
 			row.addComponents(new MessageButton().setCustomId('ver_datos').setLabel('🔑 Ver mis datos').setStyle('SUCCESS'));
 		} else{
-			row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
+			//row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
 		}
 		
 		embed = new MessageEmbed().setTitle('Ticket')
