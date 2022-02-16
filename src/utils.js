@@ -72,6 +72,7 @@ module.exports = {
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
 
             let random_msg=await this.create_random_msg()
+            console.log(from_acc,random_msg,from_private)
             let jwt=await this.get_jwt(from_acc,random_msg,from_private)
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
             console.log(jdata)
@@ -470,6 +471,7 @@ module.exports = {
         }`
 
         let response=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
+        console.log(response)
         if(!response || !response.data || !response.data.createRandomMessage)return null
         return response.data.createRandomMessage
     },
