@@ -9,7 +9,7 @@ const Web3 = require('web3');
 var axie_abi = require(path.resolve(__dirname, "./Data/axie_abi.json"));
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 
-TABULADORES={uno:75,dos:60,tres:50,cuatro:40}
+TABULADORES={uno:60,dos:45,tres:35,cuatro:25}
 DISCORD_JSON=877625345996632095//jeisson
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36"
