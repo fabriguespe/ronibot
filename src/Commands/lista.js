@@ -8,6 +8,7 @@ const QuickChart = require('quickchart-js');
 const { stat } = require('fs');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
+TABULADORES={uno:75,dos:60,tres:50,cuatro:40}
 
 module.exports = new Command({
 	name: "lista"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
@@ -67,17 +68,17 @@ module.exports = new Command({
 				proms.cant+=1
 
 				
-				if(user.slp_prom>=130)colores['GREEN']+=value
-				else if(user.slp_prom>=100 && user.slp_prom<130)colores['YELLOW']+=value
-				else if(user.slp_prom>=80 && user.slp_prom<100)colores['ORANGE']+=value
-				else if(user.slp_prom>=50 && user.slp_prom<80)colores['RED']+=value
-				else if(user.slp_prom>=0 && user.slp_prom<50)colores['BLACK']+=value
+				if(user.slp_prom>=TABULADORES.uno)colores['GREEN']+=value
+				else if(user.slp_prom>=TABULADORES.dos && user.slp_prom<TABULADORES.uno)colores['YELLOW']+=value
+				else if(user.slp_prom>=TABULADORES.tres && user.slp_prom<TABULADORES.dos)colores['ORANGE']+=value
+				else if(user.slp_prom>=TABULADORES.cuatro && user.slp_prom<TABULADORES.tres)colores['RED']+=value
+				else if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)colores['BLACK']+=value
 				
-				if(user.slp_prom>=130)numcolores['GREEN']+=1
-				else if(user.slp_prom>=100 && user.slp_prom<130)numcolores['YELLOW']+=1
-				else if(user.slp_prom>=80 && user.slp_prom<100)numcolores['ORANGE']+=1
-				else if(user.slp_prom>=50 && user.slp_prom<80)numcolores['RED']+=1
-				else if(user.slp_prom>=0 && user.slp_prom<50)numcolores['BLACK']+=1
+				if(user.slp_prom>=TABULADORES.uno)numcolores['GREEN']+=1
+				else if(user.slp_prom>=TABULADORES.dos && user.slp_prom<TABULADORES.uno)numcolores['YELLOW']+=1
+				else if(user.slp_prom>=TABULADORES.tres && user.slp_prom<TABULADORES.dos)numcolores['ORANGE']+=1
+				else if(user.slp_prom>=TABULADORES.cuatro && user.slp_prom<TABULADORES.tres)numcolores['RED']+=1
+				else if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)numcolores['BLACK']+=1
 			}
 
 			let titulo=''

@@ -25,7 +25,6 @@ module.exports = new Command({
                 
                 //build
                 let axies_to=await utils.getAxiesIds(to_acc)
-                console.log(axies_to)
                 if(!axies_to || axies_to.count>0)return message.channel.send(`La cuenta destino ya tiene axies!`);
                 //Data
                 if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
@@ -33,15 +32,11 @@ module.exports = new Command({
                 to_acc=to_acc.replace('ronin:','0x')
 
                 //build
-                console.log(from_acc)
                 let axies=await utils.getAxiesIds(from_acc)
                 if(!axies || !axies.axies)return message.channel.send(`Failed to get axies!`);
                 for(let i in axies.axies){
                     let axie_id=axies.axies[i].id
-                    //Transfer
                     await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
-            
-                    //Retirar
                 }
                 await utils.cambiarEstado(user_from.num,user_from.nota,'retiro',message)
                 utils.log("Listo!",message);
