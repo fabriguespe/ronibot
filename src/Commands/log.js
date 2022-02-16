@@ -21,6 +21,9 @@ module.exports = new Command({
 			let stats = await db.collection('log').find(query,  { sort: { timestamp: -1 } }).toArray();
 			let data_por_dia=[]
 			
+			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
+			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
+
 			for(let i in stats){
 				let undia=stats[i]
 				let fecha=utils.getPaymentName(undia.date)
@@ -42,8 +45,8 @@ module.exports = new Command({
 				for(let j in data_por_dia[i]){
 					let data=data_por_dia[i][j]
 					if(data.type=='slp_jugador'){
-						texto+=''+data.date+': !pagar '+data.slp*0.06+' amaloa\n'
-						texto+=''+data.date+': !pagar '+data.slp*0.02+' pablo\n'
+						texto+=''+data.date+': !pagar '+data.slp*0.06+' amaloa ('+(slp*0.06*slp_price)+'USD)\n'
+						texto+=''+data.date+': !pagar '+data.slp*0.02+' pablo ('+(slp*0.02*slp_price)+'USD)\n'
 					}
 				}
 			}
