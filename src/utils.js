@@ -72,10 +72,9 @@ module.exports = {
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
 
             let random_msg=await this.create_random_msg()
-            console.log(from_acc,random_msg,from_private)
             let jwt=await this.get_jwt(from_acc,random_msg,from_private)
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
-            console.log(jdata)
+          
             let signature=jdata.blockchain_related.signature
             
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
