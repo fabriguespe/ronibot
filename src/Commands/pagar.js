@@ -1,4 +1,5 @@
 const path = require('path');
+const fetch = require( "node-fetch")
 const Command = require("../Structures/Command.js");
 var utils = require(path.resolve(__dirname, "../utils.js"));
 
@@ -29,7 +30,7 @@ module.exports = new Command({
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
             usd=slp.replace('usd','')
             slp=Math.round(usd/slp_price)
-            
+
             from_acc=await utils.getPaymentWalletByNum("BREED")
             to_acc=await utils.getPaymentWalletByNum(args[2])
             console.log(to_acc)
