@@ -266,11 +266,11 @@ module.exports = {
             
             if(!cache) {
                 let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1").then(response => response.json()).then(data => { return data});   
-                console.log(this.FROM_UNIX_EPOCH(jdata.last_claimed_item_at))
-
-                let balance=jdata.blockchain_related.balance
-                let total=jdata.total-jdata.blockchain_related.balance
-                data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,has_to_claim:(jdata.claimable_total>0)}
+                if(jdata){
+                    let balance=jdata.blockchain_related.balance
+                    let total=jdata.total-jdata.blockchain_related.balance
+                    data= {in_game_slp:total,ronin_slp:balance,last_claim:jdata.last_claimed_item_at,has_to_claim:(jdata.claimable_total>0)}
+                }
             }else{
                 url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
                 data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
@@ -470,7 +470,7 @@ module.exports = {
         }`
 
         let response=await fetch(url, { method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
-        console.log(response)
+        //console.log(response)
         if(!response || !response.data || !response.data.createRandomMessage)return null
         return response.data.createRandomMessage
     },
