@@ -49,10 +49,11 @@ module.exports = new Command({
 					
 					try{
 						data= await fetch("https://game-api.axie.technology/api/v1/"+user.accountAddress, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+						console.log(data)
 					}catch (e) {
 						utils.log("ERROR: "+e.message,message)
 					}
-
+					console.log(data)
 					data.accountAddress=user.accountAddress
 					data.user_id=user._id
 					data.num=user.num
@@ -78,16 +79,27 @@ module.exports = new Command({
 				let new_data=[]
 				let users=await db.collection('users').find({}).toArray()
 				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
-				let data={}
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
 					let user=users[i]
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
-					let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});           
+					let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});     
+					if(!jdata || !jdata.blockchain_related){
+						//console.log(jdata)
+						jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});  
+						if(!jdata || !jdata.blockchain_related){   
+							jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});  
+							if(!jdata || !jdata.blockchain_related){   
+								utils.log("error: "+user.num)
+								continue
+							}
+						}
+					}else utils.log(user.num)
+
 					let balance=jdata.blockchain_related.balance
 					let total=jdata.total-jdata.blockchain_related.balance
-					data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at}
+					let data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at}
 
 					data.accountAddress=user.accountAddress
 					data.nota=user.nota
@@ -97,10 +109,11 @@ module.exports = new Command({
 					data.timestamp.setDate(data.timestamp.getDate() - 1)
 					data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
 					new_data.push(data)
-					console.log(data)
+					//console.log(data)
 					await db.collection('slp').insertOne(data)
 				}
-				utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+				
+				if(typeof message !== 'undefined' && message.channel)utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
 				utils.log("ERROR: "+e.message,message)
 			}	

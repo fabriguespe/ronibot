@@ -47,7 +47,7 @@ module.exports = new Command({
 			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
 			//row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
-		}else if(currentUser && currentUser.nota.includes('entrevist')){
+		}else if(currentUser && currentUser.nota=='entrevista'){
 			row.addComponents(new MessageButton().setCustomId('ver_datos').setLabel('🔑 Ver mis datos').setStyle('SUCCESS'));
 		} 
 		embed = new MessageEmbed().setTitle('Ticket')
