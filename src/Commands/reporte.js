@@ -94,18 +94,21 @@ module.exports = new Command({
 
 				stats = await db.collection('slp').find({accountAddress:eluser.accountAddress},  { sort: { timestamp: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.timestamp - b.timestamp});
-				
+				console.log(stats)
 				data={days:[],slp:[],mmr:[]}
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
 					if(stat && anteultimo){
+						console.log('entra')
 						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
 						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
 					}
-					
+					data.slp.push(stat['slp'])
+					data.mmr.push(stat['mmr'])
+					data['days'].push(utils.getDayName(stat.date, "es-ES"))
 				}
-				
+
 				let chart = new QuickChart().setConfig({
 					type: 'bar',
 					data: { 
@@ -122,7 +125,7 @@ module.exports = new Command({
 						datasets:[{label: 'MMR', data: data.mmr}] 
 					},
 				}).setWidth(800).setHeight(400);
-				message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+				//message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 	
 			}else{
 				message.channel.send(`Comando incompleto`);

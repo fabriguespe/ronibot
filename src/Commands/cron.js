@@ -84,23 +84,8 @@ module.exports = new Command({
 					let user=users[i]
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
-					let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});     
-					if(!jdata || !jdata.blockchain_related){
-						//console.log(jdata)
-						jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});  
-						if(!jdata || !jdata.blockchain_related){   
-							jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+user.accountAddress.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});  
-							if(!jdata || !jdata.blockchain_related){   
-								utils.log("error: "+user.num)
-								continue
-							}
-						}
-					}else utils.log(user.num)
-
-					let balance=jdata.blockchain_related.balance
-					let total=jdata.total-jdata.blockchain_related.balance
-					let data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at}
-
+					let data=await utils.getSLP(user.accountAddress,null,false)
+					console.log(data)
 					data.accountAddress=user.accountAddress
 					data.nota=user.nota
 					data.user_id=user._id
