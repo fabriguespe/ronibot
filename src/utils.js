@@ -257,7 +257,7 @@ module.exports = {
     },
     getSLP:async function(from_acc,message,cache=false){
         try{
-            if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
+            if(!this.isSafe(from_acc) && message)return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')  
    
             if(!cache) {
