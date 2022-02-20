@@ -67,7 +67,7 @@ module.exports = new Command({
 				help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp+(user.mmr==undefined?'':'('+user.mmr+')')+'\n'
 			}	
 			embed = new MessageEmbed().setTitle("TOP 10 COPAS").setDescription(help).setColor('#3C5D74').setTimestamp()
-			message.channel.send({content: ` `,embeds: [embed]})
+			//message.channel.send({content: ` `,embeds: [embed]})
 			
 			
 			//Bottom 10 SLP
