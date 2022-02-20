@@ -119,8 +119,8 @@ module.exports = new Command({
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
 					let data=await utils.getSLP(user.accountAddress,null,false)
-					console.log(data)
-					if(data.in_game_slp)await utils.justClaim(data,message)
+					message.channel.send('Se encontraron '+data.in_game_slp+'SLP sin reclamar')
+					if(data.in_game_slp>0)await utils.justClaim(data,message)
 				}
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
