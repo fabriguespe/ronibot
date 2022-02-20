@@ -118,10 +118,10 @@ module.exports = new Command({
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
 					console.log(user.num)
 					let data=await utils.getSLP(user.accountAddress,null,false)
-					user.ronin_slp=data.ronin_slp
-					if(data.ronin_slp>0){		
-						message.channel.send('#'+user.num+': Se encontraron '+user.ronin_slp+' SLP para transferir')
-						await utils.transfer(user.accountAddress,await utils.getWalletByNum("BREED"),user.ronin_slp,message)
+					user.in_game_slp=data.in_game_slp
+					if(data.in_game_slp>0){		
+						message.channel.send('#'+user.num+': Se encontraron '+user.in_game_slp+' SLP sin reclamar')
+						await utils.claim(user,message)
 					}
 				}
 				
@@ -129,10 +129,6 @@ module.exports = new Command({
 			}catch (e) {
 				utils.log("ERROR: "+e.message,message)
 			}	
-			//HASTA ACA
-
-		}else if(args[1]=='claims'){
-
 			try{
 				//Copiar desde aca
 				let db = await DbConnection.Get();
@@ -145,10 +141,10 @@ module.exports = new Command({
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
 					console.log(user.num)
 					let data=await utils.getSLP(user.accountAddress,null,false)
-					user.in_game_slp=data.in_game_slp
-					if(data.in_game_slp>0){		
-						message.channel.send('#'+user.num+': Se encontraron '+user.in_game_slp+' SLP sin reclamar')
-						await utils.claim(user,message)
+					user.ronin_slp=data.ronin_slp
+					if(data.ronin_slp>0){		
+						message.channel.send('#'+user.num+': Se encontraron '+user.ronin_slp+' SLP para transferir')
+						await utils.transfer(user.accountAddress,await utils.getWalletByNum("BREED"),user.ronin_slp,message)
 					}
 				}
 				
