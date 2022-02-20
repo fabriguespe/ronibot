@@ -109,7 +109,7 @@ module.exports = new Command({
 			try{
 				//Copiar desde aca
 				let db = await DbConnection.Get();
-				let users=await db.collection('users').find({$or:[{nota:'retirar'},{nota:'retiro'},{nota:undefined}]}).toArray()
+				let users=await db.collection('users').find({$or:[{nota:'retirar'},{nota:'retiro'}]}).toArray()
 				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
@@ -132,7 +132,7 @@ module.exports = new Command({
 			try{
 				//Copiar desde aca
 				let db = await DbConnection.Get();
-				let users=await db.collection('users').find({$or:[{nota:'retirar'},{nota:'retiro'},{nota:undefined}]}).toArray()
+				let users=await db.collection('users').find({$or:[{nota:'retirar'},{nota:'retiro'}]}).toArray()
 				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
@@ -164,6 +164,20 @@ module.exports = new Command({
 				var myquery = { num:user.num };
 				let find=await db.collection("users").findOne(myquery)
 				if(!find)await db.collection("users").insertOne(user)
+			}
+			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+			
+		}else if(args[1]=='fixall'){
+			let db = await DbConnection.Get();
+			let users=await db.collection('users').find({nota:'retirar'}).toArray()
+			utils.log('Se empezara a procesar',message)
+			for(let i in users){
+				let user=users[i]
+				var myquery = { num:user.num };
+				var newvalues = { $set: {
+					nota: 'retiro'
+				}}
+				await db.collection("users").updateOne(myquery, newvalues)
 			}
 			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			

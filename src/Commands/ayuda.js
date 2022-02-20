@@ -16,7 +16,7 @@ module.exports = new Command({
 		help+="!roni para poder validarte y realizar cobros\n\n"
 		if(utils.esManager(message)){
 			help+="!reporte XX para ver info del jugador\n\n"
-			help+="!cambio AXIE_ID DESDE_XX HASTA_XX para transferir axies\n\n"
+			help+="!cambio AXIE_ID,AXIE_ID DESDE_XX HASTA_XX para transferir axies\n\n"
 			help+="!update XX FIELD VALUE para actualizar (nota,wallet,name)\n\n"
 			help+="!ranking para traer los 10 mejores\n\n"
 			help+="!lista para traer los 10 mejores\n\n"
@@ -25,9 +25,9 @@ module.exports = new Command({
 		}else if(utils.esFabri(message)){
 			help+="!retiro DESDE_XX HASTA_XX para transferir todos los axies\n\n"
 			help+="!aprobar XX para aprobar una entrevista\n\n"
-			help+="!claim ID,ID claimea multiples cuentas\n\n"
-			help+="!flush ID,ID retira slp multiples cuentas\n\n"
-			help+="!pagar SLP DE HASTA para hacer un pago normal\n\n"
+			help+="!ingreso XX discord_username\n\n"
+			help+="!cron flushall \n\n"
+			help+="!pagar cant_de_slp/plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
 		}
 		let embed = new MessageEmbed().setTitle('Comandos').setDescription(help).setColor('GREEN').setTimestamp()
 		return message.channel.send({content: ` `,embeds: [embed]})
