@@ -61,7 +61,7 @@ module.exports = {
         last_claim.setDate(last_claim.getDate() + days)
         return last_claim.toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
-    justClaim:async function (data,message){
+    claim:async function (data,message){
         try{
             let db = await DbConnection.Get();
             let from_acc=data.accountAddress
@@ -104,8 +104,9 @@ module.exports = {
                 let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tr_raw.transactionHash+")").setColor('GREEN').setTimestamp()
                 message.channel.send({content: ` `,embeds: [embed]})
                 await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',timestamp:this.timestamp_log(),date:this.date_log(), slp:data.in_game_slp,num:data.num,from_acc:from_acc})
+                return true
             }  
-            return data
+            return null
         }catch(e){
             console.log(e)
             this.log("ERROR: "+e.message,message)
@@ -115,7 +116,7 @@ module.exports = {
 
         try{
             let db = await DbConnection.Get();
-            await this.justClaim(data,message)
+            await this.claim(data,message)
             let roni_slp=data.in_game_slp-data.recibe
             let jugador_slp=data.recibe
             if(roni_slp==jugador_slp)roni_slp-=1
