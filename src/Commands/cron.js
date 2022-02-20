@@ -115,9 +115,9 @@ module.exports = new Command({
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
 					let user=users[i]
-					console.log(user.num)
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
+					console.log(user.num)
 					let data=await utils.getSLP(user.accountAddress,null,false)
 					message.channel.send('Se encontraron '+data.in_game_slp+'SLP sin reclamar')
 					if(data.in_game_slp>0)await utils.justClaim(data,message)
