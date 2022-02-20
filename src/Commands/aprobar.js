@@ -18,7 +18,7 @@ module.exports = new Command({
 				let quien=await utils.getUserByNum(el_num)
 				await utils.cambiarEstado(quien.num,quien.nota,'aprobado',message)
 				if(!quien.discord){//old auth
-					let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
+					let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal entrevistas
 					let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a <@"+quien.discord+"> "+quien.name+"(#"+quien.num+")\nYa puedes escribir !roni para validarte").setColor('GREEN').setTimestamp()
 					rCanal.send({content: ` `,embeds: [embed]})
 				}else{//new auth	
