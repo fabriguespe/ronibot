@@ -121,7 +121,7 @@ module.exports = new Command({
 					user.ronin_slp=data.ronin_slp
 					if(data.ronin_slp>0){		
 						message.channel.send('#'+user.num+': Se encontraron '+user.ronin_slp+' SLP para transferir')
-						await utils.transfer(user.accountAddress,await this.getWalletByNum("BREED"),user.ronin_slp,message)
+						await utils.transfer(user.accountAddress,await utils.getWalletByNum("BREED"),user.ronin_slp,message)
 					}
 				}
 				
