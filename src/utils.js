@@ -425,7 +425,8 @@ module.exports = {
         return message.author.id==533994454391062529 && message.channel.name.includes('comandos-admin')
     },
     getUserIDByUsername:async function(name,message){
-        
+        if(!name.includes('#'))name+="#"
+        console.log(name)
         let username=name.split('#')[0]
         let discriminator=name.split('#')[1]
         await message.guild.members.fetch()
