@@ -125,7 +125,7 @@ module.exports = new Command({
 					}
 				}
 				
-				if(typeof message !== 'undefined' && message.channel)utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+				if(typeof message !== 'undefined' && message.channel)utils.log('Claim corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
 				utils.log("ERROR: "+e.message,message)
 			}	
@@ -148,7 +148,7 @@ module.exports = new Command({
 					}
 				}
 				
-				if(typeof message !== 'undefined' && message.channel)utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+				if(typeof message !== 'undefined' && message.channel)utils.log('Flush corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
 				utils.log("ERROR: "+e.message,message)
 			}	
