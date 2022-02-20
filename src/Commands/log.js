@@ -126,7 +126,7 @@ amaloa=150-vis-ronimate-axie  = 14.18
             rCanal.send("Se agrego un nuevo ***aspirante***")
 			
 			rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal entrevistas
-			let embed = new MessageEmbed().setTitle('Nuevo Aspirante!').setDescription("@"+args[2]+"Porfavor confirmar que estas presente para recibir una beca.").setColor('GREEN').setTimestamp()
+			let embed = new MessageEmbed().setTitle('Nuevo Aspirante!').setDescription("@"+args[2]+" confirmar que estas presente para recibir una beca.").setColor('GREEN').setTimestamp()
 			rCanal.send({content: ` `,embeds: [embed]})
 		}
 
