@@ -128,11 +128,8 @@ module.exports = {
             let fallo=false
             try{
                 let tx=await this.transfer(from_acc,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
-                if(tx){
-                    let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
-                    message.channel.send({content: ` `,embeds: [embed]})
-                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
-                }
+                if(tx)await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
+                
             }catch(e){
                 fallo=true
                 this.log("ERROR: "+e.message,message)
@@ -140,11 +137,8 @@ module.exports = {
             roniPrimero=!roniPrimero
             try{
                 let tx=await this.transfer(from_acc,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
-                if(tx){
-                    let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
-                    message.channel.send({content: ` `,embeds: [embed]})
-                    await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
-                }
+                if(tx) await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
+                
             }catch(e){
                 fallo=true
                 this.log("ERROR: "+e.message,message)
@@ -242,10 +236,14 @@ module.exports = {
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
-       
+            
 
-            if(tr_raw.status)return tr_raw.transactionHash
-            else return false          
+            if(tr_raw.status){
+                let tx=tr_raw.transactionHash
+                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+tx+")").setColor('GREEN').setTimestamp()
+                message.channel.send({content: ` `,embeds: [embed]})   
+                return tx
+            }else return false          
         }catch(e){
             this.log("ERROR:"+e.message,message)
         }

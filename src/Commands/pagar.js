@@ -21,10 +21,7 @@ module.exports = new Command({
             to_acc=to_acc.replace('ronin:','0x')
             
             let t1=await utils.transfer(from_acc,to_acc,slp,message)
-            if(t1){
-                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
-                message.channel.send({content: ` `,embeds: [embed]})
-            }
+
         }else if(args.length==3 && slp.includes('usd')){//sale de breed
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
@@ -38,10 +35,7 @@ module.exports = new Command({
             to_acc=to_acc.replace('ronin:','0x')
 
             let t1=await utils.transfer(from_acc,to_acc,slp,message)
-            if(t1){
-                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
-                message.channel.send({content: ` `,embeds: [embed]})
-            }
+
         }else if(args.length==3){//sale de breed
             
             from_acc=await utils.getPaymentWalletByNum("BREED")
@@ -51,10 +45,6 @@ module.exports = new Command({
             to_acc=to_acc.replace('ronin:','0x')
 
             let t1=await utils.transfer(from_acc,to_acc,slp,message)
-            if(t1){
-                let embed = new MessageEmbed().setTitle('Exito!').setDescription("La transacción se procesó exitosamente. [Ir al link]("+"https://explorer.roninchain.com/tx/"+t1+")").setColor('GREEN').setTimestamp()
-                message.channel.send({content: ` `,embeds: [embed]})
-            }
         }else{
             return message.channel.send(`Cantidad de argumentos invalida!`);
         }
