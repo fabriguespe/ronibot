@@ -104,7 +104,7 @@ module.exports = new Command({
 			}	
 			//HASTA ACA
 
-		}else if(args[1]=='flush'){
+		}else if(args[1]=='flushall'){
 
 			try{
 				//Copiar desde aca
