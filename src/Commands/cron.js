@@ -110,6 +110,18 @@ module.exports = new Command({
 				msg+=i+','
 			}
 			return message.channel.send(msg);
+		}else if(args[1]=='updateall'){
+			let users=await db.collection('users-db').find({}).toArray()
+			message.channel.send('Se empezara a procesar')
+			for(let i in users){
+				let user=users[i]
+				user.num=user.num.toString()
+				var myquery = { num:user.num };
+				let find=await db.collection("users").findOne(myquery)
+				if(!find)await db.collection("users").insertOne(user)
+			}
+			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+			
 		}else{
 			return message.channel.send("Comando incorrecto");
 

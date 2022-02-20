@@ -11,7 +11,6 @@ module.exports = new Command({
 	
 		let db = await DbConnection.Get();
 		if(args.length==4){	
-			
 			let ids=args[1].split(",");
 			for(let i in ids){
 				let elnum=ids[i]
@@ -27,23 +26,6 @@ module.exports = new Command({
 				message.channel.send('El jugador ***#'+elnum+'*** fue actualizado con exito')
 				
 			}
-		}else if(args[1]=='all'){
-			if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
-			let users=await db.collection('users-db').find({}).toArray()
-			try{
-				message.channel.send('Se empezara a procesar')
-				for(let i in users){
-					let user=users[i]
-					user.num=user.num.toString()
-					var myquery = { num:user.num };
-					let find=await db.collection("users").findOne(myquery)
-					if(!find)await db.collection("users").insertOne(user)
-				}
-			}catch (e) {
-				utils.log("ERROR: "+e.message,message)
-			}
-		
-			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 		}
 	}
 });
