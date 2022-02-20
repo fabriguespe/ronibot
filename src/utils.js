@@ -61,21 +61,18 @@ module.exports = {
         last_claim.setDate(last_claim.getDate() + days)
         return last_claim.toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
-    justClaim:async function (user,data,message){
+    justClaim:async function (data,message){
         try{
             let db = await DbConnection.Get();
-            console.log(data)
-            let from_acc=data.from_acc
+            let from_acc=data.accountAddress
             from_acc=from_acc.replace('ronin:','0x')
             data.scholarPayoutAddress=data.scholarPayoutAddress.replace('ronin:','0x')
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
-
             let random_msg=await this.create_random_msg()
             let jwt=await this.get_jwt(from_acc,random_msg,from_private)
             let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc+"/items/1/claim", { method: 'post', headers: { 'User-Agent': USER_AGENT, 'authorization': 'Bearer '+jwt},body: ""}).then(response => response.json()).then(data => { return data});
             
             let signature=jdata.blockchain_related.signature
-            
             const web3 = await new Web3(new Web3.providers.HttpProvider(RONIN_PROVIDER_FREE));
             let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
             let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
@@ -110,6 +107,7 @@ module.exports = {
             }  
             return data
         }catch(e){
+            console.log(e)
             this.log("ERROR: "+e.message,message)
         }
     },

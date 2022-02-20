@@ -122,6 +122,7 @@ module.exports = new Command({
 					if(data.in_game_slp>0){		
 						message.channel.send('#'+user.num+': Se encontraron '+user.in_game_slp+' SLP sin reclamar')
 						await utils.justClaim(user,message)
+						message.channel.send('Exito en el claim')
 					}
 				}
 				
