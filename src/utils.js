@@ -66,7 +66,6 @@ module.exports = {
             let db = await DbConnection.Get();
             let from_acc=data.accountAddress
             from_acc=from_acc.replace('ronin:','0x')
-            data.scholarPayoutAddress=data.scholarPayoutAddress.replace('ronin:','0x')
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
             let random_msg=await this.create_random_msg()
             let jwt=await this.get_jwt(from_acc,random_msg,from_private)
@@ -122,7 +121,8 @@ module.exports = {
             if(roni_slp==jugador_slp)roni_slp-=1
             let roniPrimero=(roni_slp>=jugador_slp)
 
-            let player_wallet=data.scholarPayoutAddress
+            if(!data.scholarPayoutAddress)return message.channel.send("Wallet de cobro no existente")
+            let player_wallet=data.scholarPayoutAddress.replace('ronin:','0x')
             let roni_wallet=(data.num=='43' || data.num=='186' || data.num=='187')?await this.getWalletByNum("PRO"):await this.getWalletByNum("BREED")
             roni_wallet=roni_wallet.replace('ronin:','0x')
             let fallo=false
