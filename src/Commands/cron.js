@@ -104,6 +104,31 @@ module.exports = new Command({
 			}	
 			//HASTA ACA
 
+		}else if(args[1]=='claims'){
+
+			try{
+				//Copiar desde aca
+				let db = await DbConnection.Get();
+				let new_data=[]
+				let users=await db.collection('users').find({nota:"retiro"}).toArray()
+				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
+				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
+				for(let i in users){
+					let user=users[i]
+					console.log(user.num)
+					if(!user.accountAddress || user.accountAddress.length!=46)continue
+					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
+					let data=await utils.getSLP(user.accountAddress,null,false)
+					console.log(data)
+					if(data.in_game_slp)await utils.justClaim(data,message)
+				}
+				
+				if(typeof message !== 'undefined' && message.channel)utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+			}catch (e) {
+				utils.log("ERROR: "+e.message,message)
+			}	
+			//HASTA ACA
+
 		}else if(args[1]=='jeje'){
 			let msg=''
 			for(let i=32;i<=307;i++){

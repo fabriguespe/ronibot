@@ -61,10 +61,8 @@ module.exports = {
         last_claim.setDate(last_claim.getDate() + days)
         return last_claim.toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
-    claim:async function(data,message){
-
+    justClaim:async function (data,message){
         try{
-            
             let db = await DbConnection.Get();
             let from_acc=data.from_acc
             from_acc=from_acc.replace('ronin:','0x')
@@ -109,6 +107,16 @@ module.exports = {
                 message.channel.send({content: ` `,embeds: [embed]})
                 await db.collection('log').insertOne({tx:tr_raw.transactionHash,type:'slp_claim',timestamp:this.timestamp_log(),date:this.date_log(), slp:data.in_game_slp,num:data.num,from_acc:from_acc})
             }  
+            return data
+        }catch(e){
+            this.log("ERROR: "+e.message,message)
+        }
+    },
+    cobro:async function(data,message){
+
+        try{
+            let db = await DbConnection.Get();
+            await this.justClaim(data,message)
             let roni_slp=data.in_game_slp-data.recibe
             let jugador_slp=data.recibe
             if(roni_slp==jugador_slp)roni_slp-=1

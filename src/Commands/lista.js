@@ -96,13 +96,11 @@ module.exports = new Command({
 					message.channel.send({content: ` `,embeds: [new MessageEmbed().setTitle(titulo).setDescription(text).setColor(color)]})
 				}
 				pie_chart[(color=='GREEN')?'Generando 60%':(color=='YELLOW')?'Generando 50%':(color=='ORANGE')?'Generando 40%':(color=='RED')?'Alerta 30%':(color=='BLACK')?'Retiro':'']=numcolores[color]
-
 			}
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
 
 			if(tipo)return //vuelve si no tiene nada mas
-			
 			let exampleEmbed = new MessageEmbed().setColor('#0099ff')
 			exampleEmbed = exampleEmbed.addFields(
 				{ name: 'Precio SLP', value: ''+slp_price,inline:true},

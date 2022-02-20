@@ -91,7 +91,7 @@ module.exports = new Command({
 						collector.on('collect',async m => {
 							if(m.author.id==908739379059626094 || (!esPagos && (m.author.id==DISCORD_JSON  || m.author.id==DISCORD_FABRI)))return
 							if (m.content && m.content.toLowerCase() == "si") {
-								let fallo=await utils.claim(data,message)
+								let fallo=await utils.cobro(data,message)
 								if(!fallo && !args[1]){
 									message.channel.send('Exito!\nEste canal se cerrara en 30 segundos.')
 									setTimeout(() => { message.channel.delete()}, 3000*10)
