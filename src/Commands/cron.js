@@ -154,12 +154,6 @@ module.exports = new Command({
 			}	
 			//HASTA ACA
 
-		}else if(args[1]=='jeje'){
-			let msg=''
-			for(let i=32;i<=307;i++){
-				msg+=i+','
-			}
-			return message.channel.send(msg);
 		}else if(args[1]=='updateall'){
 			let db = await DbConnection.Get();
 			let users=await db.collection('users-db').find({}).toArray()
