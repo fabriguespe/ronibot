@@ -111,8 +111,9 @@ module.exports = new Command({
 			}
 			return message.channel.send(msg);
 		}else if(args[1]=='updateall'){
+			let db = await DbConnection.Get();
 			let users=await db.collection('users-db').find({}).toArray()
-			message.channel.send('Se empezara a procesar')
+			utils.log('Se empezara a procesar',message)
 			for(let i in users){
 				let user=users[i]
 				user.num=user.num.toString()
