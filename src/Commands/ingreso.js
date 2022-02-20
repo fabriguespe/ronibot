@@ -37,18 +37,13 @@ module.exports = new Command({
                 let from_acc=new_account.accountAddress
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
-                let username=args[2].split('#')[0]
-                let discriminator=args[2].split('#')[1]
-                await message.guild.members.fetch()
-                let ingreso=message.guild.members.cache.find(c => {return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) || c.user.username.toLowerCase() == username.toLowerCase()  || c.user.discriminator.toLowerCase() == discriminator.toLowerCase() });
+                let ingreso=await utils.getUserIDByUsername(args[2],message)
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
-                
-                let discord_id=ingreso.id
+                console.log(ingreso)
                 await utils.cambiarEstado(new_account.num,'aspirante','entrevista',message)
-                await utils.ingresar(new_account.num,username?username:discriminator,discord_id)
+                await utils.ingresar(new_account.num,ingreso.username,ingreso.id)
                 
-                let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones <@"+discord_id+">\nAhora debes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
-                //let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("<@"+discord_id+">ya entraste en nuestra lista de espera. Por favor contactar a nuestro whatsapp para continuar con tu entrevista.\n [Continuar](https://api.whatsapp.com/send?text=+58412-3965456&text=Hola%20Pablo!,%20soy%20el%20usuario%20"+args[2]+"%20y%20necesito%20continuar%20con%20el%20proceso%20para%20mi%20aprobación')").setColor('GREEN').setTimestamp()
+                let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones <@"+ingreso.id+">\nAhora debes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
                 let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
                 rCanal.send({content: ` `,embeds: [embed]})
                 

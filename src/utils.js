@@ -424,6 +424,14 @@ module.exports = {
     esFabri:function(message){
         return message.author.id==533994454391062529 && message.channel.name.includes('comandos-admin')
     },
+    getUserIDByUsername:async function(name,message){
+        
+        let username=name.split('#')[0]
+        let discriminator=name.split('#')[1]
+        await message.guild.members.fetch()
+        let ingreso=message.guild.members.cache.find(c => {return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) || c.user.username.toLowerCase() == username.toLowerCase()  || c.user.discriminator.toLowerCase() == discriminator.toLowerCase() });
+        return ingreso
+    },
     esManager:function(message){
         if(message.author.bot)return true
         let r1=message.guild.roles.cache.find(r => r.name === "Manager")
