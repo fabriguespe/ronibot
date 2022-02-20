@@ -61,9 +61,10 @@ module.exports = {
         last_claim.setDate(last_claim.getDate() + days)
         return last_claim.toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
-    justClaim:async function (data,message){
+    justClaim:async function (user,data,message){
         try{
             let db = await DbConnection.Get();
+            console.log(data)
             let from_acc=data.from_acc
             from_acc=from_acc.replace('ronin:','0x')
             data.scholarPayoutAddress=data.scholarPayoutAddress.replace('ronin:','0x')
