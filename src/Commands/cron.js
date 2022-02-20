@@ -174,9 +174,7 @@ module.exports = new Command({
 			for(let i in users){
 				let user=users[i]
 				var myquery = { num:user.num };
-				var newvalues = { $set: {
-					nota: 'retiro'
-				}}
+				var newvalues = { $set: {	nota: 'retiro'	}}
 				await db.collection("users").updateOne(myquery, newvalues)
 			}
 			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
