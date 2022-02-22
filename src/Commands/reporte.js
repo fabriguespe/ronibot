@@ -21,25 +21,12 @@ module.exports = new Command({
 			
 
 			if(args.length==2){
-				
 				message.channel.send("Aguarde un momento..")
-				let axies={}
-				try{
-
-					url = `https://graphql-gateway.axieinfinity.com/graphql`;
-					query = `{"operationName": "GetAxieBriefList","variables": {"owner":"${eluser.accountAddress.replace('ronin:','0x')}"},
-					"query": "query GetAxieBriefList($auctionType: AuctionType, $criteria: AxieSearchCriteria, $from: Int, $sort: SortBy, $size: Int, $owner: String) {  axies(auctionType: $auctionType, criteria: $criteria, from: $from, sort: $sort, size: $size, owner: $owner) {    total    results {      ...AxieBrief      __typename    }    __typename  }}fragment AxieBrief on Axie {  id  name  stage  class  breedCount  image  title  battleInfo {    banned    __typename  }  auction {    currentPrice    currentPriceUSD    __typename  }  parts {    id    name    class    type    specialGenes    __typename  }  __typename}"
-					}`
-					let response=await fetch(url, { credentials: 'include',method: 'post',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(JSON.parse(query))}).then(response => response.json()).then(data => { return data});
-					if(response && response.data && response.data.axies)axies=response.data.axies.results
-				}catch(e){
-					utils.log(e,message)
-				}
-				
+				let axies=await utils.getAxiesIds(eluser.accountAddress.replace('ronin:','0x'))
 				let axiesdata=[]
-				if(axies){
-					for(let i in axies){
-						let axie=axies[i]
+				if(axies && axies.axies){
+					for(let i in axies.axies){
+						let axie=axies.axies[i]
 						let pushed={}
 						pushed.id=axie.id
 						pushed.url= 'https://marketplace.axieinfinity.com/axie/'+axie.id
@@ -94,13 +81,11 @@ module.exports = new Command({
 
 				stats = await db.collection('slp').find({accountAddress:eluser.accountAddress},  { sort: { timestamp: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.timestamp - b.timestamp});
-				console.log(stats)
 				data={days:[],slp:[],mmr:[]}
 				for(let i in stats){
 					let stat=stats[i]
 					let anteultimo=stats[i-1]
 					if(stat && anteultimo){
-						console.log('entra')
 						if(stat.in_game_slp<anteultimo.in_game_slp)stat['slp']=stat.in_game_slp
 						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
 					}
