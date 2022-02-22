@@ -183,12 +183,12 @@ module.exports = new Command({
 						let total=axies.axies.length
 						datos.total+=total
 						if(total==0)continue
-						if(total==10 && user.nota=='energias')datos.energias+=7
+						if(total==10 && user.nota=='energia')datos.energias+=7
 						if( user.nota=='pro')datos.pro+=7
 						if(total==3 && user.nota=='aprobado')continue
 						if(total==3 && user.nota=='entrevista')continue
 						if(total==3 && user.nota==undefined)continue
-						if(total==10 && user.nota=='energias')continue
+						if(total==10 && user.nota=='energia')continue
 						let value=('#'+user.num+': Se encontraron '+total+' Axies | '+user.nota)
 						console.log(value)
 						datos.raros+=value+'\n'
