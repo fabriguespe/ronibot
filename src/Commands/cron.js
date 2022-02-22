@@ -197,11 +197,11 @@ module.exports = new Command({
 						}
 					}
 				}
-				let embed = new MessageEmbed().setTitle('Casos Exceptionales').setDescription(datos.raros).setColor('GREEN').setTimestamp()
+				let embed = new MessageEmbed().setTitle('Casos').setDescription(datos.raros).setColor('GREEN').setTimestamp()
 				message.channel.send({content: ` `,embeds: [embed]})
 
 				embed = new MessageEmbed().setColor('#0099ff')
-				exampleEmbed = exampleEmbed.addFields(
+				embed = exampleEmbed.addFields(
 					{ name: 'Axies Totales', value: ''+datos.total,inline:true},
 					{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
 					{ name: 'Cuentas pro', value: ''+datos.pro,inline:true},
