@@ -169,43 +169,47 @@ module.exports = new Command({
 			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			
 		}else if(args[1]=='axies'){
-			let db = await DbConnection.Get();
-			let users=await db.collection('users').find({}).toArray()
-			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
-			if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
-			let datos={total:0,energias:0,raros:'',pro:0}
-			for(let i in users){
-				let user=users[i]
-				if(user.num=='2')continue
-				let axies=await utils.getAxiesIds(user.accountAddress.replace('ronin:','0x'))
-				if(axies && axies.axies){
-					let total=axies.axies.length
-					datos.total+=total
-					if(total==0)continue
-					if(total==10 && user.nota=='energias')datos.energias+=7
-					if( user.nota=='pro')datos.pro+=7
-					if(total==3 && user.nota=='aprobado')continue
-					let value=('#'+user.num+': Se encontraron '+total+' Axies | '+user.nota)
-					console.log(value)
-					datos.raros+=value+'\n'
-					for(let i in axies.axies){
-						let axie=axies.axies[i]
+			try{
+				let db = await DbConnection.Get();
+				let users=await db.collection('users').find({}).toArray()
+				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
+				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
+				let datos={total:0,energias:0,raros:'',pro:0}
+				for(let i in users){
+					let user=users[i]
+					if(user.num=='2')continue
+					let axies=await utils.getAxiesIds(user.accountAddress.replace('ronin:','0x'))
+					if(axies && axies.axies){
+						let total=axies.axies.length
+						datos.total+=total
+						if(total==0)continue
+						if(total==10 && user.nota=='energias')datos.energias+=7
+						if( user.nota=='pro')datos.pro+=7
+						if(total==3 && user.nota=='aprobado')continue
+						let value=('#'+user.num+': Se encontraron '+total+' Axies | '+user.nota)
+						console.log(value)
+						datos.raros+=value+'\n'
+						for(let i in axies.axies){
+							let axie=axies.axies[i]
+						}
 					}
 				}
+				let embed = new MessageEmbed().setTitle('Casos Exceptionales').setDescription(datos.raros).setColor('GREEN').setTimestamp()
+				message.channel.send({content: ` `,embeds: [embed]})
+
+				embed = new MessageEmbed().setColor('#0099ff')
+				exampleEmbed = exampleEmbed.addFields(
+					{ name: 'Axies Totales', value: ''+datos.total,inline:true},
+					{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
+					{ name: 'Cuentas pro', value: ''+datos.pro,inline:true},
+				)
+				
+				message.channel.send({content: ` `,embeds: [embed]})
+				utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+
+			}catch (e) {
+				utils.log(e.message,message)
 			}
-            let embed = new MessageEmbed().setTitle('Casos Exceptionales').setDescription(datos.raros).setColor('GREEN').setTimestamp()
-            message.channel.send({content: ` `,embeds: [embed]})
-
-			embed = new MessageEmbed().setColor('#0099ff')
-			exampleEmbed = exampleEmbed.addFields(
-				{ name: 'Axies Totales', value: ''+datos.total,inline:true},
-				{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
-				{ name: 'Cuentas pro', value: ''+datos.pro,inline:true},
-			)
-			
-            message.channel.send({content: ` `,embeds: [embed]})
-			utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
-
 		}else if(args[1]=='fixall'){
 			let db = await DbConnection.Get();
 			let users=await db.collection('users').find({nota:'retirar'}).toArray()
