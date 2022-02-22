@@ -201,7 +201,7 @@ module.exports = new Command({
 				message.channel.send({content: ` `,embeds: [embed]})
 
 				embed = new MessageEmbed().setColor('#0099ff')
-				embed = exampleEmbed.addFields(
+				embed = embed.addFields(
 					{ name: 'Axies Totales', value: ''+datos.total,inline:true},
 					{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
 					{ name: 'Cuentas pro', value: ''+datos.pro,inline:true},
