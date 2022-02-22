@@ -172,6 +172,7 @@ module.exports = new Command({
 			let db = await DbConnection.Get();
 			let users=await db.collection('users').find({}).toArray()
 			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
+			if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 			let datos={total:0,energias:0,raros:'',pro:0}
 			for(let i in users){
 				let user=users[i]
