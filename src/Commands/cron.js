@@ -186,6 +186,8 @@ module.exports = new Command({
 						if(total==10 && user.nota=='energias')datos.energias+=7
 						if( user.nota=='pro')datos.pro+=7
 						if(total==3 && user.nota=='aprobado')continue
+						if(total==3 && user.nota=='entrevista')continue
+						if(total==3 && user.nota==undefined)continue
 						let value=('#'+user.num+': Se encontraron '+total+' Axies | '+user.nota)
 						console.log(value)
 						datos.raros+=value+'\n'
