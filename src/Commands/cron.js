@@ -181,8 +181,8 @@ module.exports = new Command({
 					let axies=await utils.getAxiesIds(user.accountAddress.replace('ronin:','0x'))
 					if(axies && axies.axies){
 						let total=axies.axies.length
+						if(total==0 || user.nota=='pro')continue
 						datos.total+=total
-						if(total==0)continue
 						if(total==10 && user.nota=='energia')datos.energias+=7
 						if( user.nota=='pro')datos.pro+=7
 						if(total==3 && user.nota=='aprobado')continue
