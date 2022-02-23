@@ -14,7 +14,7 @@ module.exports = new Command({
 		if(args[1] && !esPagos)return message.channel.send('No tienes permisos para correr este comando')
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		
-		let temporal=false
+		let temporal=args[2]=='--force'?true:false
 		if(!temporal && (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
 		if(!temporal && (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario invalido')
 
@@ -40,19 +40,14 @@ module.exports = new Command({
 
 		let row=new MessageActionRow()
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
-		if(esPagos){
-			if(temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Pagar').setStyle('SUCCESS'));
-		}else if(utils.esJugador(message)){
-			if(temporal || utils.esFechaCobros())row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
-			row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
-			row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
-			//row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
-		}else if(currentUser && currentUser.nota=='entrevista'){
-			row.addComponents(new MessageButton().setCustomId('ver_datos').setLabel('🎮 Empezar a jugar').setStyle('SUCCESS'));
-		} 
+		row.addComponents(new MessageButton().setCustomId('ver_datos').setLabel('🎮 Empezar a jugar').setStyle('SUCCESS'));
+		if(utils.esJugador(message) && (temporal || utils.esFechaCobros()))row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
+		row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
+		row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
+		//row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
+		
 		embed = new MessageEmbed().setTitle('Ticket')
-		.setDescription(`Hola ${message.author}, soy Roni. \nPor favor seleccioná una opción tocando el boton correspondiente`).setColor('GREEN').setTimestamp()
-
+		.setDescription(`Hola ${message.author}, soy Roni. \nPor favor seleccioná una opción tocando el boton correspondiente\nROL:`+(utils.esJugador(message)?'Jugador':'Sin Rol')).setColor('GREEN').setTimestamp()
 		await thread.send({content: ` `,embeds: [embed],components: [row] })
 		let lascomnd=''
 		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1/*,time:600000*/})
