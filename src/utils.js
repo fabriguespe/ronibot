@@ -11,6 +11,7 @@ const {MessageEmbed} = require('discord.js');
 
 TABULADORES={uno:60,dos:45,tres:35,cuatro:25}
 DISCORD_JSON=877625345996632095//jeisson
+DISCORD_FABRI=533994454391062529
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36"
 TIMEOUT_MINS = 5
@@ -20,7 +21,6 @@ SLP_CONTRACT = "0xa8754b9fa15fc18bb59458815510e40a12cd2014"
 WETH_CONTRACT = "0xc99a6a985ed2cac1ef41640596c5a5f9f4e19ef5"
 RONIN_PROVIDER_FREE = "https://proxy.roninchain.com/free-gas-rpc"
 RONIN_PROVIDER = "https://api.roninchain.com/rpc"
-DISCORD_FABRI=533994454391062529
 
 
 var log4js = require("log4js");
@@ -33,6 +33,12 @@ var logger = log4js.getLogger();
 logger.level = "debug";
 
 module.exports = {
+
+    parseDate:function(dateStr, locale){
+        var initial =dateStr.split(/\//);
+        let final=[ initial[1], initial[0], initial[2] ].join('/'); 
+        return new Date(final);     
+    },
     esFechaCobros(){
         let today = new Date(Date.UTC(0, 0, 0, 0, 0, 0));
         let diadelmes=today.getDate()
@@ -40,6 +46,21 @@ module.exports = {
         if((diadelmes>=(lastDayOfMonth-2) &&  diadelmes<=lastDayOfMonth) || diadelmes>=15 &&  diadelmes<=16) return true
         return false
     },
+    getNumberOfDays(start, end) {
+        const date1 = new Date(start);
+        const date2 = new Date(end);
+    
+        // One day in milliseconds
+        const oneDay = 1000 * 60 * 60 * 24;
+    
+        // Calculating the time difference between two dates
+        const diffInTime = date2.getTime() - date1.getTime();
+    
+        // Calculating the no. of days between two dates
+        const diffInDays = Math.round(diffInTime / oneDay);
+    
+        return diffInDays;
+    },    
     HOURS_NEXT_CLAIM:function(epoch_in_secs){
         let today = new Date();
         let next_claim = new Date(epoch_in_secs * 1000)
@@ -60,6 +81,12 @@ module.exports = {
         let last_claim = new Date(epoch_in_secs * 1000)
         last_claim.setDate(last_claim.getDate() + days)
         return last_claim.toLocaleString("es-ES", {timeZone: "America/Caracas"})
+    },
+    mensajeIngresos(tit,msg,message){
+
+        let embed = new MessageEmbed().setTitle(tit).setDescription(msg).setColor('GREEN').setTimestamp()
+        let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
+        rCanal.send({content: ` `,embeds: [embed]})
     },
     claim:async function (data,message){
         try{
@@ -387,11 +414,11 @@ module.exports = {
         message.channel.send("Este canal se cerrara en 60 segundos\nMucha suerte!")
         setTimeout(() => { message.channel.delete()}, 60000)
     },
-    ingresar:async function(num,username,discord_id){
+    ingresar:async function(num,username,discord){
         let db = await DbConnection.Get();
         var myquery = { num: num };
         var newvalues = { $set: {
-            discord: discord_id,
+            discord: discord,
             name:username,
             timestamp:this.timestamp_log(),
             date:this.date_log()
@@ -568,11 +595,6 @@ module.exports = {
             sum+=array[i]
         }
         return sum
-    },
-    parseDate:function(dateStr, locale){
-        var initial =dateStr.split(/\//);
-        let final=[ initial[1], initial[0], initial[2] ].join('/'); 
-        return new Date(final);     
     },
     getPaymentName:function(dateStr, locale){
         var initial =dateStr.split(/\//);

@@ -8,7 +8,8 @@ const QuickChart = require('quickchart-js');
 const { stat } = require('fs');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
-
+DISCORD_JSON=877625345996632095//jeisson
+DISCORD_FABRI=533994454391062529
 module.exports = new Command({
 	name: "entrevista"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
@@ -62,12 +63,16 @@ module.exports = new Command({
 				if(user.name)user.name=user.name.replaceAll('*','')
 				let valores=user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+'('+user.stat_count+')'
 		
-				if(!user.slp_prom)valores=' No empezó'
+				days=utils.getNumberOfDays(utils.parseDate(user.date),new Date())
+				
+				if(!user.slp_prom){
+					valores=' No empezó'+'('+days+')'
+					if(days>1)utils.mensajeIngresos("Atención","Antención, no se reporta actividad de tu entrevista. Reportate con tu <@"+DISCORD_JSON+"> por este canal o seras retirado. <@"+user.discord+">\n",message)
+				}
 				let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+valores+'\n'
 				
-				if(user.stat_count<3){//FASE 1
-					nuevos+=value
-				}else if(user.stat_count==3){//FASE 1
+				if(user.stat_count<3)nuevos+=value
+				else if(user.stat_count==3){//FASE 1
 					if(user.slp_prom<num_retirar)retirar+=value
 					else if(user.slp_prom>=num_retirar && user.slp_prom<=num_aprobado)evaluar+=value
 					else if(user.slp_prom>num_aprobado)aprobar+=value

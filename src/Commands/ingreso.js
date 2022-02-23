@@ -40,10 +40,7 @@ module.exports = new Command({
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 await utils.cambiarEstado(new_account.num,'aspirante','entrevista',message)
                 await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)
-                
-                let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones <@"+ingreso.id+">\nAhora debes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
-                let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
-                rCanal.send({content: ` `,embeds: [embed]})
+                utils.mensajeIngresos("Felicitaciones <@"+ingreso.id+">\nAhora debes escribir !roni para empezar tu entrevista",message)
                 
             }else{
                 utils.log(`${args[0]} is not a valid command!`);
