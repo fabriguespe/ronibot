@@ -48,11 +48,11 @@ module.exports = new Command({
 		.setDescription(`Hola ${message.author}, soy Roni. \nPor favor seleccioná una opción tocando el boton correspondiente\nROL:`+(utils.esJugador(message)?'Jugador':'Sin Rol')).setColor('GREEN').setTimestamp()
 		await thread.send({content: ` `,embeds: [embed],components: [row] })
 		let lascomnd=''
-		const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1/*,time:600000*/})
+		/*const mcollector = thread.createMessageCollector({filter:(m) => m.author.id === message.author.id,max:1})
 		mcollector.on('collect', async message => {
 			if(lascomnd=='desasociar')return utils.desasociar(message)
 			else if(lascomnd=='asociar')return utils.asociar(message)
-		});
+		});*/
 
 		const collector = thread.createMessageComponentCollector({ componentType: 'BUTTON'/*, time: 600000*/ });
 		collector.on('collect',  async interaction => {

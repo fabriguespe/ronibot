@@ -17,15 +17,17 @@ module.exports = new Command({
 				let el_num=ids[i]
 				let quien=await utils.getUserByNum(el_num)
 				await utils.cambiarEstado(quien.num,quien.nota,'aprobado',message)
-				if(!quien.discord){//old auth
-					let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal entrevistas
-					let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a <@"+quien.discord+"> "+quien.name+"(#"+quien.num+")\nYa puedes escribir !roni para validarte").setColor('GREEN').setTimestamp()
-					rCanal.send({content: ` `,embeds: [embed]})
-				}else{//new auth	
-					let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal general
-					let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a <@"+quien.discord+"> "+quien.name+"(#"+quien.num+")\nYa eres parte de la academia").setColor('GREEN').setTimestamp()
-					rCanal.send({content: ` `,embeds: [embed]})
-				}
+
+				let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");
+				await message.guild.members.fetch()
+				let ingreso=message.guild.members.cache.find(c => c.id==quien.discord)
+				ingreso.roles.add(rJugador);
+
+				let rCanal = message.guild.channels.cache.find(c => c.id == 867150874912882688);//canal general
+				let embed = new MessageEmbed().setTitle('Nuevo Ingreso!').setDescription("Felicitaciones a <@"+quien.discord+"> "+quien.name+"(#"+quien.num+")\nYa eres parte de la academia").setColor('GREEN').setTimestamp()
+				rCanal.send({content: ` `,embeds: [embed]})
+
+
 			}
 		}
 	}
