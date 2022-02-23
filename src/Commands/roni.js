@@ -15,9 +15,7 @@ module.exports = new Command({
 		let currentUser=args[1]?await utils.getUserByNum(args[1]):await utils.getUserByDiscord(message.author.id)
 		
 		let temporal=args[2]=='--force'?true:false
-		if(!temporal && (!utils.esIngresos(message) && !currentUser))return message.channel.send('Usuario invalido')
-		if(!temporal && (!utils.esIngresos(message) && !currentUser.discord))return message.channel.send('Usuario invalido')
-
+		if(!temporal && (!utils.esIngresos(message) && (!currentUser || !currentUser.discord)))return message.channel.send('Usuario invalido')
 		let ticket_name=(!esPagos?'ticket':'pagos')+(currentUser?"-"+currentUser.num:"")+"-"+(esPagos?'':message.author.username)
 		try{
 			let eliminar = message.guild.channels.cache.find(c => c.name == ticket_name)
@@ -41,7 +39,7 @@ module.exports = new Command({
 		let row=new MessageActionRow()
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
 		row.addComponents(new MessageButton().setCustomId('ver_datos').setLabel('🎮 Empezar a jugar').setStyle('SUCCESS'));
-		if((temporal || utils.esFechaCobros()))row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
+		if(utils.esJugador(message) && (temporal || utils.esFechaCobros()))row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
 		row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 		row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
 		//row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
