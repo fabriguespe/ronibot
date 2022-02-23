@@ -18,8 +18,8 @@ module.exports = new Command({
 			let users = await db.collection('users').find({nota:'entrevista'}).toArray()
 			let limit_prom=args[1]?parseInt(args[1]):3
 
-			let num_aprobado=50
-			let num_retirar=30	
+			let num_aprobado=1
+			let num_retirar=0	
 
 			for(let ii in users){
 				let eluser=users[ii]
@@ -65,7 +65,7 @@ module.exports = new Command({
 				if(!user.slp_prom)valores=' No empezó'
 				let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+valores+'\n'
 				
-				/*if(user.stat_count<3){//FASE 1
+				if(user.stat_count<3){//FASE 1
 					nuevos+=value
 				}else if(user.stat_count==3){//FASE 1
 					if(user.slp_prom<num_retirar)retirar+=value
@@ -78,10 +78,7 @@ module.exports = new Command({
 				}else if(user.stat_count<=14){// FASE 3
 					if(user.slp_prom<num_aprobado)retirar+=value
 					else if(user.slp_prom>=num_aprobado)aprobar+=value
-				}else fin+=value*/
-				//Nuevas entrevistas
-				if(user.slp_prom>0)aprobar+=value
-				else retirar+=value
+				}else fin+=value
 			}
 			
 			embed = new MessageEmbed().setTitle("Nuevos").setDescription(nuevos).setColor('WHITE').setFooter( 'PROM SLP - COPAS - DIAS')
