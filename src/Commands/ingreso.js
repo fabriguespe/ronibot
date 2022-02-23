@@ -32,7 +32,6 @@ module.exports = new Command({
                 args=['ingreso',uno,dos]
             }
             if(args.length==3){
-                
                 let new_account=await utils.getUserByNum(args[1])
                 let from_acc=new_account.accountAddress
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
@@ -40,7 +39,7 @@ module.exports = new Command({
                 let ingreso=await utils.getUserIDByUsername(args[2],message)
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 await utils.cambiarEstado(new_account.num,'aspirante','entrevista',message)
-                await utils.ingresar(new_account.num,ingreso.username,ingreso.id)
+                await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)
                 
                 let embed = new MessageEmbed().setTitle('Nuevo Entrevista Asignada').setDescription("Felicitaciones <@"+ingreso.id+">\nAhora debes escribir !roni para empezar tu entrevista").setColor('GREEN').setTimestamp()
                 let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
