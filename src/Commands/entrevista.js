@@ -57,16 +57,15 @@ module.exports = new Command({
 			let retirar=''
 			let fin=''
 			let embed=''
-			console.log(users)
 			for(let ii in top){
 				let user=top[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
 				let valores=user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+'('+user.stat_count+')'
-				console.log(valores)
+		
 				if(!user.slp_prom)valores=' No empezó'
 				let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+valores+'\n'
 				
-				if(user.stat_count<3){//FASE 1
+				/*if(user.stat_count<3){//FASE 1
 					nuevos+=value
 				}else if(user.stat_count==3){//FASE 1
 					if(user.slp_prom<num_retirar)retirar+=value
@@ -79,7 +78,10 @@ module.exports = new Command({
 				}else if(user.stat_count<=14){// FASE 3
 					if(user.slp_prom<num_aprobado)retirar+=value
 					else if(user.slp_prom>=num_aprobado)aprobar+=value
-				}else fin+=value
+				}else fin+=value*/
+				//Nuevas entrevistas
+				if(user.slp_prom>0)aprobar+=value
+				else retirar+=value
 			}
 			
 			embed = new MessageEmbed().setTitle("Nuevos").setDescription(nuevos).setColor('WHITE').setFooter( 'PROM SLP - COPAS - DIAS')
@@ -92,8 +94,6 @@ module.exports = new Command({
 			message.channel.send({content: ` `,embeds: [embed]})
 			embed = new MessageEmbed().setTitle("Fin - Vacio").setDescription(fin).setColor('ORANGE').setFooter( 'PROM SLP - COPAS - DIAS')
 			message.channel.send({content: ` `,embeds: [embed]})
-
-
 
 		}catch(e){
 			utils.log(e.message,message)
