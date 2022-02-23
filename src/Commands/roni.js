@@ -40,8 +40,8 @@ module.exports = new Command({
 		row.addComponents(new MessageButton().setCustomId('cerrar_ticket').setLabel('🗑️ Cerrar Ticket').setStyle('DANGER'));
 		row.addComponents(new MessageButton().setCustomId('ver_datos').setLabel('🎮 Empezar a jugar').setStyle('SUCCESS'));
 		if(utils.esJugador(message) && (temporal || utils.esFechaCobros()))row.addComponents(new MessageButton().setCustomId('cobros').setLabel('🤑 Cobrar').setStyle('SUCCESS'));
-		row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
-		row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
+		if(utils.esManager(message))row.addComponents(new MessageButton().setCustomId('desasociar').setLabel('☠️ Desasociar').setStyle('DANGER'));
+		//row.addComponents(new MessageButton().setCustomId('ticket_soporte').setLabel('👩🏻‍🚒 Hablar con Soporte').setStyle('PRIMARY'));
 		//row.addComponents(new MessageButton().setCustomId('asociar').setLabel('🗺 Asociar').setStyle('SUCCESS'));
 		
 		embed = new MessageEmbed().setTitle('Ticket')
