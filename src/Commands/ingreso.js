@@ -47,7 +47,7 @@ module.exports = new Command({
                 utils.log(`${args[0]} is not a valid command!`);
             }
         }catch(e){
-            message.channel.send("ERROR: "+e.message);
+            utils.log(e.message,message)
         }
 	}
 });
