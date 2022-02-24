@@ -33,6 +33,7 @@ module.exports = new Command({
             }
             if(args.length==3){
                 let new_account=await utils.getUserByNum(args[1])
+                if(new_account.nota=='retiro' || new_account.nota=='aprobado')return message.channel.send(`Esta cuenta ya esta/fue asignada!`);
                 let from_acc=new_account.accountAddress
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
