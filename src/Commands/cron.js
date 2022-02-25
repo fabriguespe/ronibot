@@ -177,7 +177,7 @@ module.exports = new Command({
 				let datos={total:0,energias:0,raros:'',pro:0,breed:0,buenos:0}
 				for(let i in users){
 					let user=users[i]
-					if(user.num=='2')continue
+					if(user.num=='2' || user.num=='1')continue
 					let axies=await utils.getAxiesIds(user.accountAddress.replace('ronin:','0x'))
 					if(axies && axies.axies){
 						let total=axies.axies.length
