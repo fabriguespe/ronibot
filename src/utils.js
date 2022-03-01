@@ -82,6 +82,18 @@ module.exports = {
         last_claim.setDate(last_claim.getDate() + days)
         return last_claim.toLocaleString("es-ES", {timeZone: "America/Caracas"})
     },
+    async crearCanalSoporte(num,message){
+		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
+		let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
+        let thread=await message.guild.channels.create('ayuda-', { 
+        type: 'GUILD_TEXT',parent:rCategoria?rCategoria.id:null,permissionOverwrites: [{id: message.author.id,allow: ['VIEW_CHANNEL']},{id: rSoporte.id,allow: ['VIEW_CHANNEL']},{id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
+        ]}).then(chan=>{return chan})
+
+        embed = new MessageEmbed().setTitle('Ticket')
+		.setDescription(`Hola ${message.author}, soy Roni. \nPor favor seleccioná una opción tocando el boton correspondiente\nROL:`+(utils.esJugador(message)?'Jugador':'Sin Rol')).setColor('GREEN').setTimestamp()
+		await thread.send({content: ` `,embeds: [embed],components: [row] })
+
+    },
     mensajeIngresos(tit,msg,message){
 
         let embed = new MessageEmbed().setTitle(tit).setDescription(msg).setColor('GREEN').setTimestamp()

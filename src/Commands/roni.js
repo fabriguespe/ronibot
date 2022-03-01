@@ -28,9 +28,7 @@ module.exports = new Command({
 		let rSoporte = message.guild.roles.cache.find(r => r.name === "Soporte");
 		let rCategoria = message.guild.channels.cache.find(c => c.id == (args[1]?921106145811263499:utils.esJugador(message)?866879155350143006:909634641030426674) && c.type=='GUILD_CATEGORY');
 		let thread=await message.guild.channels.create(ticket_name, { 
-		type: 'GUILD_TEXT',
-		parent:rCategoria?rCategoria.id:null,
-		permissionOverwrites: [{id: message.author.id,allow: ['VIEW_CHANNEL']},{id: rSoporte.id,allow: ['VIEW_CHANNEL']},{id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
+		type: 'GUILD_TEXT',parent:rCategoria?rCategoria.id:null,permissionOverwrites: [{id: message.author.id,allow: ['VIEW_CHANNEL']},{id: rSoporte.id,allow: ['VIEW_CHANNEL']},{id: message.guild.roles.everyone.id,deny: ['VIEW_CHANNEL']},
 		]}).then(chan=>{return chan})
 		let embed = new MessageEmbed().setTitle('Nuevo Ticket')
 		.setDescription(`CLICK AQUI PARA CONTINUAR ----->>> <#${thread.id}>`).setColor('GREEN').setTimestamp()
