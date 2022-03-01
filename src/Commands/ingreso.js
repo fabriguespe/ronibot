@@ -20,7 +20,7 @@ RONIN_PROVIDER = "https://api.roninchain.com/rpc"
 module.exports = new Command({
 	name: "ingreso"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
+		if(!utils.esFabri(message) || !utils.esJeissonPagos(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
             if(args[2].includes('"') || args[2].includes("'")){
                 let completo=args.join(" ")
