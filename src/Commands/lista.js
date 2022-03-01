@@ -133,7 +133,7 @@ module.exports = new Command({
 
 
 		}catch(e){
-			utils.log(e.message,message)
+			utils.log(e,message)
 		}
 
 	}

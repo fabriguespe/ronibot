@@ -35,6 +35,7 @@ logger.level = "debug";
 module.exports = {
 
     parseDate:function(dateStr, locale){
+        if(!dateStr)return 0
         var initial =dateStr.split(/\//);
         let final=[ initial[1], initial[0], initial[2] ].join('/'); 
         return new Date(final);     
@@ -491,8 +492,9 @@ module.exports = {
         if(r1 && message.member.roles.cache.has(r1.id))return true
         return false
     },
-    log:function (log,message=null){
-        console.log(log)
+    log:function (e,message=null){        
+        console.log(e)
+        let log=e.message
         if(log && log.includes('ERROR:Transaction has been reverted by the EVM'))log='ERROR: Transaction has been reverted by the EVM'
         logger.debug(log)
         console.log(log)

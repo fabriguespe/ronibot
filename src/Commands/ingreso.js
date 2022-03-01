@@ -47,7 +47,7 @@ module.exports = new Command({
                 utils.log(`${args[0]} is not a valid command!`);
             }
         }catch(e){
-            utils.log(e.message,message)
+            utils.log(e,message)
         }
 	}
 });

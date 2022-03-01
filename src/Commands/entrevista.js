@@ -98,7 +98,7 @@ module.exports = new Command({
 			message.channel.send({content: ` `,embeds: [embed]})
 
 		}catch(e){
-			utils.log(e.message,message)
+			utils.log(e,message)
 		}
 
 	}
