@@ -67,7 +67,7 @@ module.exports = new Command({
 				
 				if(!user.slp_prom){
 					valores=' No empezó'+'('+days+')'
-					if(days>2 && args[2]=='noti')utils.mensajeIngresos("Atención","Antención, no se reporta actividad de tu entrevista. Reportate con <@"+DISCORD_JSON+"> por este canal o seras retirado. <@"+user.discord+">\n",message)
+					if(days>2 && (args[1]=='noti' || args[2]=='noti'))utils.mensajeIngresos("Atención","Antención, no se reporta actividad de tu entrevista. Reportate con <@"+DISCORD_JSON+"> por este canal o seras retirado. <@"+user.discord+">\n",message)
 				}
 				let value='#'+user.num+" [***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+valores+'\n'
 				
