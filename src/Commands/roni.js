@@ -86,6 +86,8 @@ module.exports = new Command({
 								if(!fallo && !args[1]){
 									message.channel.send('Exito!\nEste canal se cerrara en 30 segundos.')
 									setTimeout(() => { message.channel.delete()}, 3000*10)
+								}else if(!fallo && args[1]){
+									message.channel.send('Exito!\.')
 								}else{
 									//return interaction.channel.send('Hubo un error!')
 								}
