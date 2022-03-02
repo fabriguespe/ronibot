@@ -105,6 +105,7 @@ module.exports = {
     claim:async function (data,message){
         try{
             let db = await DbConnection.Get();
+            console.log(data)
             let from_acc=data.accountAddress
             from_acc=from_acc.replace('ronin:','0x')
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
@@ -149,14 +150,14 @@ module.exports = {
             return null
         }catch(e){
             console.log(e)
-            this.log("ERROR: "+e.message,message)
+            this.log(e.message,message)
         }
     },
     cobro:async function(data,message){
 
         try{
             let db = await DbConnection.Get();
-            await this.claim(data,message)
+            if(data.in_game_slp>0)await this.claim(data,message)
             let roni_slp=data.in_game_slp-data.recibe
             let jugador_slp=data.recibe
             if(roni_slp==jugador_slp)roni_slp-=1
@@ -173,7 +174,7 @@ module.exports = {
                 
             }catch(e){
                 fallo=true
-                this.log("ERROR: "+e.message,message)
+                this.log(e.message,message)
             }
             roniPrimero=!roniPrimero
             try{
@@ -182,13 +183,13 @@ module.exports = {
                 
             }catch(e){
                 fallo=true
-                this.log("ERROR: "+e.message,message)
+                this.log(e.message,message)
             }
 
             return fallo
              
         }catch(e){
-            this.log("ERROR: "+e.message,message)
+            this.log(e.message,message)
         }
     },timestamp_log:function(){
         return new Date(Date.now())
@@ -316,12 +317,12 @@ module.exports = {
                     if(!jdata || !jdata.blockchain_related){   
                         jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});  
                         if(!jdata || !jdata.blockchain_related){   
-                            this.log("error: "+from_acc)
+                            this.log(from_acc)
                             return null
                         }
                     }
                 }
-                console.log(jdata)
+                console.log(jdata.claimable_total)
                 let balance=jdata.blockchain_related.balance
                 let total=jdata.total-jdata.blockchain_related.balance
                 let data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at,has_to_claim:(jdata.claimable_total>0)}
@@ -333,7 +334,7 @@ module.exports = {
             return data
 
         }catch(e){
-            this.log("ERROR: "+e.message,message)
+            this.log(e.message,message)
         }
     },
     claimData:async function(currentUser,message){
@@ -349,17 +350,15 @@ module.exports = {
             let date_next_claim=this.ADD_DAYS_TO_UNIX(data.last_claim,15)
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
-            console.log(days)
-            //if(days<1 && data.in_game_slp>0)days=15
-            let prom = Math.round(data.in_game_slp/days)
-            //uno 60%
-            //dos 50%
-            //tres 40%
-            //cuatro 30%
-            //cinco 20%
+            if(days==0)days=15
+            
+            let slp=data.in_game_slp?data.in_game_slp:data.ronin_slp
+            let prom = Math.round(slp/days)
+            
+
             let porcetage=prom<=TABULADORES.cuatro?20:prom<TABULADORES.tres?30:prom<TABULADORES.dos?40:prom<TABULADORES.uno?50:prom>=TABULADORES.uno?60:0;
             
-            let arecibir=Math.round(data.in_game_slp/(100/porcetage))
+            let arecibir=Math.round(slp/(100/porcetage))
             let embed = new MessageEmbed().setTitle('Calculo').setColor('GREEN').setTimestamp()
             
             embed.addFields(
@@ -370,7 +369,7 @@ module.exports = {
                 { name: 'Fecha actual', value: ''+date_ahora,inline:true},
                 { name: 'Ultimo reclamo', value: ''+date_last_claim,inline:true},
                 { name: 'Proximo reclamo', value: ''+date_next_claim,inline:true},
-                { name: 'SLP Total', value: ''+data.in_game_slp,inline:true},
+                { name: 'SLP Total', value: ''+(slp),inline:true},
                 { name: 'Dias', value: ''+days,inline:true},
                 { name: 'Tu promedio', value: ''+prom,inline:true},
                 { name: 'Porcentaje', value: ''+porcetage+'%',inline:true},
@@ -402,12 +401,17 @@ module.exports = {
 
 
             porcetage+=bono
-            let recibe=Math.round(data.in_game_slp/(100/porcetage))
+            currentUser.jugador_slp=Math.round(data.in_game_slp/(100/porcetage))
+            if(data.in_game_slp==0 && data.ronin_slp>0)currentUser.jugador_slp=Math.round(data.ronin_slp/(100/porcetage))
             let hours=this.HOURS_NEXT_CLAIM(data.last_claim)
-            return {hours:hours,num:currentUser.num,scholarPayoutAddress:currentUser.scholarPayoutAddress,from_acc:from_acc,in_game_slp:data.in_game_slp,recibe:recibe,has_to_claim:data.has_to_claim}
+            currentUser.hours=hours
+            currentUser.in_game_slp=data.in_game_slp
+            currentUser.ronin_slp=data.ronin_slp
+            currentUser.has_to_claim=data.has_to_claim
+            return currentUser
 
         }catch(e){
-            this.log("ERROR: "+e.message,message)
+            this.log(e.message,message)
         }
     },
     desasociar:async function(message){
