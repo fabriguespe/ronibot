@@ -158,19 +158,20 @@ module.exports = {
         try{
             let db = await DbConnection.Get();
             if(data.in_game_slp>0)await this.claim(data,message)
-            let roni_slp=data.in_game_slp-data.recibe
-            let jugador_slp=data.recibe
+            let slp_total=data.in_game_slp+data.ronin_slp
+            let roni_slp=slp_total-data.jugador_slp
+            let jugador_slp=data.jugador_slp
             if(roni_slp==jugador_slp)roni_slp-=1
             let roniPrimero=(roni_slp>=jugador_slp)
-
+            console.log('Jugador:'+jugador_slp + 'Ronimate:' +roni_slp)
             if(!data.scholarPayoutAddress)return message.channel.send("Wallet de cobro no existente")
             let player_wallet=data.scholarPayoutAddress.replace('ronin:','0x')
             let roni_wallet=(data.num=='43' || data.num=='186' || data.num=='187')?await this.getWalletByNum("PRO"):await this.getWalletByNum("BREED")
             roni_wallet=roni_wallet.replace('ronin:','0x')
             let fallo=false
             try{
-                let tx=await this.transfer(from_acc,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
-                if(tx)await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
+                let tx=await this.transfer(data.accountAddress,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
+                if(tx)await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:data.accountAddress,wallet:(roniPrimero?roni_wallet:player_wallet)})
                 
             }catch(e){
                 fallo=true
@@ -178,8 +179,8 @@ module.exports = {
             }
             roniPrimero=!roniPrimero
             try{
-                let tx=await this.transfer(from_acc,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
-                if(tx) await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:from_acc,wallet:(roniPrimero?roni_wallet:player_wallet)})
+                let tx=await this.transfer(data.accountAddress,(roniPrimero?roni_wallet:player_wallet),(roniPrimero?roni_slp:jugador_slp),message)
+                if(tx) await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:data.accountAddress,wallet:(roniPrimero?roni_wallet:player_wallet)})
                 
             }catch(e){
                 fallo=true
@@ -351,7 +352,7 @@ module.exports = {
             let diffInMilliSeconds=(ahora/1000)-data.last_claim
             let days = (Math.floor(diffInMilliSeconds / 3600) /24).toFixed(2)
             if(days==0)days=15
-            
+
             let slp=data.in_game_slp?data.in_game_slp:data.ronin_slp
             let prom = Math.round(slp/days)
             

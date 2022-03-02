@@ -66,7 +66,6 @@ module.exports = new Command({
 			}else if( customId=='cobros'){
 				interaction.channel.send('Aguarde un momento...') 
 				let data=await utils.claimData(currentUser,interaction.message)
-				console.log('data.has_to_claim',data)
 				if(data.jugador_slp==0){
 					interaction.channel.send('Tu cuenta no tiene SLP para reclamar\nEste canal se cerrara en 20 segundos.') 
 					setTimeout(() => { interaction.channel.delete()}, 2000*10)
