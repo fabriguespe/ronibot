@@ -18,7 +18,7 @@ RONIN_PROVIDER = "https://api.roninchain.com/rpc"
 
 
 module.exports = new Command({
-	name: "ingreso"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
+	name: "asociar"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esFabri(message) && !utils.esJeissonPagos(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
@@ -33,16 +33,13 @@ module.exports = new Command({
             }
             if(args.length==3){
                 let new_account=await utils.getUserByNum(args[1])
-                if(new_account.nota=='retiro' || new_account.nota=='aprobado')return message.channel.send(`Esta cuenta ya esta/fue asignada!`);
                 let from_acc=new_account.accountAddress
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
                 let ingreso=await utils.getUserIDByUsername(args[2],message)
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
-                await utils.cambiarEstado(new_account.num,'aspirante','entrevista',message)
                 await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)
-                utils.mensajeIngresos("Nueva Entrevista","Felicitaciones <@"+ingreso.id+">\nAhora debes escribir !roni para empezar tu entrevista",message)
-                
+                message.channel.send('ID:'+ingreso.id+ ` asociado con exito a la cuenta #`+new_account.num);
             }else{
                 utils.log(`${args[0]} is not a valid command!`);
             }
