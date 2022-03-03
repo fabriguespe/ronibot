@@ -17,6 +17,12 @@ module.exports = new Command({
 			let db = await DbConnection.Get();
 			let limit_prom=args[1]?parseInt(args[1]):3
 			let query={nota:args[1]=='pro'?'pro':'aprobado'}
+
+			if(args[2]){
+				limit_prom=args[1]?parseInt(args[1]):3
+				query={nota:args[2]=='pro'?'pro':'aprobado'}
+			}
+			
 			let users = await db.collection('users').find(query).toArray()
 			for(let ii in users){
 				let eluser=users[ii]
