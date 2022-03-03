@@ -16,7 +16,8 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let limit_prom=args[1]?parseInt(args[1]):3
-			let users = await db.collection('users').find({nota:'aprobado'}).toArray()
+			let query={nota:args[1]=='pro'?'pro':'aprobado'}
+			let users = await db.collection('users').find(query).toArray()
 			for(let ii in users){
 				let eluser=users[ii]
 				users[ii]['mmr_sum']=0
