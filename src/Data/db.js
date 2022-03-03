@@ -23,7 +23,7 @@ var DbConnection = function () {
             //console.log(`DbConnection called ${instance} times`);
 
             if (db != null) {
-                console.log(`db connection is already alive`);
+                //console.log(`db connection is already alive`);
                 return db;
             } else {
                 //console.log(`getting new db connection`);

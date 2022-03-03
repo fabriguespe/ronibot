@@ -163,7 +163,7 @@ module.exports = {
             let jugador_slp=data.jugador_slp
             if(roni_slp==jugador_slp)roni_slp-=1
             let roniPrimero=(roni_slp>=jugador_slp)
-            console.log('Jugador:'+jugador_slp + 'Ronimate:' +roni_slp)
+            this.log('Jugador:'+jugador_slp + ' Ronimate:' +roni_slp)
             if(!data.scholarPayoutAddress)return message.channel.send("Wallet de cobro no existente")
             let player_wallet=data.scholarPayoutAddress.replace('ronin:','0x')
             let roni_wallet=(data.num=='43' || data.num=='186' || data.num=='187')?await this.getWalletByNum("PRO"):await this.getWalletByNum("BREED")

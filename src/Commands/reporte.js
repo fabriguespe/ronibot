@@ -50,6 +50,7 @@ module.exports = new Command({
 					//{ name: 'Precio', value: ''+slp+'USD'},
 					{ name: 'SLP Total', value: ''+slp.in_game_slp,inline:true},
 					{ name: 'Nombre', value: ''+eluser.name,inline:true},
+					{ name: 'Discord', value: ''+eluser.discord,inline:true},
 					{ name: 'Copas', value: ''+(slp.mmr?slp.mmr:'Error'),inline:true},
 					{ name: 'Ultimo reclamo', value: ''+utils.FROM_UNIX_EPOCH(slp.last_claim),inline:true},
 					{ name: 'Proximo', value: ''+utils.ADD_DAYS_TO_UNIX(slp.last_claim,15),inline:true},

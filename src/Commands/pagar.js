@@ -14,12 +14,12 @@ module.exports = new Command({
         let from_acc=''
         let to_acc=''
         if(args.length==4 /*&& (args[2]=='amaloa' || args[2]=='jeisson' || args[2]=='pablo')*/){
-            from_acc=await utils.getPaymentWalletByNum(args[2])
+            from_acc=await utils.getWalletByNum(args[2])
             to_acc=await utils.getPaymentWalletByNum(args[3])
             
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
-            
+            console.log(from_acc,to_acc,slp)
             let t1=await utils.transfer(from_acc,to_acc,slp,message)
 
         }else if(args.length==3 && slp.includes('usd')){//sale de breed
