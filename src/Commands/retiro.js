@@ -23,7 +23,6 @@ module.exports = new Command({
                     users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
                     args[2]=users[0].num
                     message.channel.send(`Se va a asignar la cuenta `+args[2]);
-                    return
                 }
                 
                 let user_to=await utils.getUserByNum(args[2])
