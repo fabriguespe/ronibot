@@ -17,7 +17,7 @@ module.exports = new Command({
                 //IDs
                 let user_from=await utils.getUserByNum(args[1])
                 
-                if(args[2]=='retiro'){//si no hay destino auto asigna un retirado
+                if(!args[2]){//si no hay destino auto asigna un retirado
                     let db = await DbConnection.Get();
                     let users=await db.collection('users').find({nota:"retiro"}).toArray()
                     users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
