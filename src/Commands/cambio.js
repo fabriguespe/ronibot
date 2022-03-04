@@ -21,8 +21,6 @@ module.exports = new Command({
             let num_from=(user_from && user_from.num)?user_from.num:args[2]
             let num_to=(user_to && user_to.num)?user_to.num:args[3]
 
-            
-            if(!utils.isSafe(from_acc) || !utils.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
             

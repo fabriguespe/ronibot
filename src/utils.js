@@ -104,7 +104,6 @@ module.exports = {
     claim:async function (data,message){
         try{
             let db = await DbConnection.Get();
-            console.log(data)
             let from_acc=data.accountAddress
             from_acc=from_acc.replace('ronin:','0x')
             let from_private = secrets[(from_acc.replace('0x','ronin:'))]    
@@ -215,7 +214,7 @@ module.exports = {
         }
     },
     transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
-      
+        if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
         try{
             
             let db = await DbConnection.Get();
@@ -247,10 +246,11 @@ module.exports = {
             }        
             else message.channel.send("ERROR Status False");
         }catch(e){
-            message.channel.send("ERROR: "+e.message);
+            this.log(e,message)
         }
     },
     transfer:async function(from_acc,to_acc,balance,message){
+        if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
         try{
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
@@ -484,7 +484,7 @@ module.exports = {
     async checkAspirante(message){
         if(!this.isTesting() && this.esManager(message))return
         if(!this.isTesting() && !message.channel.name.includes('entrevista'))return
-        console.log(message.author)
+       // console.log(message.author)
         let db = await DbConnection.Get();
         let user=await db.collection('users').findOne({discord:message.author.id.toString()})
         if(user && user.nota=='aspirante'){
@@ -622,7 +622,7 @@ module.exports = {
         else return null
     },
     isSafe:function(wallet){
-        return wallet in secrets
+        return wallet.replace('0x','ronin:') in secrets
     },
     getArrSum(array){
         let sum=0
