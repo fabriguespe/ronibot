@@ -10,7 +10,7 @@ module.exports = new Command({
 	name: "retiro"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
         if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
-        if(args.length==3){
+        if(args.length==2 || args.length==3){
             try{
            
 
