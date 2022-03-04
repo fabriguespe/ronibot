@@ -117,7 +117,7 @@ module.exports = new Command({
 				message.channel.send(`Comando incompleto`);
 			}
 		}catch(e){
-			console.log(e.message)
+			console.log(e)
 		}
 
 	}

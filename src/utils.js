@@ -148,7 +148,7 @@ module.exports = {
             return null
         }catch(e){
             console.log(e)
-            this.log(e.message,message)
+            this.log(e,message)
         }
     },
     isTesting(){
@@ -177,7 +177,7 @@ module.exports = {
                 
             }catch(e){
                 fallo=true
-                this.log(e.message,message)
+                this.log(e,message)
             }
             roniPrimero=!roniPrimero
             try{
@@ -186,13 +186,13 @@ module.exports = {
                 
             }catch(e){
                 fallo=true
-                this.log(e.message,message)
+                this.log(e,message)
             }
 
             return fallo
              
         }catch(e){
-            this.log(e.message,message)
+            this.log(e,message)
         }
     },timestamp_log:function(){
         return new Date(Date.now())
@@ -338,7 +338,7 @@ module.exports = {
             return data
 
         }catch(e){
-            this.log(e.message,message)
+            this.log(e,message)
         }
     },
     claimData:async function(currentUser,message){
@@ -415,7 +415,7 @@ module.exports = {
             return currentUser
 
         }catch(e){
-            this.log(e.message,message)
+            this.log(e,message)
         }
     },
     desasociar:async function(message){

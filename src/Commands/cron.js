@@ -52,7 +52,7 @@ module.exports = new Command({
 						data= await fetch("https://game-api.axie.technology/api/v1/"+user.accountAddress, { method: "Get" }).then(res => res.json()).then((json) => { return json});
 						console.log(data)
 					}catch (e) {
-						utils.log(e.message,message)
+						utils.log(e,message)
 					}
 					console.log(data)
 					data.accountAddress=user.accountAddress
@@ -66,7 +66,7 @@ module.exports = new Command({
 				}
 				utils.log('Proceso corrido a las ' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
-				utils.log(e.message,message)
+				utils.log(e,message)
 			}	
 			//hasta aca
 
@@ -101,7 +101,7 @@ module.exports = new Command({
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
-				utils.log(e.message,message)
+				utils.log(e,message)
 			}	
 			//HASTA ACA
 
@@ -128,7 +128,7 @@ module.exports = new Command({
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Claim corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
-				utils.log(e.message,message)
+				utils.log(e,message)
 			}	
 			try{
 				//Copiar desde aca
@@ -151,7 +151,7 @@ module.exports = new Command({
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Flush corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			}catch (e) {
-				utils.log(e.message,message)
+				utils.log(e,message)
 			}	
 			//HASTA ACA
 
