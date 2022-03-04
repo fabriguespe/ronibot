@@ -20,7 +20,7 @@ module.exports = new Command({
                 if(args[2]=='retiro'){//si no hay destino auto asigna un retirado
                     let db = await DbConnection.Get();
                     let users=await db.collection('users').find({nota:"retiro"}).toArray()
-                    users=users.sort(function(a, b) {return parseInt(b.num) - parseInt(a.num)});
+                    users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
                     args[2]=users[0].num
                     message.channel.send(`Se va a asignar la cuenta `+args[2]);
                     return
