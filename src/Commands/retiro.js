@@ -38,6 +38,7 @@ module.exports = new Command({
                     await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
                 }
                 await utils.cambiarEstado(user_from.num,user_from.nota,'retiro',message)
+                await utils.cambiarEstado(user_to.num,user_to.nota,'libre',message)
                 utils.log("Listo!",message);
         
         }catch(e){
