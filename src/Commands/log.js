@@ -126,16 +126,19 @@ amaloa=150-vis-ronimate-axie  = 14.18
             rCanal.send("Se agrego un nuevo ***aspirante***")
 			
 			let ingreso=await utils.getUserIDByUsername(args[2],message)
-			rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal entrevistas
-			//console.log(ingreso)
-			
 			if(ingreso){
-				let embed = new MessageEmbed().setTitle('Nuevo Aspirante!').setDescription("<@"+ingreso.id+"> confirmar que estas presente para recibir una beca.").setColor('GREEN').setTimestamp()
-				rCanal.send({content: ` `,embeds: [embed]})
-			}else{
-				let embed = new MessageEmbed().setTitle('Error de Aspirante').setDescription("El usuario "+args[2]+" ingreso incorrectamente su nombre de usuario. Debe volver a completarlo.").setColor('GREEN').setTimestamp()
-				rCanal.send({content: ` `,embeds: [embed]})
+				await db.collection('aspirantes').insertOne({discord:ingreso.id})
+				rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal entrevistas
+				if(ingreso){
+					let embed = new MessageEmbed().setTitle('Nuevo Aspirante!').setDescription("<@"+ingreso.id+"> confirmar que estas presente para recibir una beca escribiendo 'presente'").setColor('GREEN').setTimestamp()
+					rCanal.send({content: ` `,embeds: [embed]})
+				}else{
+					let embed = new MessageEmbed().setTitle('Error de Aspirante').setDescription("El usuario "+args[2]+" ingreso incorrectamente su nombre de usuario. Debe volver a completarlo.").setColor('GREEN').setTimestamp()
+					rCanal.send({content: ` `,embeds: [embed]})
+				}
 			}
+
+
 		}
 
 	}

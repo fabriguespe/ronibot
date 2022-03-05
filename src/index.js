@@ -72,7 +72,7 @@ client.on("ready", message => {
 
 
 client.on("messageCreate", message => {
-	utils.checkAspirante(message)
+	if(message.content.toLowerCase()=='presente')utils.checkAspirante(message)
 	if (message.author.bot && (!message.channel.name.includes('chat') && !message.channel.name.includes('anuncios')) ) return;
 	if (message.content && !message.content.startsWith(config.prefix)) return;
 	const args = message.content.substring(config.prefix.length).split(/ +/);

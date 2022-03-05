@@ -487,13 +487,15 @@ module.exports = {
             if(!this.isTesting() && this.esManager(message))return
             if(!this.isTesting() && !message.channel.name.includes('entrevista'))return
             let db = await DbConnection.Get();
-            let user=await db.collection('users').findOne({discord:message.author.id.toString()})
-            if(user && user.nota=='aspirante'){
+            let user=await db.collection('aspirantes').findOne({discord:message.author.id.toString()})
+            if(user){
                 console.log('Entra')
-                let num = await db.collection('users').findOne({nota:'libre'})
-                let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
-                
-                rCanal.send("!ingreso "+num.num+" "+message.author.usnermae+"#"+message.author.discriminator)
+                let user = await db.collection('users').findOne({nota:'libre'})
+                console.log(user)
+                if(user){
+                    let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
+                    rCanal.send("!ingreso "+user.num+" "+message.author.usnermae+"#"+message.author.discriminator)
+                }
             }  
         }catch(e){
             this.log(e,message)
