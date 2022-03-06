@@ -12,11 +12,8 @@ module.exports = new Command({
         if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
         if(args.length==2 || args.length==3){
             try{
-           
-
                 //IDs
                 let user_from=await utils.getUserByNum(args[1])
-                
                 if(!args[2]){//si no hay destino auto asigna un retirado
                     let db = await DbConnection.Get();
                     let users=await db.collection('users').find({nota:"retiro"}).toArray()

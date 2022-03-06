@@ -58,6 +58,7 @@ module.exports = new Command({
 			let colores={GREEN:'',YELLOW:'',ORANGE:'',RED:'',BLACK:''}
 			let numcolores={GREEN:0,YELLOW:0,ORANGE:0,RED:0,BLACK:0}
 			let proms={slp_sum:0,mmr_sum:0,cant:0}
+			let aretirar=[]
 			for(let ii in users){
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
@@ -67,18 +68,22 @@ module.exports = new Command({
 				proms.mmr_sum+=user.mmr
 				proms.cant+=1
 
-				
+				//Texto
 				if(user.slp_prom>=TABULADORES.uno)colores['GREEN']+=value
 				else if(user.slp_prom>=TABULADORES.dos && user.slp_prom<TABULADORES.uno)colores['YELLOW']+=value
 				else if(user.slp_prom>=TABULADORES.tres && user.slp_prom<TABULADORES.dos)colores['ORANGE']+=value
 				else if(user.slp_prom>=TABULADORES.cuatro && user.slp_prom<TABULADORES.tres)colores['RED']+=value
 				else if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)colores['BLACK']+=value
 				
+				//Contadores
 				if(user.slp_prom>=TABULADORES.uno)numcolores['GREEN']+=1
 				else if(user.slp_prom>=TABULADORES.dos && user.slp_prom<TABULADORES.uno)numcolores['YELLOW']+=1
 				else if(user.slp_prom>=TABULADORES.tres && user.slp_prom<TABULADORES.dos)numcolores['ORANGE']+=1
 				else if(user.slp_prom>=TABULADORES.cuatro && user.slp_prom<TABULADORES.tres)numcolores['RED']+=1
 				else if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)numcolores['BLACK']+=1
+
+				//Otros
+				if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)aretirar.push(user.num)
 			}
 
 			let titulo=''
@@ -100,7 +105,10 @@ module.exports = new Command({
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
 
+			if(args[2]=='Retiro' && aretirar.length>0)message.channel.send('!retirot '+aretirar[0])///uno por dia
+			
 			if(tipo)return //vuelve si no tiene nada mas
+
 			let exampleEmbed = new MessageEmbed().setColor('#0099ff')
 			exampleEmbed = exampleEmbed.addFields(
 				{ name: 'Precio SLP', value: ''+slp_price,inline:true},
