@@ -45,6 +45,7 @@ module.exports = new Command({
 						else users[ii]['slp']=stat.in_game_slp-anteultimo.in_game_slp
 					
 
+
 						users[ii]['mmr_sum']+=stat['mmr']
 						users[ii]['mmr']=stat['mmr']
 						if(users[ii]['slp']>0)users[ii]['stat_count']+=1
@@ -54,6 +55,9 @@ module.exports = new Command({
 				
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])
 				users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
+
+				if( eluser.nota=='pro')users[ii]['mmr']=await utils.getMMR(eluser.accountAddress,message,false)
+
 			}
 			
 			//Top 10 SLP

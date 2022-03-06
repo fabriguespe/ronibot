@@ -308,6 +308,20 @@ module.exports = {
         let balance = await  contract.methods.balanceOf( web3.utils.toChecksumAddress(from_acc.replace("ronin:", "0x"))).call()
         return balance
     },
+    getMMR:async function(from_acc,message,cache=false){
+        try{
+            if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
+            from_acc=from_acc.replace('ronin:','0x')  
+            
+            url = "https://game-api.axie.technology/api/v2/"+from_acc.replace('0x','ronin:')  ;
+            data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+            console.log(from_acc,data.mmr)
+            return data.mmr
+
+        }catch(e){
+            this.log(e,message)
+        }
+    },
     getSLP:async function(from_acc,message,cache=false){
         try{
             if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
