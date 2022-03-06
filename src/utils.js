@@ -200,7 +200,7 @@ module.exports = {
         return new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
     },
     cambiarEstado:async function(num,old_estado,estado,message){
-        if(num=='1' || num=='2')return
+        if(num=='1' || num=='2' || num=='buenos' || num=='breed')return
         let db = await DbConnection.Get();
         let obj={nota:estado}
         if(estado.includes('retir'))obj['discord']=null
@@ -251,7 +251,7 @@ module.exports = {
         }
     },
     transfer:async function(from_acc,to_acc,balance,message){
-        if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
+        //if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
         try{
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
