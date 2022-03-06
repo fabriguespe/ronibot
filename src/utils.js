@@ -200,6 +200,7 @@ module.exports = {
         return new Date().getDate()+'/'+(new Date().getMonth()+1)+'/'+new Date().getFullYear()
     },
     cambiarEstado:async function(num,old_estado,estado,message){
+        if(num=='1' || num=='2')return
         let db = await DbConnection.Get();
         let obj={nota:estado}
         if(estado.includes('retir'))obj['discord']=null
@@ -500,6 +501,11 @@ module.exports = {
         }catch(e){
             this.log(e,message)
         }
+    },
+    getDiscordDByID:async function(el_id,message){
+        await message.guild.members.fetch()
+        let ingreso=message.guild.members.cache.find(c => {return c.id ==el_id});
+        return ingreso
     },
     getUserIDByUsername:async function(name,message){
         if(!name.includes('#'))name+="#"
