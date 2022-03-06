@@ -65,7 +65,7 @@ client.on("ready", message => {
 	scheduledMessage = new cron.CronJob('30 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
 		rCanal.send("@here" + " Por último veamos quienes estan con bajo promedio y en riesgo a ser retirados")
-		rCanal.send('!lista 7 Retiro')
+		rCanal.send('!lista 7 Retiro auto')
 	}, null, true, 'UTC');
 	scheduledMessage.start()
 })
