@@ -519,7 +519,7 @@ module.exports = {
     getDiscordDByID:async function(el_id,message){
         await message.guild.members.fetch()
         let ingreso=message.guild.members.cache.find(c => {return c.id ==el_id});
-        return ingreso
+        if(ingreso)return ingreso.user
     },
     getUserIDByUsername:async function(name,message){
         if(!name.includes('#'))name+="#"
@@ -543,7 +543,8 @@ module.exports = {
     },
     log:function (e,message=null){        
         console.log(e)
-        let log=e.message
+        let log=e
+        if(e.message)log=e.message
         if(log && log.includes('ERROR:Transaction has been reverted by the EVM'))log='ERROR: Transaction has been reverted by the EVM'
         logger.debug(log)
         console.log(log)

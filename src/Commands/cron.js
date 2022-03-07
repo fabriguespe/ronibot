@@ -83,10 +83,11 @@ module.exports = new Command({
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
 					let user=users[i]
+					if(user.nota!='aprobado' && user.nota!='entrevista')continue
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
 					let data=await utils.getSLP(user.accountAddress,null,false)
-					console.log(data)
+
 					data.accountAddress=user.accountAddress
 					data.nota=user.nota
 					data.user_id=user._id
@@ -94,9 +95,50 @@ module.exports = new Command({
 					data.timestamp = new Date();
 					data.timestamp.setDate(data.timestamp.getDate() - 1)
 					data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
+
+					try{//MMR
+						let mmrdata= await fetch("https://game-api.axie.technology/api/v2/"+user.accountAddress.replace('0x','ronin:'), { method: "Get" }).then(res => res.json()).then((json) => { return json})
+						if(mmrdata.mmr)data.mmr=mmrdata.mmr
+					}catch(e){
+						utils.log(e,message)
+					}
+
 					new_data.push(data)
-					//console.log(data)
 					await db.collection('slp').insertOne(data)
+					break
+				}
+				
+				if(typeof message !== 'undefined' && message.channel)utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+			}catch (e) {
+				utils.log(e,message)
+			}	
+			//HASTA ACA
+
+		}else if(args[1]=='mmr'){
+
+			//cd /node/ronicron;git pull;forever restart 0
+			//DESDE ACA
+			try{
+				//Copiar desde aca
+				let db = await DbConnection.Get();
+				let new_data=[]
+				let users=await db.collection('users').find({}).toArray()
+				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
+				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
+				
+				for(let i in users){
+					let user=users[i]
+					if(user.nota!='aprobado' && user.nota!='entrevista')continue
+					if(!user.accountAddress || user.accountAddress.length!=46)continue
+					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
+					let url = "https://game-api.axie.technology/api/v2/"+user.accountAddress.replace('0x','ronin:')  ;
+					let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json})
+					if(data.mmr)data=data.mmr
+					console.log(data)
+					var myquery = { num:user.num };
+					var newvalues = { $set: {	mmr: data	}}
+					await db.collection("users").updateOne(myquery, newvalues)
+					break
 				}
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);

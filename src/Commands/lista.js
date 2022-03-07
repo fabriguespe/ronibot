@@ -105,7 +105,7 @@ module.exports = new Command({
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
 
-			if(args[2]=='Retiro' && args[3]=='auto' && aretirar.length>0)message.channel.send('!retirot '+aretirar[0])///uno por dia
+			if(args[2]=='Retiro' && args[3]=='auto' && aretirar.length>0)message.channel.send('!retiro '+aretirar[0])///uno por dia
 			
 			if(tipo)return //vuelve si no tiene nada mas
 
