@@ -39,7 +39,7 @@ client.on("ready", message => {
 	scheduledMessage = new cron.CronJob('15 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
 		rCanal.send("@here" + "Soy Roni, este es el reporte de la academia.\nPrimero nuestras entrevistas")
-		rCanal.send('!entrevista noti')
+		rCanal.send('!entrevista auto')
 
 	}, null, true, 'UTC');
 	scheduledMessage.start()
