@@ -98,7 +98,7 @@ module.exports = new Command({
 					
 					new_data.push(data)
 					await db.collection('slp').insertOne(data)
-					break
+					
 				}
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Proceso corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
