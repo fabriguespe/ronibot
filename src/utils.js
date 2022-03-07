@@ -324,7 +324,6 @@ module.exports = {
     },
     getSLP:async function(from_acc,message=null,cache=false){
         try{
-            from_acc=from_acc.replace('ronin:','0x')  
             if(!cache) {
                 let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});     
                 if(!jdata || !jdata.blockchain_related){
@@ -343,15 +342,15 @@ module.exports = {
                 let data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at,has_to_claim:(jdata.claimable_total>0)}
                 
                 try{//MMR
-                    let mmrdata= await fetch("https://game-api.axie.technology/api/v2/"+user.accountAddress.replace('0x','ronin:'), { method: "Get" }).then(res => res.json()).then((json) => { return json})
+                    let mmrdata= await fetch("https://game-api.axie.technology/api/v2/"+from_acc.replace('0x','ronin:'), { method: "Get" }).then(res => res.json()).then((json) => { return json})
                     if(mmrdata.mmr)data.mmr=mmrdata.mmr
                 }catch(e){
                     utils.log(e,message)
                 }
                 return data
             }else{
-                //url = "https://game-api.axie.technology/api/v1/"+from_acc.replace('0x','ronin:')  ;
-                //data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+                let url = "https://game-api.axie.technology/api/v2/"+from_acc.replace('0x','ronin:')  ;
+                let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
             }
             return data
 
