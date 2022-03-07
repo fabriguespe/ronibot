@@ -79,7 +79,7 @@ client.on("messageCreate", message => {
 	const command = client.commands.find(cmd => cmd.name == args[0]);
 	
 	//if(!(message.channel.name.includes('comandos') || message.channel.name.includes('chat') || message.channel.name.includes('entrevista') || message.channel.name.includes('soporte') || message.channel.name.includes('anuncios')))return message.reply("Este canal no admite comandos")
-	if (!command) return message.channel.send(`${args[0]} is not a valid command!`);
+	if (!command) return message.channel.send(`${args[0]} is not a valid command1!`);
 	command.run(message, args, client);
 });
 

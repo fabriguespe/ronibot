@@ -41,7 +41,7 @@ module.exports = new Command({
                 await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)
                 message.channel.send('ID:'+ingreso.id+ ` asociado con exito a la cuenta #`+new_account.num);
             }else{
-                utils.log(`${args[0]} is not a valid command!`);
+                utils.log(`${args[0]} is not a valid command2!`);
             }
         }catch(e){
             utils.log(e,message)

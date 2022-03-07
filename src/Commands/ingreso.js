@@ -44,7 +44,7 @@ module.exports = new Command({
                 utils.mensajeIngresos("Nueva Entrevista","Felicitaciones <@"+ingreso.id+">\nAhora debes escribir !roni para empezar tu entrevista",message)
                 
             }else{
-                utils.log(`${args[0]} is not a valid command!`);
+                utils.log(`${args[0]} is not a valid command2!`);
             }
         }catch(e){
             utils.log(e,message)
