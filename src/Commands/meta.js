@@ -24,13 +24,14 @@ module.exports = new Command({
 				let user=users[i]
 				let axies=await utils.getAxiesIds(user.accountAddress.replace('ronin:','0x'))
 				if(axies && axies.axies){
+
+					//Omitir
+					if(user.num=='2' || user.num=='1' || user.num=='43' || user.num=='186' || user.num=='187')continue
+					
 					let total=axies.axies.length
 					if(total==0)continue
 					datos.total+=total
 
-					//breed y buenos
-					if(user.num=='2' || user.num=='1' || user.num=='43' || user.num=='186' || user.num=='187')continue
-					
 
 
 					//META
