@@ -95,14 +95,7 @@ module.exports = new Command({
 					data.timestamp = new Date();
 					data.timestamp.setDate(data.timestamp.getDate() - 1)
 					data.date=data.timestamp.getDate()+'/'+(data.timestamp.getMonth()+1)+'/'+data.timestamp.getFullYear(); 
-
-					try{//MMR
-						let mmrdata= await fetch("https://game-api.axie.technology/api/v2/"+user.accountAddress.replace('0x','ronin:'), { method: "Get" }).then(res => res.json()).then((json) => { return json})
-						if(mmrdata.mmr)data.mmr=mmrdata.mmr
-					}catch(e){
-						utils.log(e,message)
-					}
-
+					
 					new_data.push(data)
 					await db.collection('slp').insertOne(data)
 					break
