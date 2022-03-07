@@ -117,14 +117,14 @@ module.exports = new Command({
 			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 
 			
-			/*chart = new QuickChart().setConfig({
+			chart = new QuickChart().setConfig({
 				type: 'bar',
 				data: { 
 					labels: chart_data.days,
 					datasets:[{label: 'copas-prom', data: chart_data.prom_mmr,backgroundColor: '#5E9DF8'}] 
 				},
 			}).setWidth(800).setHeight(400);
-			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);*/
+			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 	
 
 		}catch(e){

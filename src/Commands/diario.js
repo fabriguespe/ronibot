@@ -67,11 +67,10 @@ module.exports = new Command({
 				help+='#'+user.num+" ***"+(user.name?user.name.replaceAll('*',''):'')+'*** '+user.slp+(user.mmr==undefined?'':'('+user.mmr+')')+'\n'
 			}	
 			embed = new MessageEmbed().setTitle("TOP 10 COPAS").setDescription(help).setColor('#3C5D74').setTimestamp()
-			//message.channel.send({content: ` `,embeds: [embed]})
+			message.channel.send({content: ` `,embeds: [embed]})
 			
 			
 			//Bottom 10 SLP
-			/*
 			top=users.sort(function(a, b) {return b.slp - a.slp}).slice(users.length-1-10, users.length);
 			help=''
 			for(let ii in top){
@@ -80,7 +79,7 @@ module.exports = new Command({
 			}	
 			embed = new MessageEmbed().setTitle("ULTIMOS 10 SLP").setDescription(help).setColor('#574760').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
-			*/
+			
 			
 
 		}catch(e){
