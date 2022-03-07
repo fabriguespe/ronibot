@@ -75,7 +75,7 @@ module.exports = new Command({
 				{ name: 'Axies Totales', value: ''+datos.total,inline:true},
 				{ name: '20 Energias', value: ''+datos.normal,inline:true},
 				{ name: '40 Energias', value: ''+datos.pro,inline:true},
-				{ name: 'Cuentas Libres', value: ''+(datos.libres+datos.buenos),inline:true},
+				{ name: 'Cuentas Libres', value: ''+(datos.libres),inline:true},
 				{ name: 'Axies Libres', value: ''+(datos.libres+datos.buenos),inline:true},
 				{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
 			)
