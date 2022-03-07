@@ -83,7 +83,7 @@ module.exports = new Command({
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
 					let user=users[i]
-					if(user.nota!='aprobado' && user.nota!='entrevista')continue
+					//if(user.nota!='aprobado' && user.nota!='entrevista')continue
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
 					let data=await utils.getSLP(user.accountAddress,null,false)
