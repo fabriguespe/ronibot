@@ -155,6 +155,9 @@ module.exports = {
         if(process.env.LOGNAME=='fabrizioguespe')return true
         return false
     },
+    isProFabri(num){
+        return num=='43' || num=='186' || num=='187'|| num=='21'
+    },
     cobro:async function(data,message){
 
         try{
@@ -168,7 +171,7 @@ module.exports = {
             this.log('Jugador:'+jugador_slp + ' Ronimate:' +roni_slp)
             if(!data.scholarPayoutAddress)return message.channel.send("Wallet de cobro no existente")
             let player_wallet=data.scholarPayoutAddress.replace('ronin:','0x')
-            let roni_wallet=(data.num=='43' || data.num=='186' || data.num=='187')?await this.getWalletByNum("PRO"):await this.getWalletByNum("BREED")
+            let roni_wallet=(this.isProFabri(data.num))?await this.getWalletByNum("PRO"):await this.getWalletByNum("BREED")
             roni_wallet=roni_wallet.replace('ronin:','0x')
             let fallo=false
             try{

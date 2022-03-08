@@ -80,7 +80,7 @@ client.on("messageCreate", message => {
 	
 	//if(!(message.channel.name.includes('comandos') || message.channel.name.includes('chat') || message.channel.name.includes('entrevista') || message.channel.name.includes('soporte') || message.channel.name.includes('anuncios')))return message.reply("Este canal no admite comandos")
 	//if (!command) return message.channel.send(`${args[0]} is not a valid command1!`);
-	command.run(message, args, client);
+	if(command)command.run(message, args, client);
 });
 
 TEST ='OTA5NTEyMjE4NjI0ODA3MDMy.YZFXQg.3_Cs0tajVJ152ySKLaDTMnF5J2Y'
