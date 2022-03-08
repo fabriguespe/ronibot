@@ -18,8 +18,14 @@ module.exports = new Command({
                     let db = await DbConnection.Get();
                     let users=await db.collection('users').find({nota:"retiro"}).toArray()
                     users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
-                    args[2]=users[0].num
-                    message.channel.send(`Se va a asignar la cuenta `+args[2]);
+                    for(let i in users){
+                        let mmr=await utils.getMMR(users[i].accountAddress,message,false)
+                        if(mmr>=1200){
+                            args[2]=users[0].num
+                            message.channel.send(`Se va a asignar la cuenta `+args[2]);
+                            break;
+                        }
+                    }
                 }
                 
                 let user_to=await utils.getUserByNum(args[2])

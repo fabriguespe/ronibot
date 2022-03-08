@@ -56,8 +56,6 @@ module.exports = new Command({
 				users[ii]['slp_prom']=Math.round(users[ii]['slp_sum']/users[ii]['stat_count'])
 				users[ii]['mmr_prom']=Math.round(users[ii]['mmr_sum']/users[ii]['stat_count'])
 
-				if( eluser.nota=='pro')users[ii]['mmr']=await utils.getMMR(eluser.accountAddress,message,false)
-
 			}
 			
 			//Top 10 SLP

@@ -313,12 +313,8 @@ module.exports = {
     },
     getMMR:async function(from_acc,message,cache=false){
         try{
-            if(!this.isSafe(from_acc))return message.channel.send(`Una de las wallets esta mal!`);
             from_acc=from_acc.replace('ronin:','0x')  
-            
-            url = "https://game-api.axie.technology/api/v2/"+from_acc.replace('0x','ronin:')  ;
-            data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
-            console.log(from_acc,data.mmr)
+            let = await fetch("https://game-api.axie.technology/api/v2/"+from_acc.replace('0x','ronin:') , { method: "Get" }).then(res => res.json()).then((json) => { return json});
             return data.mmr
 
         }catch(e){
@@ -327,6 +323,7 @@ module.exports = {
     },
     getSLP:async function(from_acc,message=null,cache=false){
         try{
+            let data={}
             if(!cache) {
                 let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});     
                 if(!jdata || !jdata.blockchain_related){
@@ -342,7 +339,7 @@ module.exports = {
                 }
                 let balance=jdata.blockchain_related.balance
                 let total=jdata.total-jdata.blockchain_related.balance
-                let data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at,has_to_claim:(jdata.claimable_total>0)}
+                data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at,has_to_claim:(jdata.claimable_total>0)}
                 
                 try{//MMR
                     let mmrdata= await fetch("https://game-api.axie.technology/api/v2/"+from_acc.replace('0x','ronin:'), { method: "Get" }).then(res => res.json()).then((json) => { return json})
@@ -353,7 +350,7 @@ module.exports = {
                 return data
             }else{
                 let url = "https://game-api.axie.technology/api/v2/"+from_acc.replace('0x','ronin:')  ;
-                let data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
+                data= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return json});
             }
             return data
 
