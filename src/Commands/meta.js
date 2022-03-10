@@ -63,6 +63,7 @@ module.exports = new Command({
 					//Log
 					if(total==3 && user.nota!='retiro')continue
 					if(total==10 && user.nota=='energia')continue
+					if(total==10 && user.nota=='pro')continue
 					let value=('#'+user.num+': Se encontraron '+total+' Axies | '+user.nota)
 					datos.raros+=value+'\n'
 				}
