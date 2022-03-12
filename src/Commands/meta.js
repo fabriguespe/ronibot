@@ -55,14 +55,13 @@ module.exports = new Command({
 					else meta[metas]++
 					
 					//Count
-					if(total==10 && user.nota=='energia')datos.energias+=7
-					if(total==10 && user.nota=='energia')datos.pro+=1
+					if(total==10 && user.nota=='pro')datos.energias+=7
+					if(total==10 && user.nota=='pro')datos.pro+=1
 					if(total==3 &&  user.nota=='libre')datos.libres+=1
 					if(total==3 &&  user.nota=='aprobado')datos.normal+=1
 
 					//Log
 					if(total==3 && user.nota!='retiro')continue
-					if(total==10 && user.nota=='energia')continue
 					if(total==10 && user.nota=='pro')continue
 					let value=('#'+user.num+': Se encontraron '+total+' Axies | '+user.nota)
 					datos.raros+=value+'\n'
