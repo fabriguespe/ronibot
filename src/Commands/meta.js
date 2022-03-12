@@ -18,7 +18,7 @@ module.exports = new Command({
 			let users=await db.collection('users').find({}).toArray()
 			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 			if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
-			let datos={total:0,energias:0,normal:0,raros:'',pro:0,energias:32,buenos:24,libres:0,breed:0}
+			let datos={total:(32+24),energias:0,normal:0,raros:'',pro:0,energias:32,buenos:24,libres:0,breed:0}
 			datos.total=datos.energias+datos.buenos
 			let meta={}
 			for(let i in users){
