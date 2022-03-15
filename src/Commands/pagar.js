@@ -22,6 +22,26 @@ module.exports = new Command({
             console.log(from_acc,to_acc,slp)
             let t1=await utils.transfer(from_acc,to_acc,slp,message)
 
+        }else if(args.length==3 && args[1]=='todos'){//sale de breed
+			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
+			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
+            usd=slp.replace('usd','')
+
+            from_acc=await utils.getPaymentWalletByNum("BREED")
+            from_acc=from_acc.replace('ronin:','0x')
+
+            to_acc=await utils.getPaymentWalletByNum("PABLO")
+            to_acc=to_acc.replace('ronin:','0x')
+            let t1=await utils.transfer(from_acc,to_acc,Math.round(150/slp_price),message)
+            
+            to_acc=await utils.getPaymentWalletByNum("JEISSON")
+            to_acc=to_acc.replace('ronin:','0x')
+            let t1=await utils.transfer(from_acc,to_acc,Math.round(80/slp_price),message)
+            
+            to_acc=await utils.getPaymentWalletByNum("AMALOA")
+            to_acc=to_acc.replace('ronin:','0x')
+            let t1=await utils.transfer(from_acc,to_acc,Math.round(150/slp_price),message)
+
         }else if(args.length==3 && slp.includes('usd')){//sale de breed
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
