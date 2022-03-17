@@ -120,19 +120,11 @@ amaloa=150-vis-ronimate-axie  = 14.18
 			}).setWidth(800).setHeight(400);
 			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 		
-		}else if(args[1]=='libre'){
+		}else if(args[1]=='cuenta'){
 			let db = await DbConnection.Get();
-			let users=await db.collection('users').find({nota:"retiro"}).toArray()
+			let users=await db.collection('users').find({nota:args[2]}).toArray()
 			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 			message.channel.send(`La proxima cuenta libre es va `+users[0].num);
-			
-
-		}else if(args[1]=='retiro'){
-			let db = await DbConnection.Get();
-			let users=await db.collection('users').find({nota:"retiro"}).toArray()
-			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
-			message.channel.send(`La proxima cuenta libre es va `+users[0].num);
-
 		}else if(args[1]=='aspirante'){
 			await utils.cambiarEstado(null,null,'aspirante',message)
             let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
