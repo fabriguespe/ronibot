@@ -97,8 +97,8 @@ module.exports = new Command({
 			msg=''
 
 			
-			for(let i in users)if(users[i].nota=='pro')msg+='#'+users[i].num
-			embed = new MessageEmbed().setTitle('Metas').setDescription(msg).setColor('#0099ff').setTimestamp()
+			for(let i in users)if(users[i].nota=='pro')msg+='#'+users[i].num+' '+users[i].meta+'\n'
+			embed = new MessageEmbed().setTitle('Cuentas Pro').setDescription(msg).setColor('#0099ff').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 
 		}catch (e) {
