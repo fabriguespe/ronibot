@@ -41,9 +41,8 @@ module.exports = new Command({
 
 					//META
 					let metas=[]
-					if(user.meta){
-						metas=user.meta
-					}else{
+					if(user.meta)metas=user.meta
+					else{
 						for(let j in axies.axies){
 							let axie=axies.axies[j]
 							console.log(axie)
