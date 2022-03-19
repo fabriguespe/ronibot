@@ -41,11 +41,10 @@ module.exports = new Command({
 
 					//META
 					let metas=[]
-					if(user.meta)metas=user.meta
+					if(user.meta && total==10)metas=user.meta
 					else{
 						for(let j in axies.axies){
 							let axie=axies.axies[j]
-							console.log(axie)
 							let clase=axie.class
 							if(clase=='Plant')clase='Planta'
 							else if(clase=='Plant')clase='Planta'
