@@ -41,23 +41,28 @@ module.exports = new Command({
 
 					//META
 					let metas=[]
-					for(let j in axies.axies){
-						let axie=axies.axies[j]
-						console.log(axie)
-						let clase=axie.class
-						if(clase=='Plant')clase='Planta'
-						else if(clase=='Plant')clase='Planta'
-						else if(clase=='Aquatic')clase='Pez'
-						else if(clase=='Bird')clase='Ave'
-						else if(clase=='Reptile')clase='Reptil'
-						else if(clase=='Beast')clase='Bestia'
-						else if(clase=='Dusk')clase='Tierra'
-						else if(clase=='Bug')clase='Bicho'
-						metas.push(clase)
+					if(user.meta){
+						metas=user.meta
+					}else{
+						for(let j in axies.axies){
+							let axie=axies.axies[j]
+							console.log(axie)
+							let clase=axie.class
+							if(clase=='Plant')clase='Planta'
+							else if(clase=='Plant')clase='Planta'
+							else if(clase=='Aquatic')clase='Pez'
+							else if(clase=='Bird')clase='Ave'
+							else if(clase=='Reptile')clase='Reptil'
+							else if(clase=='Beast')clase='Bestia'
+							else if(clase=='Dusk')clase='Tierra'
+							else if(clase=='Bug')clase='Bicho'
+							metas.push(clase)
+						}
+						metas=metas.sort().join('-')
 					}
+					
 
 					//Types compbinations
-					metas=metas.sort().join('-')
 					if(!Object.keys(meta).includes(metas))meta[metas]=1
 					else meta[metas]++
 					
