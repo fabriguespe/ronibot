@@ -97,6 +97,7 @@ module.exports = new Command({
 			msg=''
 
 			
+			users=users.sort(function(a, b) {return (a.meta) - (b.meta)});
 			for(let i in users)if(users[i].nota=='pro')msg+='#'+users[i].num+' '+users[i].meta+'\n'
 			embed = new MessageEmbed().setTitle('Cuentas Pro').setDescription(msg).setColor('#0099ff').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
