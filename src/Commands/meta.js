@@ -29,10 +29,10 @@ module.exports = new Command({
 			let meta={}
 			for(let i in users){
 				let user=users[i]
+				if(user.num=='2' || user.num=='1' || utils.isProFabri(user.num))continue
 				let axies=await utils.getAxiesIds(user.accountAddress.replace('ronin:','0x'))
 				if(axies && axies.axies){
 					//Omitir
-					if(user.num=='2' || user.num=='1' || utils.isProFabri(user.num))continue
 					
 					let total=axies.axies.length
 					if(total==0)continue
