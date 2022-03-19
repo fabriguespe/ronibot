@@ -15,8 +15,14 @@ module.exports = new Command({
 		
 		try{
 			let db = await DbConnection.Get();
-			let users=await db.collection('users').find({}).toArray()
+			let users=[]
+			if(args[1]!=undefined)users=await db.collection('users').find({num:"215"}).toArray()
+			else users=await db.collection('users').find({}).toArray()
+
+
+
 			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
+
 			if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 			let datos={total:0,energias:0,normal:0,raros:'',pro:0,energias:32,buenos:24,libres:0,breed:0}
 			datos.total=datos.energias+datos.buenos
@@ -33,11 +39,12 @@ module.exports = new Command({
 					datos.total+=total
 
 
-
 					//META
 					let metas=[]
 					for(let j in axies.axies){
-						let clase=axies.axies[j].class
+						let axie=axies.axies[j]
+						console.log(axie)
+						let clase=axie.class
 						if(clase=='Plant')clase='Planta'
 						else if(clase=='Plant')clase='Planta'
 						else if(clase=='Aquatic')clase='Pez'
@@ -78,15 +85,19 @@ module.exports = new Command({
 				{ name: 'Axies Libres', value: ''+(datos.libres+datos.buenos),inline:true},
 				{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
 			)
-			message.channel.send({content: ` `,embeds: [embed]})
+			if(args[1]==undefined)message.channel.send({content: ` `,embeds: [embed]})
 			
 			let msg=''
-			for(let i in meta){
-				if(meta[i]>0)msg+=i+' '+meta[i]+'\n'
-			}
-			embed = new MessageEmbed().setTitle('Metas').setDescription(msg).setColor('GREEN').setTimestamp()
+			for(let i in meta)if(meta[i]>0)msg+=i+' '+meta[i]+'\n'
+			embed = new MessageEmbed().setTitle('Metas').setDescription(msg).setColor('#0099ff').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
-			embed = new MessageEmbed().setColor('#0099ff')
+			msg=''
+
+			
+			for(let i in users)if(users[i].nota=='pro')msg+='#'+users[i].num
+			embed = new MessageEmbed().setTitle('Metas').setDescription(msg).setColor('#0099ff').setTimestamp()
+			message.channel.send({content: ` `,embeds: [embed]})
+
 		}catch (e) {
 			utils.log(e,message)
 		}
