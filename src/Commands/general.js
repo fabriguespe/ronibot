@@ -37,6 +37,7 @@ module.exports = new Command({
 						else stat['slp']=stat.in_game_slp-anteultimo.in_game_slp
 						if(stat['mmr']!=1200 && (stat['slp']==0 || stat['slp']==null || stat['slp']==undefined))continue
 						data.push({timestamp:stat.timestamp,date:utils.getDayName(stat.date, "es-ES"),slp:stat['slp'],mmr:stat['mmr']})//esto mete a todos
+							
 					}
 				}
 				//if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
@@ -62,7 +63,7 @@ module.exports = new Command({
 			
 			let chart_data={days:[],slp:[],mmr:[],prom_slp:[],prom_mmr:[],usd:[],players:[],grupo1:[],grupo2:[],grupo3:[],grupo4:[],grupo5:[]}
 			for(let i in data_por_dia){
-				console.log(data_por_dia[i].slp/count_users)
+				console.log(data_por_dia[i].slp)
 				chart_data.days.push(data_por_dia[i].date)
 				chart_data.players.push(data_por_dia[i].players)
 				chart_data.grupo1.push(data_por_dia[i].grupo1)
