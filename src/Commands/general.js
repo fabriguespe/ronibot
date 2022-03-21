@@ -25,6 +25,7 @@ module.exports = new Command({
 				let eluser=users[ii]				
 				let stats = await db.collection('slp').find({accountAddress:eluser.accountAddress},  { sort: { timestamp: -1 } })./*limit(limit_prom).*/toArray();
 				stats=stats.sort(function(a, b) {return a.timestamp - b.timestamp});
+				
 				let data=[]
 				//if(stats.length>=limit_prom)
 				count_users++
@@ -41,18 +42,18 @@ module.exports = new Command({
 				//if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
 				data_users.push(data)
 			}
+			console.log(count_users)
 			let data_por_dia=[]
 			for(let i in data_users){
 				let dias_del_user=data_users[i]
 				for(let j in dias_del_user){
 					let undia=dias_del_user[j]
 					let fecha=undia.date
-					if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,slp:0,players:0,mmr:0,grupo1:0,grupo2:0,grupo3:0,grupo4:0,grupo5:0,grupo6:0}
+					if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,slp:0,players:0,mmr:0,grupo1:0,grupo2:0,grupo3:0,grupo4:0,grupo5:0}
 					data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,players:data_por_dia[fecha].players+(undia.slp>0?1:0),slp:data_por_dia[fecha].slp+=undia.slp,mmr:data_por_dia[fecha].mmr+=undia.mmr,grupo1:data_por_dia[fecha].grupo1+(undia.slp>0 && undia.slp<=TABULADORES.cuatro?1:0),grupo2:data_por_dia[fecha].grupo2+(undia.slp<TABULADORES.tres && undia.slp>=TABULADORES.cuatro?1:0),grupo3:data_por_dia[fecha].grupo3+(undia.slp<TABULADORES.dos && undia.slp>=TABULADORES.tres?1:0),grupo4:data_por_dia[fecha].grupo4+(undia.slp<TABULADORES.uno && undia.slp>=TABULADORES.dos?1:0),grupo5:data_por_dia[fecha].grupo5+(undia.slp>=TABULADORES.uno?1:0)}
 
 				}
 			}
-
 			data_por_dia=Object.values(data_por_dia)
 			data_por_dia=data_por_dia.sort(function(a, b) {return a.timestamp - b.timestamp});
 
@@ -61,6 +62,7 @@ module.exports = new Command({
 			
 			let chart_data={days:[],slp:[],mmr:[],prom_slp:[],prom_mmr:[],usd:[],players:[],grupo1:[],grupo2:[],grupo3:[],grupo4:[],grupo5:[]}
 			for(let i in data_por_dia){
+				console.log(data_por_dia[i].slp/count_users)
 				chart_data.days.push(data_por_dia[i].date)
 				chart_data.players.push(data_por_dia[i].players)
 				chart_data.grupo1.push(data_por_dia[i].grupo1)
@@ -78,35 +80,33 @@ module.exports = new Command({
 			
 			let chart = ''
 			
-			if(utils.esFabri(message)){
-				chart=new QuickChart().setConfig({
-					type: 'bar',
-					data: { 
-						labels: chart_data.days,
-						datasets:[
-							{type: 'bar',"yAxisID": "y1",label: '0 > < 25', data: chart_data.grupo1,"fill": false,backgroundColor: 'black'},
-							{type: 'bar',"yAxisID": "y1",label: '25 > < 35', data: chart_data.grupo2,"fill": false,backgroundColor: '#D55040'},
-							{type: 'bar',"yAxisID": "y1",label: '35 > < 45', data: chart_data.grupo3,"fill": false,backgroundColor: '#F8D978'},
-							{type: 'bar',"yAxisID": "y1",label: '45 > < 60', data: chart_data.grupo4,"fill": false,backgroundColor: '#9EC284'},
-							{type: 'bar',"yAxisID": "y1",label: '60 > < ...', data: chart_data.grupo5,"fill": false,backgroundColor: '#9EC284'}
-						] 
-					},
-					"options": {"scales": {"xAxes": [{"stacked": true}],"yAxes": [	{"id": "y1","display": true,"position": "left","stacked": true}]}
-					}
-				}).setWidth(800).setHeight(400);
-				message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
-				
-				
-				chart = new QuickChart().setConfig({
-					type: 'bar',
-					data: { 
-						labels: chart_data.days,
-						datasets:[{label: 'usd-day', data: chart_data.usd,backgroundColor: '#9EC284'}] 
-					},
-				}).setWidth(800).setHeight(400);
-				//message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
-			}
-	
+			chart=new QuickChart().setConfig({
+				type: 'bar',
+				data: { 
+					labels: chart_data.days,
+					datasets:[
+						{type: 'bar',"yAxisID": "y1",label: '0 > < 25', data: chart_data.grupo1,"fill": false,backgroundColor: 'black'},
+						{type: 'bar',"yAxisID": "y1",label: '25 > < 35', data: chart_data.grupo2,"fill": false,backgroundColor: '#D55040'},
+						{type: 'bar',"yAxisID": "y1",label: '35 > < 45', data: chart_data.grupo3,"fill": false,backgroundColor: '#F8D978'},
+						{type: 'bar',"yAxisID": "y1",label: '45 > < 60', data: chart_data.grupo4,"fill": false,backgroundColor: 'ORANGE'},
+						{type: 'bar',"yAxisID": "y1",label: '60 > < ...', data: chart_data.grupo5,"fill": false,backgroundColor: '#9EC284'}
+					] 
+				},
+				"options": {"scales": {"xAxes": [{"stacked": true}],"yAxes": [	{"id": "y1","display": true,"position": "left","stacked": true}]}
+				}
+			}).setWidth(800).setHeight(400);
+			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+			
+			
+			chart = new QuickChart().setConfig({
+				type: 'bar',
+				data: { 
+					labels: chart_data.days,
+					datasets:[{label: 'usd-day', data: chart_data.usd,backgroundColor: '#9EC284'}] 
+				},
+			}).setWidth(800).setHeight(400);
+			//message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+		
 			
 			chart = new QuickChart().setConfig({
 				type: 'bar',
@@ -118,6 +118,15 @@ module.exports = new Command({
 			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 
 			
+			chart = new QuickChart().setConfig({
+				type: 'bar',
+				data: { 
+					labels: chart_data.days,
+					datasets:[{label: 'slp-prom', data: chart_data.prom_slp,backgroundColor: '#5E9DF8'}] 
+				},
+			}).setWidth(800).setHeight(400);
+			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+
 			chart = new QuickChart().setConfig({
 				type: 'bar',
 				data: { 
