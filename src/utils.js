@@ -41,7 +41,6 @@ module.exports = {
         return new Date(final);     
     },
     esFechaCobros(){
-        return false;
         let today = new Date(Date.UTC(0, 0, 0, 0, 0, 0));
         let diadelmes=today.getDate()
         let lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
