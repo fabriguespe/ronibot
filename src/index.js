@@ -27,11 +27,11 @@ client.on("ready", message => {
 	scheduledMessage = new cron.CronJob('10 0 * * *', () => {
 		let admin = message.channels.cache.find(c => c.id == 930958850713079838);//ranking en admin
 		let backupProcess = spawn('mongodump', ['--db=ronimate','--archive=.','--gzip']);
-		/*backupProcess.on('exit', (code, signal) => {
+		backupProcess.on('exit', (code, signal) => {
 			if(code) admin.send('ERROR BACKUP ', code);
 			else if (signal)admin.send('ERROR BACKUP ', signal);
 			else admin.send('BACKUP de base datos se realizó con Exito!')
-		});*/
+		});
 
 	}, null, true, 'UTC');
 	scheduledMessage.start()
