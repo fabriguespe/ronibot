@@ -30,8 +30,7 @@ module.exports = new Command({
                 let from_acc=new_account.accountAddress
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
-                
-                let ingreso=await utils.getUserIDByUsername(args,message,"!ingreso")
+                let ingreso=await utils.getUserIDByUsername(args,message,"ingreso"+(process.env.LOGNAME=='fabrizioguespe'?'t':''))
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 await utils.cambiarEstado(new_account.num,'aspirante','entrevista',message)
                 await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)

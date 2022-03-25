@@ -528,12 +528,19 @@ module.exports = {
         if(ingreso)return ingreso.user
     },
     getUserIDByUsername:async function(args,message,erase){
-        let completo=args.join(" ").replaceAll(erase,'"')
+        let completo=args.join(" ").replaceAll(erase,'').toLowerCase().trim()
+        completo=completo.replaceAll('á','a')
+        completo=completo.replaceAll('é','e')
+        completo=completo.replaceAll('í','i')
+        completo=completo.replaceAll('ó','o')
+        completo=completo.replaceAll('ú','u')
         let username=completo.split('#')[0]
         let discriminator=completo.split('#')[1]
-        message.channel.send(`Ese sdsdd no se encuentra en el Discord`+username+`#`+discriminator);
+
         await message.guild.members.fetch()
-        let ingreso=message.guild.members.cache.find(c => {return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) });
+        let ingreso=message.guild.members.cache.find(c => {
+        //console.log(c.user.username.toLowerCase().trim(),username,c.user.username.toLowerCase() == username)
+        return (c.user.username.toLowerCase() == username && c.user.discriminator == discriminator) });
         return ingreso
     },
     esManager:function(message){

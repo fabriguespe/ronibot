@@ -30,7 +30,7 @@ module.exports = new Command({
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
 
-                let ingreso=await utils.getUserIDByUsername(args,message,"!asociar "+args[1])
+                let ingreso=await utils.getUserIDByUsername(args,message,"asociar"+(process.env.LOGNAME=='fabrizioguespe'?'t':'')+" "+args[1])
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)
                 message.channel.send('ID:'+ingreso.id+ ` asociado con exito a la cuenta #`+new_account.num);

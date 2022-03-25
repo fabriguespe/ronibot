@@ -130,7 +130,7 @@ amaloa=150-vis-ronimate-axie  = 14.18
             let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
             rCanal.send("Se agrego un nuevo ***aspirante***")
 
-			let ingreso=await utils.getUserIDByUsername(args,message,"!log aspirante")
+			let ingreso=await utils.getUserIDByUsername(args,message,"log"+(process.env.LOGNAME=='fabrizioguespe'?'t':'')+" aspirante")
 			if(ingreso){
 				await db.collection('aspirantes').insertOne({discord:ingreso.id})
 				rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal entrevistas
