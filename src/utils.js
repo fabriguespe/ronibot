@@ -529,6 +529,7 @@ module.exports = {
     },
     getUserIDByUsername:async function(args,message,erase){
         let completo=args.join(" ").replaceAll(erase,'"')
+         message.channel.send(completo);
         let username=completo.split('#')[0]
         let discriminator=completo.split('#')[1]
         await message.guild.members.fetch()
