@@ -32,7 +32,7 @@ module.exports = new Command({
 
                 
                 
-                let ingreso=await utils.getUserIDByUsername(args,message,"!ingreso "+args[1])
+                let ingreso=await utils.getUserIDByUsername(args,message,"!ingreso")
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 await utils.cambiarEstado(new_account.num,'aspirante','entrevista',message)
                 await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)

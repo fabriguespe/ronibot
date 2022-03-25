@@ -25,7 +25,7 @@ module.exports = new Command({
 		}else if(utils.esFabri(message)){
 			help+="!retiro DESDE_XX HASTA_XX para transferir todos los axies\n\n"
 			help+="!aprobar XX para aprobar una entrevista\n\n"
-			help+="!ingreso XX discord_username\n\n"
+			help+="!ingreso  discord_username\n\n"
 			help+="!cron flushall \n\n"
 			help+="!pagar cant_de_slp/plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
 		}
