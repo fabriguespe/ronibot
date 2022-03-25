@@ -31,7 +31,6 @@ module.exports = new Command({
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
                 
-                message.channel.send(`Ese sdsdd no se encuentra en el Discord`);
                 let ingreso=await utils.getUserIDByUsername(args,message,"!ingreso")
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 await utils.cambiarEstado(new_account.num,'aspirante','entrevista',message)
