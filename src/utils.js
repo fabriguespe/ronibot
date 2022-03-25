@@ -455,7 +455,7 @@ module.exports = {
         message.channel.send("Este canal se cerrara en 60 segundos\nMucha suerte!")
         setTimeout(() => { message.channel.delete()}, 60000)
     },
-    ingresar:async function(num,username,discord){
+    ingresar:async function(num,username,discord,message){
         let db = await DbConnection.Get();
         var myquery = { num: num };
         var newvalues = { $set: {
@@ -464,7 +464,16 @@ module.exports = {
             timestamp:this.timestamp_log(),
             date:this.date_log()
         }};
+
+        
         await db.collection("users").updateOne(myquery, newvalues)
+
+
+        
+        let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");
+        await message.guild.members.fetch()
+        let ingreso=message.guild.members.cache.find(c => c.id==quien.discord)
+        ingreso.roles.add(rJugador);
     },
     asociar:async function(message){
         let msg=message.content
