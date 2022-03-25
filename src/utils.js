@@ -529,9 +529,9 @@ module.exports = {
     },
     getUserIDByUsername:async function(args,message,erase){
         let completo=args.join(" ").replaceAll(erase,'"')
-        message.channel.send(`Ese sdsdd no se encuentra en el Discord`+completo);
         let username=completo.split('#')[0]
         let discriminator=completo.split('#')[1]
+        message.channel.send(`Ese sdsdd no se encuentra en el Discord`+username+`#`+discriminator);
         await message.guild.members.fetch()
         let ingreso=message.guild.members.cache.find(c => {return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) });
         return ingreso
