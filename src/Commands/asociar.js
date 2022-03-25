@@ -22,21 +22,15 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esFabri(message) && !utils.esJeissonPagos(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
-            if(args[2].includes('"') || args[2].includes("'")){
-                let completo=args.join(" ")
-                completo=completo.replaceAll("'",'"')
-                let nombre=completo.split('"')[1]
-                nombre=nombre.replaceAll('"','')
-                let uno=args[1]
-                let dos=nombre
-                args=[args[0],uno,dos]
-            }
             if(args.length==3){
+                
+
                 let new_account=await utils.getUserByNum(args[1])
                 let from_acc=new_account.accountAddress
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
-                let ingreso=await utils.getUserIDByUsername(args[2],message)
+
+                let ingreso=await utils.getUserIDByUsername(args,message,"!asociar "+args[1])
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)
                 message.channel.send('ID:'+ingreso.id+ ` asociado con exito a la cuenta #`+new_account.num);

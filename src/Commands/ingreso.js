@@ -22,22 +22,17 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
-            if(args[2].includes('"') || args[2].includes("'")){
-                let completo=args.join(" ")
-                completo=completo.replaceAll("'",'"')
-                let nombre=completo.split('"')[1]
-                nombre=nombre.replaceAll('"','')
-                let uno=args[1]
-                let dos=nombre
-                args=[args[0],uno,dos]
-            }
             if(args.length==3){
-                let new_account=await utils.getUserByNum(args[1])
-                if(new_account.nota=='retiro' || new_account.nota=='aprobado')return message.channel.send(`Esta cuenta ya esta/fue asignada!`);
+                
+                let new_account=await utils.getCuentaLibre()
+                if(new_account==null)return message.channel.send(`No hay cuentas libres para asignar!`);
+                //if(new_account && new_account.nota=='retiro' || new_account.nota=='aprobado')return message.channel.send(`Esta cuenta ya esta/fue asignada!`);
                 let from_acc=new_account.accountAddress
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
-                let ingreso=await utils.getUserIDByUsername(args[2],message)
+                
+                
+                let ingreso=await utils.getUserIDByUsername(args,message,"!ingreso "+args[1])
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 await utils.cambiarEstado(new_account.num,'aspirante','entrevista',message)
                 await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)

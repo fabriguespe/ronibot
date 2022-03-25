@@ -502,6 +502,11 @@ module.exports = {
     esFabri:function(message){
         return message.author.id==533994454391062529 && message.channel.name.includes('comandos-admin')
     },
+    async getCuentaLibre(){
+        let db = await DbConnection.Get();
+        let user = await db.collection('users').findOne({nota:'libre'})
+        return user
+    },
     async checkAspirante(message){
         try{    
             console.log('Check aspirante '+message.author.username)
@@ -533,7 +538,7 @@ module.exports = {
         let username=name.split('#')[0]
         let discriminator=name.split('#')[1]
         await message.guild.members.fetch()
-        let ingreso=message.guild.members.cache.find(c => {return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) || c.user.username.toLowerCase() == username.toLowerCase()  || c.user.discriminator.toLowerCase() == discriminator.toLowerCase() });
+        let ingreso=message.guild.members.cache.find(c => {return (c.user.username.toLowerCase() == username.toLowerCase() && c.user.discriminator == discriminator) });
         return ingreso
     },
     esManager:function(message){
