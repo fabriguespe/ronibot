@@ -44,7 +44,7 @@ module.exports = new Command({
                 //add role
                 let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");
                 await message.guild.members.fetch()
-                ingreso=message.guild.members.cache.find(c => c.id==quien.discord)
+                ingreso=message.guild.members.cache.find(c => c.id==ingreso.id)
                 ingreso.roles.add(rJugador);
 
             }else{
