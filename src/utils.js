@@ -515,13 +515,8 @@ module.exports = {
             let db = await DbConnection.Get();
             let user=await db.collection('aspirantes').findOne({discord:message.author.id.toString()})
             if(user){
-                console.log('Entra')
-                let user = await db.collection('users').findOne({nota:'libre'})
-                console.log(user)
-                if(user){
-                    let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
-                    rCanal.send("!ingreso "+message.author.usnermae+"#"+message.author.discriminator)
-                }
+                let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
+                rCanal.send("!ingreso "+message.author.usnermae+"#"+message.author.discriminator)    
             }  
         }catch(e){
             this.log(e,message)
