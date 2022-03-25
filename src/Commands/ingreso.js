@@ -31,6 +31,7 @@ module.exports = new Command({
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
                 
+        await message.channel.send("ja");
                 
                 let ingreso=await utils.getUserIDByUsername(args,message,"!ingreso")
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
