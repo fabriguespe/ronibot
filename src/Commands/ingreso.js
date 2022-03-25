@@ -22,7 +22,7 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
-            if(args.length==3){
+            if(args.length>1){
                 
                 let new_account=await utils.getCuentaLibre()
                 if(new_account==null)return message.channel.send(`No hay cuentas libres para asignar!`);
