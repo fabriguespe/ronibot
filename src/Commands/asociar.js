@@ -38,8 +38,15 @@ module.exports = new Command({
 
                 let ingreso=await utils.getUserIDByUsername(args[2],message)
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
-                await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id,message)
+                await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)
                 message.channel.send('ID:'+ingreso.id+ ` asociado con exito a la cuenta #`+new_account.num);
+
+                //add role
+                let rJugador = message.guild.roles.cache.find(r => r.name === "Jugador");
+                await message.guild.members.fetch()
+                ingreso=message.guild.members.cache.find(c => c.id==quien.discord)
+                ingreso.roles.add(rJugador);
+
             }else{
                 utils.log(`${args[0]} is not a valid command2!`);
             }
