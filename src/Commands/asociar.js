@@ -38,7 +38,7 @@ module.exports = new Command({
 
                 let ingreso=await utils.getUserIDByUsername(args[2],message)
                 if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
-                await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)
+                await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id,message)
                 message.channel.send('ID:'+ingreso.id+ ` asociado con exito a la cuenta #`+new_account.num);
             }else{
                 utils.log(`${args[0]} is not a valid command2!`);
