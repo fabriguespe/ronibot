@@ -30,12 +30,12 @@ client.on("ready", message => {
 		backupProcess.on('exit', (code, signal) => {
 			if(code) admin.send('ERROR BACKUP ', code);
 			else if (signal)admin.send('ERROR BACKUP ', signal);
-			else admin.send('BACKUP de base datos se realizó con Exito!')
+			//else admin.send('BACKUP de base datos se realizó con Exito!')
 		});
 
 	}, null, true, 'UTC');
 	scheduledMessage.start()
-
+	/*
 	scheduledMessage = new cron.CronJob('15 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 903282885971300362);//ranking en anuncios
 		rCanal.send("@here" + "Soy Roni, este es el reporte de la academia.\nPrimero nuestras entrevistas")
@@ -67,7 +67,7 @@ client.on("ready", message => {
 		rCanal.send("@here" + " Por último veamos quienes estan con bajo promedio y en riesgo a ser retirados")
 		rCanal.send('!lista 7 Retiro auto')
 	}, null, true, 'UTC');
-	//scheduledMessage.start()
+	//scheduledMessage.start()*/
 })
 
 
