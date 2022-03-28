@@ -13,7 +13,7 @@ module.exports = new Command({
      
         if(args.length==4){
             let user_from=await utils.getUserByNum(args[2])
-            if(args[2]=='1' && !utils.esFabri(message))return message.channel.send('No tienes permisos ')
+            //if(args[2]=='1' && !utils.esFabri(message))return message.channel.send('No tienes permisos ')
             let user_to=await utils.getUserByNum(args[3])
             
             let from_acc=(user_from && user_from.accountAddress?user_from.accountAddress:user_from)
