@@ -19,6 +19,7 @@ fs.readdirSync(__dirname+"/Commands")
 	console.log(`Command ${command.name} loaded`);
 	client.commands.set(command.name, command);
 });
+
 /*RESTART
 https://askubuntu.com/questions/919108/error-unit-mongodb-service-is-masked-when-starting-mongodb
 */
@@ -46,6 +47,7 @@ client.on("ready", message => {
 	}, null, true, 'UTC');
 	//scheduledMessage.start()
 
+	
 	scheduledMessage = new cron.CronJob('20 0 * * *', () => {
 		let rCanal = message.channels.cache.find(c => c.id == 904491832556265502);//ranking en anuncios
 		rCanal.send("@here" + "Hola a todos! Este es el ranking el día")
