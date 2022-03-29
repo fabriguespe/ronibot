@@ -156,7 +156,7 @@ module.exports = {
         return false
     },
     isProFabri(num){
-        return num=='43' || num=='186' || num=='187'|| num=='21'
+        return num=='43' || num=='186' || num=='187'|| num=='21'  || num=='45'
     },
     cobro:async function(data,message){
 
