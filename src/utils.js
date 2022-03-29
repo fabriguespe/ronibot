@@ -44,7 +44,7 @@ module.exports = {
         let today = new Date(Date.UTC(0, 0, 0, 0, 0, 0));
         let diadelmes=today.getDate()
         let lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
-        if((diadelmes>=(lastDayOfMonth-2) &&  diadelmes<=lastDayOfMonth) || diadelmes>=15 &&  diadelmes<=16) return true
+        if((diadelmes>=(lastDayOfMonth-3) &&  diadelmes<=lastDayOfMonth) || diadelmes>=15 &&  diadelmes<=16) return true
         return false
     },
     getNumberOfDays(start, end) {
