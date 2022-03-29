@@ -20,6 +20,8 @@ fs.readdirSync(__dirname+"/Commands")
 	client.commands.set(command.name, command);
 });
 
+
+
 /*RESTART
 https://askubuntu.com/questions/919108/error-unit-mongodb-service-is-masked-when-starting-mongodb
 */
