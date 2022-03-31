@@ -602,6 +602,7 @@ module.exports = {
         return response.data.createRandomMessage
     },
     getAxiesIds:async function (wallet){
+        if(!wallet)return
         wallet=wallet.replace('ronin:','0x')
         let url = `https://graphql-gateway.axieinfinity.com/graphql`;
         let query = `
@@ -628,6 +629,7 @@ module.exports = {
 		return await db.collection('users').findOne({discord:""+ID.toString()})
     },
     getUserByNum:async function(num){
+        if(num=='buenos' || num=='BUENOS')return 'ronin:4e45277c66da9bbca7f643ddadd5b5297b5e9650'
         if(num=='amaloa' || num=='AMALOA')return 'ronin:9a9dc8ab2474625cb58bca01beb72759e2c7efaa'
         if(num=='pablo' || num=='PABLO')return 'ronin:f0c889583622f97c67e2fc4cf2a5ce214f7eee8c'
         if(num=='jeisson' || num=='JEISSON')return 'ronin:9f1c0c36728b3341084adaad489a651394c9e40a'
@@ -640,6 +642,7 @@ module.exports = {
         else return null
     },
     getPaymentWalletByNum:async function(num){
+        if(num=='buenos' || num=='BUENOS')return 'ronin:4e45277c66da9bbca7f643ddadd5b5297b5e9650'
         if(num=='amaloa' || num=='AMALOA')return 'ronin:9a9dc8ab2474625cb58bca01beb72759e2c7efaa'
         if(num=='pablo' || num=='PABLO')return 'ronin:f0c889583622f97c67e2fc4cf2a5ce214f7eee8c'
         if(num=='jeisson' || num=='JEISSON')return 'ronin:9f1c0c36728b3341084adaad489a651394c9e40a'
@@ -652,6 +655,7 @@ module.exports = {
         else return null
     },
     getWalletByNum:async function(num){
+        if(num=='buenos' || num=='BUENOS')return 'ronin:4e45277c66da9bbca7f643ddadd5b5297b5e9650'
         if(num=='amaloa' || num=='AMALOA')return 'ronin:9a9dc8ab2474625cb58bca01beb72759e2c7efaa'
         if(num=='pablo' || num=='PABLO')return 'ronin:f0c889583622f97c67e2fc4cf2a5ce214f7eee8c'
         if(num=='jeisson' || num=='JEISSON')return 'ronin:9f1c0c36728b3341084adaad489a651394c9e40a'
