@@ -516,7 +516,7 @@ module.exports = {
             let user=await db.collection('aspirantes').findOne({discord:message.author.id.toString()})
             if(user){
                 let rCanal = message.guild.channels.cache.find(c => c.id == 903282885971300362);//canal chat managers
-                rCanal.send("!ingreso "+message.author.usnermae+"#"+message.author.discriminator)    
+                rCanal.send("!ingreso "+message.author.username+"#"+message.author.discriminator)    
             }  
         }catch(e){
             this.log(e,message)
