@@ -528,6 +528,7 @@ module.exports = {
         if(ingreso)return ingreso.user
     },
     getUserIDByUsername:async function(args,message,erase){
+        console.log(args,erase)
         let completo=args.join(" ").replaceAll(erase,'').toLowerCase().trim()
         completo=completo.replaceAll('á','a')
         completo=completo.replaceAll('é','e')
@@ -537,6 +538,8 @@ module.exports = {
         let username=completo.split('#')[0]
         let discriminator=completo.split('#')[1]
 
+
+        console.log(completo)
         await message.guild.members.fetch()
         let ingreso=message.guild.members.cache.find(c => {
         //console.log(c.user.username.toLowerCase().trim(),username,c.user.username.toLowerCase() == username)

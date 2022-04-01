@@ -22,16 +22,17 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esFabri(message) && !utils.esJeissonPagos(message))return message.channel.send('No tienes permisos para correr este comando')
         try{
-            if(args.length==3){
+            if(args.length>=3){
                 
 
+                let ingreso=await utils.getUserIDByUsername(args,message,"asociar"+(process.env.LOGNAME=='fabrizioguespe'?'t':'')+" "+args[1])
+                if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
+                                
                 let new_account=await utils.getUserByNum(args[1])
                 let from_acc=new_account.accountAddress
                 if(!utils.isSafe(from_acc))return message.channel.send(`La cuenta esta mal!`);
 
 
-                let ingreso=await utils.getUserIDByUsername(args,message,"asociar"+(process.env.LOGNAME=='fabrizioguespe'?'t':'')+" "+args[1])
-                if(!ingreso)return message.channel.send(`Ese usuario no se encuentra en el Discord`);
                 await utils.ingresar(new_account.num,ingreso.user.username,ingreso.id)
                 message.channel.send('ID:'+ingreso.id+ ` asociado con exito a la cuenta #`+new_account.num);
 
