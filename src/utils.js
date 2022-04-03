@@ -532,7 +532,7 @@ module.exports = {
         if(ingreso)return ingreso.user
     },
     getUserIDByUsername:async function(args,message,erase){
-        console.log(args,erase)
+    
         let completo=args.join(" ").replaceAll(erase,'').toLowerCase().trim()
         completo=completo.replaceAll('á','a')
         completo=completo.replaceAll('é','e')
@@ -543,7 +543,6 @@ module.exports = {
         let discriminator=completo.split('#')[1]
 
 
-        console.log(completo)
         await message.guild.members.fetch()
         let ingreso=message.guild.members.cache.find(c => {
         //console.log(c.user.username.toLowerCase().trim(),username,c.user.username.toLowerCase() == username)
@@ -562,7 +561,7 @@ module.exports = {
         return false
     },
     log:function (e,message=null){        
-        console.log(e)
+       // console.log(e)
         let log=e
         if(e.message)log=e.message
         if(log && log.includes('ERROR:Transaction has been reverted by the EVM'))log='ERROR: Transaction has been reverted by the EVM'

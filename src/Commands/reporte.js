@@ -19,11 +19,12 @@ module.exports = new Command({
 			let eluser = await db.collection('users').findOne({num:args[1]})
 			if(!eluser)return utils.log('usuario no encontrado',message)
 			
-
-			if(args.length==2){
-				message.channel.send("Aguarde un momento..")
+			let axie_count=0
+			if(args.length==2 || args.length==3){
+				message.channel.send("Aguarde un momento...")
 				let axies=await utils.getAxiesIds(eluser.accountAddress.replace('ronin:','0x'))
 				let axiesdata=[]
+
 				if(axies && axies.axies){
 					for(let i in axies.axies){
 						let axie=axies.axies[i]
@@ -39,13 +40,13 @@ module.exports = new Command({
 						let cola=axie.parts.find(x => x.type == "Tail").name
 						pushed.partes={espalda:espalda,boca:boca,cuerno:cuerno,cola:cola}
 						axiesdata.push(pushed)
+						axie_count++
 					}
 				}
 				
-				const exampleEmbed = new MessageEmbed().setColor('#0099ff').setTitle('Jugador #'+args[1])
 				let slp=await utils.getSLP(eluser.accountAddress,message,false)
-				
 
+				let exampleEmbed = new MessageEmbed().setColor('#0099ff').setTitle('Jugador #'+args[1]+' ('+axie_count+' Axies)')
 				exampleEmbed.addFields(
 					//{ name: 'Precio', value: ''+slp+'USD'},
 					{ name: 'SLP Total', value: ''+slp.in_game_slp,inline:true},
@@ -55,10 +56,7 @@ module.exports = new Command({
 					{ name: 'Proximo', value: ''+utils.ADD_DAYS_TO_UNIX(slp.last_claim,15),inline:true},
 					{ name: 'Estado', value: ''+eluser.nota,inline:true},
 				)
-
-				for(let i in axiesdata)exampleEmbed.addFields({ name: axiesdata[i].tipo, value: axiesdata[i].partes.cola+'\n'+axiesdata[i].partes.espalda+'\n'+axiesdata[i].partes.cuerno+'\n'+axiesdata[i].partes.boca+'\n'+'[Link]('+axiesdata[i].url+")",inline:true})
 				
-					
 				let stats = await db.collection('log').find({num:eluser.num},  { sort: { timestamp: -1 } }).toArray();
 				let help='No hay'
 				for(let j in stats){
@@ -71,7 +69,7 @@ module.exports = new Command({
 				exampleEmbed.addFields(
 					{ name: 'Wallet', value: '[Link](https://explorer.roninchain.com/address/'+eluser.accountAddress+")",inline:true},
 					{ name: 'JSON', value: '[Link](https://game-api.axie.technology/api/v1/'+eluser.accountAddress+")",inline:true},
-					{ name: 'Axies', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
+					{ name: 'Axies '+'('+axie_count+')', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
 					{ name: 'Pass', value: ''+eluser.pass,inline:true},
 					{ name: 'Email', value: 'manager+'+eluser.num+'@ronimate.xyz',inline:true},
 					{ name: 'Discord', value: ''+eluser.discord,inline:true},
@@ -79,6 +77,14 @@ module.exports = new Command({
 					{ name: 'Registros', value: ''+help},
 				)
 				message.channel.send({ embeds: [exampleEmbed] });
+				
+				if(args[2]=='axies'){
+
+					let exampleEmbed = new MessageEmbed().setColor('#0099ff').setTitle('Axies #'+args[1])
+					for(let i in axiesdata)exampleEmbed.addFields({ name: axiesdata[i].tipo, value: axiesdata[i].partes.cola+'\n'+axiesdata[i].partes.espalda+'\n'+axiesdata[i].partes.cuerno+'\n'+axiesdata[i].partes.boca+'\n'+'[Link]('+axiesdata[i].url+")",inline:true})
+					message.channel.send({ embeds: [exampleEmbed] });
+	
+				}
 
 				stats = await db.collection('slp').find({accountAddress:eluser.accountAddress},  { sort: { timestamp: -1 } }).toArray();
 				stats=stats.sort(function(a, b) {return a.timestamp - b.timestamp});
@@ -117,7 +123,7 @@ module.exports = new Command({
 				message.channel.send(`Comando incompleto`);
 			}
 		}catch(e){
-			console.log(e)
+			utils.log(e,message)
 		}
 
 	}
