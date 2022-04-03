@@ -41,6 +41,7 @@ module.exports = {
         return new Date(final);     
     },
     esFechaCobros(){
+        return true
         let today = new Date(Date.UTC(0, 0, 0, 0, 0, 0));
         let diadelmes=today.getDate()
         let lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()
@@ -154,6 +155,9 @@ module.exports = {
     isTesting(){
         if(process.env.LOGNAME=='fabrizioguespe')return true
         return false
+    },
+    isFijo(num){
+        return num=='43' || num=='139'
     },
     isProFabri(num){
         return num=='43' || num=='186' || num=='187'|| num=='21'  || num=='45'
