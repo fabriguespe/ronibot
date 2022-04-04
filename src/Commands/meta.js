@@ -65,10 +65,14 @@ module.exports = new Command({
 					else meta[metas]++
 					
 					//Count
-					if(total==10 && user.nota=='pro')datos.energias+=7
+					if(total==10)datos.energias+=7
+					else if(total==20)datos.energias+=17
+
 					if(total==10 && user.nota=='pro')datos.pro+=1
-					if(total==3 &&  user.nota=='libre')datos.libres+=1
-					if(total==3 &&  user.nota=='aprobado')datos.normal+=1
+					else if(total==10 && user.nota=='fijo')datos.fijos40+=1
+					else if(total==20 && user.nota=='fijo')datos.fijos60+=1
+					else if(total==3 &&  user.nota=='libre')datos.libres+=1
+					else if(total==3 &&  user.nota=='aprobado')datos.normal+=1
 
 					//Log
 					if(total==3 && user.nota!='retiro')continue
@@ -82,11 +86,14 @@ module.exports = new Command({
 			embed = new MessageEmbed().setColor('#0099ff')
 			embed = embed.addFields(
 				{ name: 'Axies Totales', value: ''+datos.total,inline:true},
-				{ name: '20 Energias', value: ''+datos.normal,inline:true},
-				{ name: '40 Energias', value: ''+datos.pro,inline:true},
+				{ name: 'Normals', value: ''+datos.normal,inline:true},
+				{ name: 'Pro', value: ''+datos.pro,inline:true},
 				{ name: 'Cuentas Libres', value: ''+(datos.libres),inline:true},
 				{ name: 'Axies Libres', value: ''+(datos.libres+datos.buenos),inline:true},
 				{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
+				{ name: '20 Energias', value: ''+(datos.normal),inline:true},
+				{ name: '20 Energias', value: ''+(datos.fijos40),inline:true},
+				{ name: '20 Energias', value: ''+(datos.fijos60),inline:true},
 			)
 			if(args[1]==undefined)message.channel.send({content: ` `,embeds: [embed]})
 			
