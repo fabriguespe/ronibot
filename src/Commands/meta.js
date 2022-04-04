@@ -111,7 +111,7 @@ module.exports = new Command({
 			message.channel.send({content: ` `,embeds: [embed]})
 			
 			for(let i in users)if(users[i].nota=='fijo')msg+='#'+users[i].num+' '+users[i].meta+'\n'
-			embed = new MessageEmbed().setTitle('Cuentas Pro').setDescription(msg).setColor('#0099ff').setTimestamp()
+			embed = new MessageEmbed().setTitle('Cuentas Fijas').setDescription(msg).setColor('#0099ff').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 
 		}catch (e) {
