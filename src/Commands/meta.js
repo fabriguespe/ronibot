@@ -24,7 +24,7 @@ module.exports = new Command({
 			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 
 			if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
-			let datos={total:0,energias:0,normal:0,raros:'',pro:0,energias:1,buenos:24,libres:0,breed:0}
+			let datos={total:0,energias:0,normal:0,raros:'',pro:0,energias:1,buenos:24,libres:0,breed:0,fijos40:0,fijos60:0}
 			datos.total=datos.energias+datos.buenos
 			let meta={}
 			for(let i in users){
@@ -105,12 +105,12 @@ module.exports = new Command({
 
 			
 			users=users.sort(function(a, b) {return (a.meta) - (b.meta)});
+
 			for(let i in users)if(users[i].nota=='pro')msg+='#'+users[i].num+' '+users[i].meta+'\n'
 			embed = new MessageEmbed().setTitle('Cuentas Pro').setDescription(msg).setColor('#0099ff').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 			
-			users=users.filter(function(a) {return a.nota=='fijos'});
-			for(let i in users)if(users[i].nota=='pro')msg+='#'+users[i].num+' '+users[i].meta+'\n'
+			for(let i in users)if(users[i].nota=='fijo')msg+='#'+users[i].num+' '+users[i].meta+'\n'
 			embed = new MessageEmbed().setTitle('Cuentas Pro').setDescription(msg).setColor('#0099ff').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 
