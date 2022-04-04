@@ -161,6 +161,7 @@ module.exports = {
         return num=='43' || num=='139' || num=='53' || num=='29' || num=='36' || num=='93' || num=='148'
     },
     isProFabri(num){
+        return false
         return num=='43' || num=='186' || num=='187'|| num=='21'  || num=='45'  || num=='94'
     },
     cobro:async function(data,message){
