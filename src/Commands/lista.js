@@ -66,7 +66,7 @@ module.exports = new Command({
 				
 				proms.slp_sum+=user.slp_prom
 				proms.mmr_sum+=user.mmr
-				proms.cant+=1
+				if(user.slp_prom>0)proms.cant+=1
 
 				//Texto
 				if(user.slp_prom>=TABULADORES.uno)colores['GREEN']+=value
