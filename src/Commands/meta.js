@@ -100,7 +100,7 @@ module.exports = new Command({
 			let msg=''
 			for(let i in meta)if(meta[i]>0)msg+=i+' '+meta[i]+'\n'
 			embed = new MessageEmbed().setTitle('Metas').setDescription(msg).setColor('#0099ff').setTimestamp()
-			message.channel.send({content: ` `,embeds: [embed]})
+			//message.channel.send({content: ` `,embeds: [embed]})
 			msg=''
 
 			
