@@ -11,7 +11,7 @@ var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 TABULADORES={uno:60,dos:45,tres:35,cuatro:1}
 
 module.exports = new Command({
-	name: "lista"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
+	name: "stat"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		if(!utils.esFabri(message) && args[1]=='pro')return message.channel.send('No tienes permisos para correr este comando')
@@ -144,6 +144,7 @@ module.exports = new Command({
 			utils.log(e,message)
 		}
 		try{
+			let db = await DbConnection.Get();
 			let query=(args[1]!=undefined?{nota:args[1]}:'')
 			let users = await db.collection('users').find(query).toArray()
 			let data_users=[]
