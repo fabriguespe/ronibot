@@ -92,8 +92,8 @@ module.exports = new Command({
 				{ name: 'Axies Libres', value: ''+(datos.libres+datos.buenos),inline:true},
 				{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
 				{ name: '20 Energias', value: ''+(datos.normal),inline:true},
-				{ name: '20 Energias', value: ''+(datos.fijos40),inline:true},
-				{ name: '20 Energias', value: ''+(datos.fijos60),inline:true},
+				{ name: '40 Energias', value: ''+(datos.fijos40),inline:true},
+				{ name: '60 Energias', value: ''+(datos.fijos60),inline:true},
 			)
 			if(args[1]==undefined)message.channel.send({content: ` `,embeds: [embed]})
 			
@@ -106,11 +106,11 @@ module.exports = new Command({
 			
 			users=users.sort(function(a, b) {return (a.meta) - (b.meta)});
 
-			for(let i in users)if(users[i].nota=='pro')msg+='#'+users[i].num+' '+users[i].meta+'\n'
+			for(let i in users)if(users[i].nota=='pro')msg+='#'+users[i].num+' '+users[i].name+' '+users[i].meta+'\n'
 			embed = new MessageEmbed().setTitle('Cuentas Pro').setDescription(msg).setColor('#0099ff').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 			
-			for(let i in users)if(users[i].nota=='fijo')msg+='#'+users[i].num+' '+users[i].meta+'\n'
+			for(let i in users)if(users[i].nota=='fijo')msg+='#'+users[i].num+' '+users[i].name+' '+users[i].meta+'\n'
 			embed = new MessageEmbed().setTitle('Cuentas Fijas').setDescription(msg).setColor('#0099ff').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 
