@@ -319,7 +319,7 @@ module.exports = {
     getMMR:async function(from_acc,message,cache=false){
         try{
             from_acc=from_acc.replace('ronin:','0x')  
-            let = await fetch("https://game-api.axie.technology/api/v2/"+from_acc.replace('0x','ronin:') , { method: "Get" }).then(res => res.json()).then((json) => { return json});
+            let data= await fetch("https://game-api.axie.technology/api/v2/"+from_acc.replace('0x','ronin:') , { method: "Get" }).then(res => res.json()).then((json) => { return json});
             return data.mmr
 
         }catch(e){
@@ -562,7 +562,7 @@ module.exports = {
         return false
     },
     log:function (e,message=null){        
-       // console.log(e)
+        console.log(e)
         let log=e
         if(e.message)log=e.message
         if(log && log.includes('ERROR:Transaction has been reverted by the EVM'))log='ERROR: Transaction has been reverted by the EVM'
