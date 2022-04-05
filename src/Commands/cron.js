@@ -146,6 +146,8 @@ module.exports = new Command({
 				let db = await DbConnection.Get();
 				let users=await db.collection('users').find({$or:[{nota:'retirar'},{nota:'retiro'}]}).toArray()
 				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
+
+				
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
 					let user=users[i]
@@ -166,9 +168,6 @@ module.exports = new Command({
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Claim corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
 			
-				let db = await DbConnection.Get();
-				let users=await db.collection('users').find({$or:[{nota:'retirar'},{nota:'retiro'}]}).toArray()
-				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
 					let user=users[i]
