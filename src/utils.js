@@ -156,17 +156,6 @@ module.exports = {
         if(process.env.LOGNAME=='fabrizioguespe')return true
         return false
     },
-    isFijo(num){
-        //Roni experiment
-        //pablo 43,139
-        //jeisson 93
-        //amaloa 148
-        //alejandro 53,29
-        //carlos runner 36
-        //28 rafaerl
-        //82 
-        return num=='43' || num=='139' || num=='53' || num=='29' || num=='36' || num=='93' || num=='148' || num=='28'
-    },
     isProFabri(num){
         return false//para recordar mis cuentas
         //mios son 6 equipos puros y 28 tutis
@@ -184,7 +173,7 @@ module.exports = {
             let roniPrimero=(roni_slp>=jugador_slp)
             this.log('Jugador:'+jugador_slp + ' Ronimate:' +roni_slp)
             if(!data.scholarPayoutAddress)return message.channel.send("Wallet de cobro no existente")
-            let player_wallet=(this.isFijo(data.num))?await this.getWalletByNum("BREED"):data.scholarPayoutAddress.replace('ronin:','0x')
+            let player_wallet=(data.nota=='fijo')?await this.getWalletByNum("BREED"):data.scholarPayoutAddress.replace('ronin:','0x')
             let roni_wallet=(this.isProFabri(data.num))?await this.getWalletByNum("PRO"):await this.getWalletByNum("BREED")
             roni_wallet=roni_wallet.replace('ronin:','0x')
             let fallo=false
