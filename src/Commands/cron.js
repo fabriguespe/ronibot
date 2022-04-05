@@ -157,7 +157,11 @@ module.exports = new Command({
 					user.in_game_slp=data.in_game_slp
 					if(data.in_game_slp>0){		
 						message.channel.send('#'+user.num+': Se encontraron '+user.in_game_slp+' SLP sin reclamar')
-						await utils.claim(user,message)
+						try{
+							await utils.claim(user,message)
+						}catch (e) {
+							utils.log(e,message)
+						}
 					}
 				}
 				
@@ -180,14 +184,16 @@ module.exports = new Command({
 					user.ronin_slp=data.ronin_slp
 					if(data.ronin_slp>0){		
 						message.channel.send('#'+user.num+': Se encontraron '+user.ronin_slp+' SLP para transferir')
-						await utils.transfer(user.accountAddress,await utils.getWalletByNum("BREED"),user.ronin_slp,message)
+						try{	
+							await utils.transfer(user.accountAddress,await utils.getWalletByNum("BREED"),user.ronin_slp,message)
+						}catch (e) {
+							utils.log(e,message)
+						}
 					}
 				}
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Flush corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
-			}catch (e) {
-				utils.log(e,message)
-			}	
+				
 			//HASTA ACA
 
 		}else if(args[1]=='updateall'){
