@@ -142,7 +142,6 @@ module.exports = new Command({
 
 		}else if(args[1]=='flushall'){
 
-			try{
 				//Copiar desde aca
 				let db = await DbConnection.Get();
 				let users=await db.collection('users').find({$or:[{nota:'retirar'},{nota:'retiro'}]}).toArray()
@@ -166,11 +165,7 @@ module.exports = new Command({
 				}
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Claim corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
-			}catch (e) {
-				utils.log(e,message)
-			}	
-			try{
-				//Copiar desde aca
+			
 				let db = await DbConnection.Get();
 				let users=await db.collection('users').find({$or:[{nota:'retirar'},{nota:'retiro'}]}).toArray()
 				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
