@@ -18,6 +18,7 @@ module.exports = new Command({
 				let key=args[2]
 				if(key=='wallet')key='scholarPayoutAddress'
 				let value=utils.erase(args,args[0]+' '+args[1]+' '+args[2])
+				console.log(value)
 				if(!utils.esFabri(message) && value=='nota')return message.channel.send('El estado debe actualizarse con los procesos')
 				let armado={}
 				armado[key]=value

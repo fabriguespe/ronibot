@@ -538,7 +538,7 @@ module.exports = {
         completo=completo.replaceAll('í','i')
         completo=completo.replaceAll('ó','o')
         completo=completo.replaceAll('ú','u')
-    
+        return completo
 
     },
     getUserIDByUsername:async function(args,message,erase){
