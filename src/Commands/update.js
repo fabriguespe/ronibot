@@ -26,6 +26,6 @@ module.exports = new Command({
 				message.channel.send('El jugador ***#'+elnum+'*** fue actualizado con exito')
 				
 			}
-		}
+		
 	}
 });
