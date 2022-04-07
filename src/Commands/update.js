@@ -10,7 +10,7 @@ module.exports = new Command({
 		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.channel.send('No tienes permisos para correr este comando')
 	
 		let db = await DbConnection.Get();
-		if(args.length==4){	
+	
 			let ids=args[1].split(",");
 			for(let i in ids){
 				let elnum=ids[i]
