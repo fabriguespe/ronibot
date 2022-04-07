@@ -530,14 +530,20 @@ module.exports = {
         let ingreso=message.guild.members.cache.find(c => {return c.id ==el_id});
         if(ingreso)return ingreso.user
     },
-    getUserIDByUsername:async function(args,message,erase){
-    
+    erase(args,erase){
+
         let completo=args.join(" ").replaceAll(erase,'').toLowerCase().trim()
         completo=completo.replaceAll('á','a')
         completo=completo.replaceAll('é','e')
         completo=completo.replaceAll('í','i')
         completo=completo.replaceAll('ó','o')
         completo=completo.replaceAll('ú','u')
+    
+
+    },
+    getUserIDByUsername:async function(args,message,erase){
+    
+        let completo=this.erase(args,erase)
         let username=completo.split('#')[0]
         let discriminator=completo.split('#')[1]
 
