@@ -71,7 +71,7 @@ module.exports = new Command({
 					{ name: 'JSON', value: '[Link](https://game-api.axie.technology/api/v1/'+eluser.accountAddress+")",inline:true},
 					{ name: 'Axies '+'('+axie_count+')', value: '[Link](https://marketplace.axieinfinity.com/profile/'+eluser.accountAddress+")",inline:true},
 					{ name: 'Pass', value: ''+eluser.pass,inline:true},
-					{ name: 'Email', value: 'manager+'+eluser.num+'@ronimate.xyz',inline:true},
+					{ name: 'Puesto', value: 'AxieMasterC',inline:true},
 					{ name: 'Discord', value: ''+eluser.discord,inline:true},
 					{ name: 'Binance', value: ''+eluser.scholarPayoutAddress,inline:true},
 					{ name: 'Registros', value: ''+help},
