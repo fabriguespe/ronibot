@@ -14,7 +14,6 @@ module.exports = new Command({
 	name: "stat"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
-		if(!utils.esFabri(message) && args[1]=='pro')return message.channel.send('No tienes permisos para correr este comando')
 		
 		try{
 			let db = await DbConnection.Get();
