@@ -191,7 +191,27 @@ module.exports = new Command({
 				
 			//HASTA ACA
 
+		}else if(args[1]=='cobrar'){
+			
+			let db = await DbConnection.Get();
+			let users=await db.collection('users').find({nota:'fijo'}).toArray()
+			for(let i in users){
+				message.channel.send('Cuenta #'+users[i].num)
+				let currentUser=await utils.getUserByNum(users[i].num)
+				
+				let data=await utils.claimData(currentUser,message,false)
+				if(data.hours>0 && !data.has_to_claim){
+					message.channel.send('Faltan '+data.hours+' hs para que puedas reclamar\nEste canal se cerrara en 20 segundos.') 
+					continue
+				}else{
+					let fallo=await utils.cobro(data,message)
+					if(!fallo)message.channel.send('Exito!')
+				}
+			}
+
 		}else if(args[1]=='updateall'){
+
+
 			let db = await DbConnection.Get();
 			let users=await db.collection('users-db').find({}).toArray()
 			utils.log('Se empezara a procesar',message)

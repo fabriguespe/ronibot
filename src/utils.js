@@ -363,7 +363,7 @@ module.exports = {
             this.log("ERROR: "+e.message,message)
         }
     },
-    claimData:async function(currentUser,message){
+    claimData:async function(currentUser,message,panel=true){
         try{
 
             let from_acc=currentUser.accountAddress
@@ -423,7 +423,7 @@ module.exports = {
                 { name: 'Información', value: 'Revisa que tu wallet sea correcta\nTu promedio de SLP se baso en el calculo de los dias y el total acumulado. Si estas de acuerdo escribe "si" para poder cobrar, de lo contrario, "no"'},
                 { name: 'Ajuste', value: 'Debito a que a partir del 9/2/2022 se cambio la cantidad de SLP emitido ahora el tabulador es diferente. Pero para este cobro hubo 9 dias en donde se tiene que ajustar el promedio a la cantidad de SLP anterior. Por eso es que este mes no hay bono pero fuimos generosos en el ajuste de promedio para compensar ese 10%.'},
             )
-            message.channel.send({content: ` `,embeds: [embed]})
+            if(panel)message.channel.send({content: ` `,embeds: [embed]})
 
 
             porcetage+=bono

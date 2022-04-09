@@ -77,9 +77,9 @@ module.exports = new Command({
 					setTimeout(() => { interaction.channel.delete()}, 2000*10)
 				}else{
 					interaction.channel.send('Escribe un comando (si/no) para continuar...').then(function (message) {
-						const filter = m => m.author.id === message.author.id;
-						const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
-						collector.on('collect',async m => {
+					const filter = m => m.author.id === message.author.id;
+					const collector = message.channel.createMessageCollector(filter, { max: 1, time: 15000, errors: ['time'] })
+					collector.on('collect',async m => {
 							if(m.author.id==908739379059626094 || (!esPagos && (m.author.id==DISCORD_JSON  || m.author.id==DISCORD_FABRI)))return
 							if (m.content && m.content.toLowerCase() == "si") {
 								let fallo=await utils.cobro(data,message)
