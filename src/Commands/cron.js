@@ -158,11 +158,12 @@ module.exports = new Command({
 					user.in_game_slp=data.in_game_slp
 					if(data.in_game_slp>0){		
 						message.channel.send('#'+user.num+': Se encontraron '+user.in_game_slp+' SLP sin reclamar')
-						try{
+						/*try{
 							await utils.claim(user,message)
 						}catch (e) {
 							utils.log(e,message)
 						}
+						}*/
 					}
 				}
 				
@@ -178,11 +179,11 @@ module.exports = new Command({
 					user.ronin_slp=data.ronin_slp
 					if(data.ronin_slp>0){		
 						message.channel.send('#'+user.num+': Se encontraron '+user.ronin_slp+' SLP para transferir')
-						try{	
+						/*try{	
 							await utils.transfer(user.accountAddress,await utils.getWalletByNum("BREED"),user.ronin_slp,message)
 						}catch (e) {
 							utils.log(e,message)
-						}
+						}*/
 					}
 				}
 				
