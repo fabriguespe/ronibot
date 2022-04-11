@@ -69,17 +69,11 @@ module.exports = new Command({
 
 				//Texto
 				if(user.slp_prom>=TABULADORES.uno)colores['GREEN']+=value
-				else if(user.slp_prom>=TABULADORES.dos && user.slp_prom<TABULADORES.uno)colores['YELLOW']+=value
-				else if(user.slp_prom>=TABULADORES.tres && user.slp_prom<TABULADORES.dos)colores['ORANGE']+=value
 				else if(user.slp_prom>=TABULADORES.cuatro && user.slp_prom<TABULADORES.tres)colores['RED']+=value
-				else if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)colores['BLACK']+=value
 				
 				//Contadores
 				if(user.slp_prom>=TABULADORES.uno)numcolores['GREEN']+=1
-				else if(user.slp_prom>=TABULADORES.dos && user.slp_prom<TABULADORES.uno)numcolores['YELLOW']+=1
-				else if(user.slp_prom>=TABULADORES.tres && user.slp_prom<TABULADORES.dos)numcolores['ORANGE']+=1
 				else if(user.slp_prom>=TABULADORES.cuatro && user.slp_prom<TABULADORES.tres)numcolores['RED']+=1
-				else if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)numcolores['BLACK']+=1
 
 				//Otros
 				if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)aretirar.push(user.num)
@@ -92,7 +86,7 @@ module.exports = new Command({
 				let lista=colores[color]
 				let partes=Math.floor(lista.length/4095)+1
 				for(let j=1;j<=partes;j++){
-					titulo=(color=='GREEN')?'Generando 60%':(color=='YELLOW')?'Generando 50%':(color=='ORANGE')?'Generando 40%':(color=='RED')?'Alerta 30%':(color=='BLACK')?'Retiro':''
+					titulo=(color=='GREEN')?'Generando':'Alerta'
 					if(tipo && tipo!=titulo)continue
 					let init=(j==1)?0:(lista.length/partes*(j-1))
 					let fin=(lista.length/partes*j)
@@ -134,7 +128,7 @@ module.exports = new Command({
 					datasets:[{label: 'SLP', data: Object.values(pie_chart)}] 
 				},
 			}).setWidth(800).setHeight(400);
-			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+			//message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 			
 
 
