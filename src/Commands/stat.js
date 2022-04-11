@@ -54,8 +54,8 @@ module.exports = new Command({
 
 			}
 			users=users.sort(function(a, b) {return b.slp_prom - a.slp_prom})
-			let colores={GREEN:'',YELLOW:'',ORANGE:'',RED:'',BLACK:''}
-			let numcolores={GREEN:0,YELLOW:0,ORANGE:0,RED:0,BLACK:0}
+			let colores={GREEN:'',RED:''}
+			let numcolores={GREEN:0,RED:0}
 			let proms={slp_sum:0,mmr_sum:0,cant:0}
 			let aretirar=[]
 			for(let ii in users){
