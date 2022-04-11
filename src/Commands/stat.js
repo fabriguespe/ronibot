@@ -3,7 +3,7 @@ const path = require('path');
 
 const Command = require("../Structures/Command.js");
 const fetch = require( "node-fetch")
-const { MessageEmbed} = require('discord.js');
+const { MessageEmbed, User} = require('discord.js');
 const QuickChart = require('quickchart-js');
 const { stat } = require('fs');
 var utils = require(path.resolve(__dirname, "../utils.js"));
@@ -61,7 +61,8 @@ module.exports = new Command({
 			for(let ii in users){
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
-				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+(user.puesto)+'\n'
+				user.axie_count==await utils.getAxiesIds(eluser.accountAddress.replace('ronin:','0x')).axie.length
+				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+(user.axie_count)+'\n'
 				
 				proms.slp_sum+=user.slp_prom
 				proms.mmr_sum+=user.mmr
