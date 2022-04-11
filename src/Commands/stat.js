@@ -75,8 +75,6 @@ module.exports = new Command({
 				if(user.slp_prom>=TABULADORES.uno)numcolores['GREEN']+=1
 				else numcolores['RED']+=1
 
-				//Otros
-				if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)aretirar.push(user.num)
 			}
 
 			let titulo=''
