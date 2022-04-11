@@ -61,7 +61,8 @@ module.exports = new Command({
 			for(let ii in users){
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
-				user.axie_count==await utils.getAxiesIds(user.accountAddress.replace('ronin:','0x')).axie.length
+				user.axie_count==await utils.getAxiesIds(user.accountAddress.replace('ronin:','0x'))
+				user.axie_count=user.axie_count.axies.length
 				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+(user.axie_count)+'\n'
 				
 				proms.slp_sum+=user.slp_prom
