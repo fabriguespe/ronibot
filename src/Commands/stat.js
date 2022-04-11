@@ -16,6 +16,7 @@ module.exports = new Command({
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
 		
 		try{
+			message.channel.send('Aguarde un momento...') 
 			let db = await DbConnection.Get();
 			let query=(args[1]!=undefined?{nota:args[1]}:'')
 			if(args[1]=='all')query={}
