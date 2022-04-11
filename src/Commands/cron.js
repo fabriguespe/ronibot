@@ -204,7 +204,7 @@ module.exports = new Command({
 					message.channel.send('Faltan '+data.hours+' hs para que puedas reclamar\nEste canal se cerrara en 20 segundos.') 
 					continue
 				}else{
-					let fallo=await utils.cobro(data,message)
+					let fallo=await utils.cobroRoni(data,message)
 					if(!fallo)message.channel.send('Exito!')
 				}
 			}

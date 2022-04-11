@@ -161,7 +161,29 @@ module.exports = {
         //mios son 6 equipos puros y 28 tutis
         return num=='43' || num=='186' || num=='187'|| num=='45'  || num=='21'  
     },
-    cobro:async function(data,message){
+    cobroRoni:async function(data,message){
+
+        try{
+            let db = await DbConnection.Get();
+            if(data.in_game_slp>0)await this.claim(data,message)
+            let slp_total=data.in_game_slp+data.ronin_slp
+            let roni_wallet=await this.getWalletByNum("BREED")
+            roni_wallet=roni_wallet.replace('ronin:','0x')
+            let fallo=false
+            try{
+                let tx=await this.transfer(data.accountAddress,(roni_wallet),(slp_total),message)
+                if(tx)await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:data.accountAddress,wallet:(roniPrimero?roni_wallet:player_wallet)})
+                
+            }catch(e){
+                fallo=true
+                this.log(e,message)
+            }
+            return fallo
+             
+        }catch(e){
+            this.log(e,message)
+        }
+    },cobro:async function(data,message){
 
         try{
             let db = await DbConnection.Get();
