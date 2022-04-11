@@ -61,7 +61,7 @@ module.exports = new Command({
 			for(let ii in users){
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
-				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+(args[1]=='all'?user.nota:'')+'\n'
+				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+(user.puesto)+'\n'
 				
 				proms.slp_sum+=user.slp_prom
 				proms.mmr_sum+=user.mmr
@@ -104,7 +104,6 @@ module.exports = new Command({
 			exampleEmbed = exampleEmbed.addFields(
 				{ name: 'Precio SLP', value: ''+slp_price,inline:true},
 				{ name: 'Jugadores', value: ''+proms.cant,inline:true},
-				{ name: 'Axies', value: ''+(proms.cant*3),inline:true},
 				{ name: 'Copas Promedio', value: ''+Math.round(proms.mmr_sum/proms.cant),inline:true},
 				{ name: 'SLP Promedio', value: ''+Math.round(proms.slp_sum/proms.cant),inline:true},
 				{ name: 'SLP día', value: ''+Math.round(proms.slp_sum),inline:true},
