@@ -69,11 +69,11 @@ module.exports = new Command({
 
 				//Texto
 				if(user.slp_prom>=TABULADORES.uno)colores['GREEN']+=value
-				else if(user.slp_prom>=TABULADORES.cuatro && user.slp_prom<TABULADORES.tres)colores['RED']+=value
+				else colores['RED']+=value
 				
 				//Contadores
 				if(user.slp_prom>=TABULADORES.uno)numcolores['GREEN']+=1
-				else if(user.slp_prom>=TABULADORES.cuatro && user.slp_prom<TABULADORES.tres)numcolores['RED']+=1
+				else numcolores['RED']+=1
 
 				//Otros
 				if(user.slp_prom>=0 && user.slp_prom<TABULADORES.cuatro)aretirar.push(user.num)
