@@ -29,7 +29,6 @@ module.exports = new Command({
                 }
                 
                 let user_to=await utils.getUserByNum(args[2])
-                console.log(user_to,args[2])
                 let from_acc=(user_from && user_from.accountAddress?user_from.accountAddress:user_from)
                 let to_acc=(user_to && user_to.accountAddress?user_to.accountAddress:user_to)
                 let num_from=(user_from && user_from.num)?user_from.num:args[1]

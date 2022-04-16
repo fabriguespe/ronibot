@@ -68,7 +68,8 @@ module.exports = new Command({
 					if(total==10)datos.energias+=7
 					else if(total==20)datos.energias+=17
 
-					if(total==10 && user.nota=='pro')datos.pro+=1
+					if(total==10 && user.nota=='pro')datos.pro40+=1
+					else if(total==20 && user.nota=='pro')datos.pro60+=1
 					else if(total==10 && user.nota=='fijo')datos.fijos40+=1
 					else if(total==20 && user.nota=='fijo')datos.fijos60+=1
 					else if(total==3 &&  user.nota=='libre')datos.libres+=1

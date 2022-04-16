@@ -33,7 +33,6 @@ var logger = log4js.getLogger();
 logger.level = "debug";
 
 module.exports = {
-
     parseDate:function(dateStr, locale){
         if(!dateStr)return 0
         var initial =dateStr.split(/\//);
