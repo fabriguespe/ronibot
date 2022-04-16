@@ -118,12 +118,9 @@ module.exports = new Command({
 			
 			msg=''
 			users=users.sort(function(a, b) {return (a.puesto) - (b.puesto)});
-			for(let i in users)if(users[i].nota=='fijo'){
-				
-				let data=await utils.getSLP(users[i].accountAddress,null,false)
-				msg+='#'+users[i].num+' '+users[i].name+' '+users[i].puesto+'\n'
+			for(let i in users)if(users[i].nota=='fijo')msg+='#'+users[i].num+' '+users[i].name+' '+users[i].puesto+'\n'
 
-			}
+			
 			embed = new MessageEmbed().setTitle('Cuentas Fijas').setDescription(msg).setColor('#0099ff').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 
