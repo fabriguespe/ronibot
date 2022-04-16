@@ -78,6 +78,7 @@ module.exports = new Command({
 					//Log
 					if(total==3 && user.nota!='retiro')continue
 					else if(total==10 && user.nota=='pro')continue
+					else if(total==20 && user.nota=='pro')continue
 					else if(total==10 && user.nota=='fijo')continue
 					else if(total==20 && user.nota=='fijo')continue
 					let value=('#'+user.num+': Se encontraron '+total+' Axies | '+user.nota)
@@ -90,7 +91,8 @@ module.exports = new Command({
 			embed = embed.addFields(
 				{ name: 'Axies Totales', value: ''+datos.total,inline:true},
 				{ name: 'Normals', value: ''+datos.normal,inline:true},
-				{ name: 'Pro', value: ''+datos.pro,inline:true},
+				{ name: 'Pro 40', value: ''+datos.pro40,inline:true},
+				{ name: 'Pro 60', value: ''+datos.pro60,inline:true},
 				{ name: 'Cuentas Libres', value: ''+(datos.libres),inline:true},
 				{ name: 'Axies Libres', value: ''+(datos.libres+datos.buenos),inline:true},
 				{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
