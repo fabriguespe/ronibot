@@ -2,9 +2,7 @@
 const path = require('path');
 
 const Command = require("../Structures/Command.js");
-const fetch = require( "node-fetch")
 const {MessageEmbed} = require('discord.js');
-const cron = require('node-cron'), spawn = require('child_process').spawn;
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 var utils = require(path.resolve(__dirname, "../utils.js"));
 
