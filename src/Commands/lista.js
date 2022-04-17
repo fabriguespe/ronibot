@@ -144,6 +144,9 @@ module.exports = new Command({
 			}catch(e){
 				utils.log(e,message)
 			}
+		}else{
+			
+			return message.channel.send("Comando incorrecto");
 		}
 	}
 });
