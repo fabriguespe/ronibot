@@ -361,7 +361,6 @@ module.exports = {
                         }
                     }
                 }
-                console.log(jdata)
                 let balance=jdata.blockchain_related.balance
                 let total=jdata.total-jdata.blockchain_related.balance
                 data= {in_game_slp:total,ronin_slp:balance?balance:0,last_claim:jdata.last_claimed_item_at,has_to_claim:(jdata.claimable_total>0)}
