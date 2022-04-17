@@ -22,7 +22,7 @@ module.exports = new Command({
 			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 
 			if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
-			let datos={total:0,energias:0,normal:0,raros:'',pro40:0,pro60:0,energias:1,buenos:24,libres:0,breed:0,fijos40:0,fijos60:0}
+			let datos={total:0,energias:0,normal:0,raros:'',pro40:0,pro60:0,energias:0,buenos:110,libres:0,breed:0,fijos40:0,fijos60:0}
 			datos.total=datos.energias+datos.buenos
 			let meta={}
 			for(let i in users){
