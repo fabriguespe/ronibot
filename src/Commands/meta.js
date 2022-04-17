@@ -75,10 +75,8 @@ module.exports = new Command({
 
 					//Log
 					if(total==3 && user.nota!='retiro')continue
-					else if(total==10 && user.nota=='pro')continue
-					else if(total==20 && user.nota=='pro')continue
-					else if(total==10 && user.nota=='fijo')continue
-					else if(total==20 && user.nota=='fijo')continue
+					else if((total==20 || total==10) && user.nota=='pro')continue
+					else if((total==20 || total==10) && user.nota=='fijo')continue
 					let value=('#'+user.num+': Se encontraron '+total+' Axies | '+user.nota)
 					datos.raros+=value+'\n'
 				}
@@ -88,15 +86,14 @@ module.exports = new Command({
 			embed = new MessageEmbed().setColor('#0099ff')
 			embed = embed.addFields(
 				{ name: 'Axies Totales', value: ''+datos.total,inline:true},
-				{ name: 'Normals', value: ''+datos.normal,inline:true},
+				{ name: '20 Energias', value: ''+(datos.normal),inline:true},
 				{ name: 'Pro 40', value: ''+datos.pro40,inline:true},
-				{ name: 'Pro 60', value: ''+datos.pro60,inline:true},
+				{ name: 'Pro 60', value: ''+datos.pro60,inline:true},/*
 				{ name: 'Cuentas Libres', value: ''+(datos.libres),inline:true},
 				{ name: 'Axies Libres', value: ''+(datos.libres+datos.buenos),inline:true},
-				{ name: 'Axies Energias', value: ''+datos.energias,inline:true},
-				{ name: '20 Energias', value: ''+(datos.normal),inline:true},
-				{ name: '40 Energias', value: ''+(datos.fijos40),inline:true},
-				{ name: '60 Energias', value: ''+(datos.fijos60),inline:true},
+				{ name: 'Axies Energias', value: ''+datos.energias,inline:true},*/
+				{ name: 'Fijos 40 ', value: ''+(datos.fijos40),inline:true},
+				{ name: 'Fijos 60 ', value: ''+(datos.fijos60),inline:true},
 			)
 			if(args[1]==undefined)message.channel.send({content: ` `,embeds: [embed]})
 			
