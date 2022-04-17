@@ -146,7 +146,7 @@ module.exports = new Command({
 			}
 		}else{
 			
-			return message.channel.send("Comando incorrecto");
+			return message.channel.send("Comando incorrecto, puede ser !lista pro,fijo,aprobado");
 		}
 	}
 });
