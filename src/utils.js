@@ -126,7 +126,7 @@ module.exports = {
                     "chainId": 2020,
                     "gas": 492874,
                     "from": from_acc,
-                    "gasPrice": 0,
+                    "gasPrice": await web3.utils.toWei("1", "gwei"),//0
                     "value": 0,
                     "to": SLP_CONTRACT,
                     "nonce": nonce,
@@ -293,7 +293,7 @@ module.exports = {
                 "chainId": 2020,
                 "gas": 492874,
                 "from": from_acc,
-                "gasPrice": await web3.utils.toWei("1", "gwei"),
+                "gasPrice": await web3.utils.toWei("1", "gwei"),//0
                 "value": 0,
                 "to": SLP_CONTRACT,
                 "nonce": nonce,
