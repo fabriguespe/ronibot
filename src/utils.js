@@ -170,7 +170,7 @@ module.exports = {
             let fallo=false
             try{
                 let tx=await this.transfer(data.accountAddress,(roni_wallet),(slp_total),message)
-                if(tx)await db.collection('log').insertOne({tx:tx,type:'slp_'+(roniPrimero?'ronimate':'jugador'),timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(roniPrimero?roni_slp:jugador_slp),num:data.num,from_acc:data.accountAddress,wallet:(roniPrimero?roni_wallet:player_wallet)})
+                if(tx)await db.collection('log').insertOne({tx:tx,type:'slp_ronimate',timestamp:this.timestamp_log(),date:this.date_log(),num:data.num, slp:(slp_total),num:data.num,from_acc:data.accountAddress,wallet:(roni_wallet)})
                 
             }catch(e){
                 fallo=true
