@@ -293,7 +293,7 @@ module.exports = {
                 "chainId": 2020,
                 "gas": 492874,
                 "from": from_acc,
-                "gasPrice": 0,
+                "gasPrice": await web3.utils.toWei("1", "gwei"),
                 "value": 0,
                 "to": SLP_CONTRACT,
                 "nonce": nonce,
@@ -681,7 +681,8 @@ module.exports = {
         if(num=='VENTA' || num=='venta')return 'ronin:29e29959cbb316923e57238467e14135d19c16f9'
         let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({num:num.toString()})
-        if(user)return user.scholarPayoutAddress
+        if(user && user.scholarPayoutAddress)return user.scholarPayoutAddress
+        //else if(user && user.accountAddress)return user.accountAddress
         else return null
     },
     getWalletByNum:async function(num){
