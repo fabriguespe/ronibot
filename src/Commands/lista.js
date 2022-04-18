@@ -22,7 +22,7 @@ module.exports = new Command({
 			if(args[1])query={nota:args[1]}
 
 			let users = await db.collection('users').find(query).toArray()
-			let limit_prom=args[1]?parseInt(args[1]):3
+			let limit_prom=args[1]?parseInt(args[1]):7
 			let tipo=args[2]
 			
 			for(let ii in users){
