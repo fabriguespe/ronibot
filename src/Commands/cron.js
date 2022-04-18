@@ -148,7 +148,7 @@ module.exports = new Command({
 				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 				let slpp=0
 				
-				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
+				if(typeof message !== 'undefined' && message.channel)message.channel.send('Procesando los claims pendientes...')
 				for(let i in users){
 					let user=users[i]
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
@@ -164,15 +164,13 @@ module.exports = new Command({
 						}catch (e) {
 							utils.log(e,message)
 						}
-						
-						
 					}	
 				}
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log(slpp +'SLP totales con una cantidad de registros: '+users.length,message);
 
 				slpp=0
-				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
+				if(typeof message !== 'undefined' && message.channel)message.channel.send('Revisando las wallets...')
 				for(let i in users){
 					let user=users[i]
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
