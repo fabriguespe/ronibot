@@ -107,7 +107,7 @@ module.exports = new Command({
 					datasets:[{label: 'usd-day', data: chart_data.usd,backgroundColor: '#9EC284'}] 
 				},
 			}).setWidth(800).setHeight(400);
-			//message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
+			message.channel.send(`Grafico: ${await chart.getShortUrl()}`);
 		
 			
 			chart = new QuickChart().setConfig({
