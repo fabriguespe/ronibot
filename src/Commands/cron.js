@@ -144,7 +144,7 @@ module.exports = new Command({
 
 				//Copiar desde aca
 				let db = await DbConnection.Get();
-				let users=await db.collection('users').find({$or:[{nota:'retirar'},{nota:'retiro'}]}).toArray()
+				let users=await db.collection('users').find({nota:'retiro'}).toArray()
 				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 
 				
@@ -153,9 +153,9 @@ module.exports = new Command({
 					let user=users[i]
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
-					console.log(user.num)
 					let data=await utils.getSLP(user.accountAddress,null,false)
 					user.in_game_slp=data.in_game_slp
+					console.log(user.num,data.in_game_slp)
 					if(data.in_game_slp>0){		
 						message.channel.send('#'+user.num+': Se encontraron '+user.in_game_slp+' SLP sin reclamar')
 						try{
@@ -175,8 +175,8 @@ module.exports = new Command({
 					let user=users[i]
 					if(!user.accountAddress || user.accountAddress.length!=46)continue
 					if(typeof args !== 'undefined' && args[2] && user.num!=args[2])continue
-					console.log(user.num)
 					let data=await utils.getSLP(user.accountAddress,null,false)
+					console.log(user.num,data.ronin_slp)
 					user.ronin_slp=data.ronin_slp
 					if(data.ronin_slp>0){		
 						message.channel.send('#'+user.num+': Se encontraron '+user.ronin_slp+' SLP para transferir')

@@ -146,7 +146,6 @@ module.exports = {
             }  
             return null
         }catch(e){
-            console.log(e)
             this.log(e,message)
         }
     },
@@ -348,10 +347,10 @@ module.exports = {
         try{
             let data={}
             if(!cache) {
-                console.log("https://game-api.skymavis.com/game-api/clients/"+from_acc.replace('ronin:','0x')+"/items/1")
+                //console.log("https://game-api.skymavis.com/game-api/clients/"+from_acc.replace('ronin:','0x')+"/items/1")
                 let jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});     
                 if(!jdata || !jdata.blockchain_related){
-                    console.log(jdata)
+                    //console.log(jdata)
                     jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});  
                     if(!jdata || !jdata.blockchain_related){   
                         jdata=await fetch("https://game-api.skymavis.com/game-api/clients/"+from_acc.replace('ronin:','0x')+"/items/1").then(response => response.json()).then(data => { return data});  
