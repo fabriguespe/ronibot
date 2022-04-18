@@ -126,7 +126,7 @@ module.exports = {
                     "chainId": 2020,
                     "gas": 492874,
                     "from": from_acc,
-                    "gasPrice": await web3.utils.toWei("1", "gwei"),//0
+                    "gasPrice":await this.getAxieCount(from_acc.replace('ronin:','0x'))>0?0: await web3.utils.toWei("1", "gwei"),
                     "value": 0,
                     "to": SLP_CONTRACT,
                     "nonce": nonce,
@@ -250,16 +250,18 @@ module.exports = {
             let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
             let myData=axie_contract.methods.safeTransferFrom((web3.utils.toChecksumAddress(from_acc)),(web3.utils.toChecksumAddress(to_acc)),(axie_id)).encodeABI()
             
+            console.log('coun',await this.getAxieCount(from_acc.replace('ronin:','0x')))
             let trans={
                     "chainId": 2020,
                     "gas": 492874,
                     "from": from_acc,
-                    "gasPrice": 0,
+                    "gasPrice":await this.getAxieCount(from_acc.replace('ronin:','0x'))>0?0: await web3.utils.toWei("1", "gwei"),
                     "value": 0,
                     "to": AXIE_CONTRACT,
                     "nonce": nonce,
                     data:myData
             }
+            console.log(trans)
                  
             message.channel.send("Listo para transferir el Axie: "+axie_id+"\nAguarde un momento...");
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
@@ -292,7 +294,7 @@ module.exports = {
                 "chainId": 2020,
                 "gas": 492874,
                 "from": from_acc,
-                "gasPrice": await web3.utils.toWei("1", "gwei"),//0
+                "gasPrice":await this.getAxieCount(from_acc.replace('ronin:','0x'))>0?0: await web3.utils.toWei("1", "gwei"),
                 "value": 0,
                 "to": SLP_CONTRACT,
                 "nonce": nonce,
@@ -629,6 +631,10 @@ module.exports = {
         //console.log(response)
         if(!response || !response.data || !response.data.createRandomMessage)return null
         return response.data.createRandomMessage
+    },
+    getAxieCount:async function (wallet){
+        let ja=await this.getAxiesIds(wallet)
+        return ja.count
     },
     getAxiesIds:async function (wallet){
         if(!wallet)return

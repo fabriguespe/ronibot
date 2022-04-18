@@ -44,7 +44,7 @@ module.exports = new Command({
 				//if(stats[stats.length-1] && stats[stats.length-2] && stats[stats.length-1].in_game_slp>0 && stats[stats.length-2].in_game_slp>0)count_users++
 				data_users.push(data)
 			}
-			console.log(count_users)
+
 			let data_por_dia=[]
 			for(let i in data_users){
 				let dias_del_user=data_users[i]
@@ -53,7 +53,6 @@ module.exports = new Command({
 					let fecha=undia.date
 					if(!data_por_dia[fecha])data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,slp:0,players:0,mmr:0,grupo1:0,grupo2:0,grupo3:0,grupo4:0,grupo5:0}
 					data_por_dia[fecha]={date:undia.date,timestamp:undia.timestamp,players:data_por_dia[fecha].players+(undia.slp>0?1:0),slp:data_por_dia[fecha].slp+=undia.slp,mmr:data_por_dia[fecha].mmr+=undia.mmr,grupo1:data_por_dia[fecha].grupo1+(undia.slp>0 && undia.slp<=TABULADORES.cuatro?1:0),grupo2:data_por_dia[fecha].grupo2+(undia.slp<TABULADORES.tres && undia.slp>=TABULADORES.cuatro?1:0),grupo3:data_por_dia[fecha].grupo3+(undia.slp<TABULADORES.dos && undia.slp>=TABULADORES.tres?1:0),grupo4:data_por_dia[fecha].grupo4+(undia.slp<TABULADORES.uno && undia.slp>=TABULADORES.dos?1:0),grupo5:data_por_dia[fecha].grupo5+(undia.slp>=TABULADORES.uno?1:0)}
-
 				}
 			}
 			data_por_dia=Object.values(data_por_dia)
