@@ -158,9 +158,14 @@ module.exports = new Command({
 					user.in_game_slp=data.in_game_slp
 					if(data.in_game_slp>0){		
 						message.channel.send('#'+user.num+': Se encontraron '+user.in_game_slp+' SLP sin reclamar')
+						try{
+							await utils.claim(user,message)
+						}catch (e) {
+							utils.log(e,message)
+						}
 						
 						
-					}
+					}	
 				}
 				
 				if(typeof message !== 'undefined' && message.channel)utils.log('Claim corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
