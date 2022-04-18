@@ -146,7 +146,7 @@ module.exports = new Command({
 				let db = await DbConnection.Get();
 				let users=await db.collection('users').find({nota:'retiro'}).toArray()
 				users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
-
+				let slpp=0
 				
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
@@ -157,6 +157,7 @@ module.exports = new Command({
 					user.in_game_slp=data.in_game_slp
 					console.log(user.num,data.in_game_slp)
 					if(data.in_game_slp>0){		
+						slpp+=data.in_game_slp
 						message.channel.send('#'+user.num+': Se encontraron '+user.in_game_slp+' SLP sin reclamar')
 						try{
 							await utils.claim(user,message)
@@ -168,8 +169,9 @@ module.exports = new Command({
 					}	
 				}
 				
-				if(typeof message !== 'undefined' && message.channel)utils.log('Claim corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
-			
+				if(typeof message !== 'undefined' && message.channel)utils.log(slpp +'SLP totales con una cantidad de registros: '+users.length,message);
+
+				slpp=0
 				if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
 				for(let i in users){
 					let user=users[i]
@@ -178,7 +180,8 @@ module.exports = new Command({
 					let data=await utils.getSLP(user.accountAddress,null,false)
 					console.log(user.num,data.ronin_slp)
 					user.ronin_slp=data.ronin_slp
-					if(data.ronin_slp>0){		
+					if(data.ronin_slp>0){			
+						slpp+=data.ronin_slp
 						message.channel.send('#'+user.num+': Se encontraron '+user.ronin_slp+' SLP para transferir')
 						try{	
 							await utils.transfer(user.accountAddress,await utils.getWalletByNum("BREED"),user.ronin_slp,message)
@@ -188,7 +191,7 @@ module.exports = new Command({
 					}
 				}
 				
-				if(typeof message !== 'undefined' && message.channel)utils.log('Flush corrido a las :' +new Date(Date.now()).toISOString()+' con una cantidad de registros: '+users.length,message);
+				if(typeof message !== 'undefined' && message.channel)utils.log(slpp +'SLP totales con una cantidad de registros: '+users.length,message);
 				
 			//HASTA ACA
 
