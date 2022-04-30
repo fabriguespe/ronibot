@@ -100,7 +100,7 @@ module.exports = {
         let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
         rCanal.send({content: ` `,embeds: [embed]})
     },
-    claim:async function (data,message){
+    claim:async function (data,message,forcefee=false){
         try{
             let db = await DbConnection.Get();
             let from_acc=data.accountAddress
@@ -115,6 +115,7 @@ module.exports = {
             let contract = new web3.eth.Contract(slp_abi,web3.utils.toChecksumAddress(SLP_CONTRACT))
             let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
             
+            
             //build
             let myData=contract.methods.checkpoint(
                 (web3.utils.toChecksumAddress(from_acc)),
@@ -126,8 +127,8 @@ module.exports = {
                     "chainId": 2020,
                     "gas": 492874,
                     "from": from_acc,
-                    "gasPrice":await this.getAxieCount(from_acc.replace('ronin:','0x'))>0?0: await web3.utils.toWei("1", "gwei"),
-                    "value": 0,
+                    "gasPrice":await this.getAxieCount(from_acc.replace('ronin:','0x'))>0 && !forcefee?0: await web3.utils.toWei("1", "gwei"),
+                    "value": 0, 
                     "to": SLP_CONTRACT,
                     "nonce": nonce,
                     data:myData
@@ -239,7 +240,7 @@ module.exports = {
             rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription(help).setColor('GREEN').setTimestamp()]})
         }
     },
-    transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
+    transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message,forcefee=false){
         if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
         try{
             
@@ -255,7 +256,7 @@ module.exports = {
                     "chainId": 2020,
                     "gas": 492874,
                     "from": from_acc,
-                    "gasPrice":await this.getAxieCount(from_acc.replace('ronin:','0x'))>0?0: await web3.utils.toWei("1", "gwei"),
+                    "gasPrice":await this.getAxieCount(from_acc.replace('ronin:','0x'))>0 && !forcefee?0: await web3.utils.toWei("1", "gwei"),
                     "value": 0,
                     "to": AXIE_CONTRACT,
                     "nonce": nonce,
@@ -277,7 +278,7 @@ module.exports = {
             this.log(e,message)
         }
     },
-    transfer:async function(from_acc,to_acc,balance,message){
+    transfer:async function(from_acc,to_acc,balance,message,forcefee=false){
         //if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
         try{
             from_acc=from_acc.replace('ronin:','0x')
@@ -294,7 +295,7 @@ module.exports = {
                 "chainId": 2020,
                 "gas": 492874,
                 "from": from_acc,
-                "gasPrice":await this.getAxieCount(from_acc.replace('ronin:','0x'))>0?0: await web3.utils.toWei("1", "gwei"),
+                "gasPrice":await this.getAxieCount(from_acc.replace('ronin:','0x'))>0 && !forcefee?0: await web3.utils.toWei("1", "gwei"),
                 "value": 0,
                 "to": SLP_CONTRACT,
                 "nonce": nonce,

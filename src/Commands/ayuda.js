@@ -28,6 +28,7 @@ module.exports = new Command({
 			help+="!ingreso  discord_username\n\n"
 			help+="!cron flushall \n\n"
 			help+="!pagar cant_de_slp/plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
+			help+="!pagar todos\n\n"
 		}
 		let embed = new MessageEmbed().setTitle('Comandos').setDescription(help).setColor('GREEN').setTimestamp()
 		return message.channel.send({content: ` `,embeds: [embed]})
