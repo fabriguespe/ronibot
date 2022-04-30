@@ -29,7 +29,7 @@ module.exports = new Command({
             try{    
                 for(let i in axies_ids){
                     let axie_id=axies_ids[i]
-                    await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message,args[5]=='--gas'?true:false)
+                    await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message,args[4]=='--gas'?true:false)
                 }
                 utils.log("Listo!",message);     
             }catch{
