@@ -11,7 +11,7 @@ module.exports = new Command({
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
    
-        if(args.length==4){
+        if(args.length==4 || args.length==5){
             let user_from=await utils.getUserByNum(args[2])
             //if(args[2]=='1' && !utils.esFabri(message))return message.channel.send('No tienes permisos ')
             let user_to=await utils.getUserByNum(args[3])
