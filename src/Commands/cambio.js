@@ -10,7 +10,7 @@ module.exports = new Command({
 	name: "cambio"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
-        console.log('ja')
+   
         if(args.length==4){
             let user_from=await utils.getUserByNum(args[2])
             //if(args[2]=='1' && !utils.esFabri(message))return message.channel.send('No tienes permisos ')
@@ -29,7 +29,7 @@ module.exports = new Command({
             try{    
                 for(let i in axies_ids){
                     let axie_id=axies_ids[i]
-                    await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message)
+                    await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message,args[5]=='--gas'?true:false)
                 }
                 utils.log("Listo!",message);     
             }catch{
