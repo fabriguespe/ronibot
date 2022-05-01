@@ -201,6 +201,7 @@ module.exports = new Command({
 			for(let i in users){
 				let currentUser=await utils.getUserByNum(users[i].num)
 				let data=await utils.claimData(currentUser,message,false)
+				if((data.hours*-1)>24)continue
 				slp+=data.in_game_slp
 				message.channel.send('Cuenta #'+users[i].num+' '+data.in_game_slp+' '+data.hours+'hs')
 			}
