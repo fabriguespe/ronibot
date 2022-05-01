@@ -8,9 +8,8 @@ module.exports = new Command({
 	name: "update"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.channel.send('No tienes permisos para correr este comando')
-	
-		let db = await DbConnection.Get();
-	
+		if(args.length>10){
+			let db = await DbConnection.Get();
 			let ids=args[1].split(",");
 			for(let i in ids){
 				let elnum=ids[i]
@@ -26,7 +25,8 @@ module.exports = new Command({
 				await db.collection("users").updateOne({ accountAddress:quien},values )
 				message.channel.send('El jugador ***#'+elnum+'*** fue actualizado con exito')
 				
-			}
+			}	
+		}
 		
 	}
 });
