@@ -64,7 +64,7 @@ module.exports = new Command({
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
 				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')')+(user.nota)+'\n'
-				if(args[1]=='scatter') value=user.accountAddress
+				if(args[1]=='scatter') value=user.accountAddress+'\n'
 				proms.slp_sum+=user.slp_prom
 				proms.mmr_sum+=user.mmr
 				if(user.slp_prom>0)proms.cant+=1
