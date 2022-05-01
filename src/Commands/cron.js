@@ -209,7 +209,23 @@ module.exports = new Command({
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
 			let usd=Math.round(slp*slp_price)
-			message.channel.send('Total '+slp+' , aprox $'+usd*0.5+' para que puedas reclamar.') 
+			message.channel.send('Total '+slp+' , aprox $'+usd*0.5+'.') 
+
+		}else if(args[1]=='forcecobrar'){
+			
+			let db = await DbConnection.Get();
+			let query={$or:[{nota:'aprobado'},{nota:'pro'}]}
+			let users=await db.collection('users').find(query).toArray()
+
+			for(let i in users){
+				message.channel.send('Cuenta #'+users[i].num)
+				let currentUser=await utils.getUserByNum(users[i].num)
+				let data=await utils.claimData(currentUser,message,false)
+				if(!(data.hours>0 && !data.has_to_claim)){
+					let fallo=await utils.cobroRoni(data,message)
+					if(!fallo)message.channel.send('Exito!')
+				}
+			}
 
 		}else if(args[1]=='cobrar'){
 			
