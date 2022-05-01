@@ -29,6 +29,8 @@ module.exports = new Command({
 			help+="!cron flushall \n\n"
 			help+="!pagar cant_de_slp/plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
 			help+="!pagar todos\n\n"
+			help+="!cron totalslp -> para ver el estado de todo\n\n"
+			
 		}
 		let embed = new MessageEmbed().setTitle('Comandos').setDescription(help).setColor('GREEN').setTimestamp()
 		return message.channel.send({content: ` `,embeds: [embed]})
