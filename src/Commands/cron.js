@@ -200,15 +200,14 @@ module.exports = new Command({
 			let slp=0
 			for(let i in users){
 				let currentUser=await utils.getUserByNum(users[i].num)
-				
 				let data=await utils.claimData(currentUser,message,false)
 				slp+=data.in_game_slp
-				message.channel.send('Cuenta #'+users[i].num+' '+data.in_game_slp)
+				message.channel.send('Cuenta #'+users[i].num+' '+data.in_game_slp+' '+data.hours+'hs')
 			}
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
 			let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
 			let usd=Math.round(slp*slp_price)
-			message.channel.send('Total '+slp+'/ $'+usd+' hs para que puedas reclamar.') 
+			message.channel.send('Total '+slp+'/ $'+usd+' para que puedas reclamar.') 
 
 		}else if(args[1]=='cobrar'){
 			
