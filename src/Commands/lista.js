@@ -19,7 +19,7 @@ module.exports = new Command({
 		try{
 			let db = await DbConnection.Get();
 			let query={$or:[{nota:'aprobado'},{nota:'pro'},{nota:'fijo'}]}
-			if(args[1]!='scatter')query={nota:args[1]}
+			if(!empty(args[1])&& args[1]!='scatter')query={nota:args[1]}
 
 			let users = await db.collection('users').find(query).toArray()
 			let limit_prom=args[1]?parseInt(args[1]):7
