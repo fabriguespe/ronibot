@@ -203,7 +203,7 @@ module.exports = new Command({
 				let data=await utils.claimData(currentUser,message,false)
 				if((Math.round(data.hours))>24)continue
 				slp+=data.in_game_slp
-				message.channel.send('Cuenta #'+users[i].num+' '+data.in_game_slp+' '+Math.round(data.hours*-1)+'hs')
+				message.channel.send('Cuenta #'+users[i].num+' '+data.in_game_slp+' '+Math.round(data.hours)*-1+'hs')
 			}
 			
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
