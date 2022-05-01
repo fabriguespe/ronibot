@@ -218,10 +218,10 @@ module.exports = new Command({
 			let users=await db.collection('users').find(query).toArray()
 
 			for(let i in users){
-				message.channel.send('Cuenta #'+users[i].num)
 				let currentUser=await utils.getUserByNum(users[i].num)
 				let data=await utils.claimData(currentUser,message,false)
 				if(!(data.hours>0 && !data.has_to_claim)){
+					message.channel.send('Cuenta #'+users[i].num)
 					let fallo=await utils.cobro(data,message)
 					if(!fallo)message.channel.send('Exito!')
 				}
