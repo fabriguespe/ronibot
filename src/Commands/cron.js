@@ -214,7 +214,7 @@ module.exports = new Command({
 		}else if(args[1]=='forcecobrar'){
 			
 			let db = await DbConnection.Get();
-			let query={$or:[{nota:'aprobado'},{nota:'pro'}]}
+			let query={$or:[{nota:'aprobado'},{nota:'pro'},{nota:'pro'}]}
 			let users=await db.collection('users').find(query).toArray()
 
 			for(let i in users){
@@ -222,12 +222,12 @@ module.exports = new Command({
 				let currentUser=await utils.getUserByNum(users[i].num)
 				let data=await utils.claimData(currentUser,message,false)
 				if(!(data.hours>0 && !data.has_to_claim)){
-					let fallo=await utils.cobroRoni(data,message)
+					let fallo=await utils.cobro(data,message)
 					if(!fallo)message.channel.send('Exito!')
 				}
 			}
 
-		}else if(args[1]=='cobrar'){
+		}else if(args[1]=='cobrarfijos'){
 			
 			let db = await DbConnection.Get();
 			let users=await db.collection('users').find({nota:'fijo'}).toArray()
