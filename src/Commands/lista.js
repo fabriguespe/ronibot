@@ -63,7 +63,7 @@ module.exports = new Command({
 			for(let ii in users){
 				let user=users[ii]
 				if(user.name)user.name=user.name.replaceAll('*','')
-				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+') ('+user.nota+')'+'\n'
+				let value='#'+user.num+"[***"+user.name+"***](https://marketplace.axieinfinity.com/profile/"+user.accountAddress+") "+user.slp_prom+(user.mmr==undefined?'':'('+user.mmr+')'+'('+user.nota+')'+'\n'
 				
 				proms.slp_sum+=user.slp_prom
 				proms.mmr_sum+=user.mmr
