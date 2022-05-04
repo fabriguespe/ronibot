@@ -227,6 +227,7 @@ module.exports = new Command({
 				}
 			}
 
+			
 		}else if(args[1]=='cobrarfijos'){
 			
 			let db = await DbConnection.Get();
