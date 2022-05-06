@@ -11,15 +11,19 @@ Hi! This is a discord bot i built using NodeJS for operating an Axie Infinity gu
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+I have put a mongo db for you to use it as a clean slate. I recommend using a mongoide so to import data from an excel or so. I use mingo.
 
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
+
+1) Install mongo db
+
+2) gunzip db
+  ```gunzip ronibot-db.gz -k    
+  ```
+3) import db
+  ```mongorestore --archive=ronibot-db
   ```
 
 ### Installation
