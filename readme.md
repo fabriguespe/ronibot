@@ -65,7 +65,6 @@ Review all accounts for missing SLP
 
 Your Name - [@fabriguespe](https://twitter.com/fabriguespe) - fguespe@gmail.com
 
-Project Link: [https://github.com/fguespe/ronibot](https://github.com/fguespe/ronibot.git)
 
 
 ## Acknowledgments
