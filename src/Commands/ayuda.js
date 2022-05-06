@@ -31,10 +31,11 @@ module.exports = new Command({
 			help+="!pagar todos\n\n"
 			help+="!cron totalslp -> para ver el estado de todo\n\n"
 			
+			
 		}
 		let embed = new MessageEmbed().setTitle('Comandos').setDescription(help).setColor('GREEN').setTimestamp()
 		return message.channel.send({content: ` `,embeds: [embed]})
 		
-		
+
 	}
 });
