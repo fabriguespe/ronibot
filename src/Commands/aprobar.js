@@ -6,6 +6,7 @@ var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 var utils = require(path.resolve(__dirname, "../utils.js"));
 const { MessageEmbed} = require('discord.js');
 
+
 module.exports = new Command({
 	name: "aprobar"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {

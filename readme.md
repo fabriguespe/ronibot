@@ -9,7 +9,6 @@ Hi! This is a discord bot i built using NodeJS for operating an Axie Infinity gu
 * [Web3js](https://web3js.readthedocs.io/)
 
 
-<!-- GETTING STARTED -->
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
@@ -41,11 +40,6 @@ _Below is an example of how you can instruct your audience on installing and set
    const API_KEY = 'ENTER YOUR API';
    ```
 
-
-
-
-
-<!-- USAGE EXAMPLES -->
 ## Usage
 
 !report XX para ver info del jugador\n\n"
@@ -62,15 +56,11 @@ _Below is an example of how you can instruct your audience on installing and set
 !pay cant_de_slp/plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
 
 
-
-<!-- CONTACT -->
 ## Contact
 
 Your Name - [@fabriguespe](https://twitter.com/fabriguespe) - email@example.com
 
 Project Link: [https://github.com/fguespe/ronibot](https://github.com/fguespe/ronibot.git)
-
-
 
 
 ## Acknowledgments
