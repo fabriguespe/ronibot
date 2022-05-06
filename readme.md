@@ -24,7 +24,8 @@ This is an example of how to list things you need to use the software and how to
   gunzip ronibot-db.gz -k    
   ```
 3) import db
-  ```mongorestore --archive=ronibot-db
+  ```
+  mongorestore --archive=ronibot-db
   ```
 
 ### Installation
