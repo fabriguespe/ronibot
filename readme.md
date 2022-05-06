@@ -43,12 +43,15 @@ _Below is an example of how you can instruct your audience on installing and set
 ## Usage
 
 Transfer axies from one wallet to another
+
 !transfer AXIE_ID,AXIE_ID FROM_ACCOUNT FROM_ACCOUNT
 
 Update user field in DB
+
 !update ACCOUNT_NUMBER FIELD VALUE 
 
 Payment receipt for user
+
 !roni ACCOUNT
 
 Review all accounts for missing SLP
