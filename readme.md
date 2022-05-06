@@ -69,5 +69,5 @@ Your Name - [@fabriguespe](https://twitter.com/fabriguespe) - fguespe@gmail.com
 
 ## Acknowledgments
 
-I want to thank 
-* [FerranMarin](https://github.com/FerranMarin/) an his axie-utils for serving as my inspiration
+
+I want to thank  * [FerranMarin](https://github.com/FerranMarin/) an his axie-utils for serving as my inspiration
