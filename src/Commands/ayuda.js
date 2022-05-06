@@ -35,5 +35,6 @@ module.exports = new Command({
 		let embed = new MessageEmbed().setTitle('Comandos').setDescription(help).setColor('GREEN').setTimestamp()
 		return message.channel.send({content: ` `,embeds: [embed]})
 		
+		
 	}
 });
