@@ -19,11 +19,11 @@ This is an example of how to list things you need to use the software and how to
 
 1) Install mongo db
 
-2) gunzip db
+2) Gunzip db
   ```
   gunzip ronibot-db.gz -k    
   ```
-3) import db
+3) Import db
   ```
   mongorestore --archive=ronibot-db
   ```
