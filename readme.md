@@ -19,6 +19,8 @@ This is an example of how to list things you need to use the software and how to
 
 1) Install mongo db
 
+2) Create a discord bot application
+
 2) Gunzip db
   ```
   gunzip ronibot-db.gz -k    
