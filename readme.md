@@ -42,18 +42,20 @@ _Below is an example of how you can instruct your audience on installing and set
 
 ## Usage
 
-!report XX para ver info del jugador\n\n"
-!transfer AXIE_ID,AXIE_ID DESDE_XX HASTA_XX para transferir axies\n\n"
-!update XX FIELD VALUE para actualizar (nota,wallet,name)\n\n"
-!ranking para traer los 10 mejores\n\n"
-!list para traer los 10 mejores\n\n"
-!entrevista para traer los 10 mejores\n\n"
-!general para ver el estado de la academia\n\n"
-!retiro DESDE_XX HASTA_XX para transferir todos los axies\n\n"
-!aprobar XX para aprobar una entrevista\n\n"
-!ingreso  discord_username\n\n"
+Transfer axies from one wallet to another
+!transfer AXIE_ID,AXIE_ID FROM_ACCOUNT FROM_ACCOUNT
+
+Update user field in DB
+!update ACCOUNT_NUMBER FIELD VALUE 
+
+Payment receipt for user
+!roni ACCOUNT
+
+Review all accounts for missing SLP
 !cron flushall \n\n"
-!pay cant_de_slp/plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
+
+
+!pay SLP /plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
 
 
 ## Contact
