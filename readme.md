@@ -24,7 +24,7 @@ This is an example of how to list things you need to use the software and how to
   ```
 {
 	
-   "token": "OTA4NzM5Mzc5MDU5NjI2MDk0.YY6Hfw.wKBvWqtl0phUKvkK0nUh-wuhIro",
+   "token": "DISCORD_BOT_TOKEN",
 	"mongo":"mongodb+srv://manager:db@password@cluster0.bkdr2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
 	"prefix": "!"
 }
