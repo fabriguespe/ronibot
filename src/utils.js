@@ -250,7 +250,6 @@ module.exports = {
             let nonce = await web3.eth.getTransactionCount(from_acc, function(error, txCount) { return txCount}); 
             let myData=axie_contract.methods.safeTransferFrom((web3.utils.toChecksumAddress(from_acc)),(web3.utils.toChecksumAddress(to_acc)),(axie_id)).encodeABI()
             
-            console.log('coun',await this.getAxieCount(from_acc.replace('ronin:','0x')))
             let trans={
                     "chainId": 2020,
                     "gas": 492874,
