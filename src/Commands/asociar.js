@@ -43,7 +43,7 @@ module.exports = new Command({
                 ingreso.roles.add(rJugador);
 
             }else{
-                utils.log(`${args[0]} is not a valid command2!`);
+                utils.log(`${args[0]} is not a valid command!`);
             }
         }catch(e){
             utils.log(e,message)

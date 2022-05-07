@@ -69,7 +69,7 @@ For this to work you have to create a file containing all wallets and their priv
 - You can even transfer USD doing a behind the scenes usd/slp conversion. So you can pay someone in USD terms and system will the slp that it needs
 
 ```
-!transfer slp/axs/ron QUANTITY FROM_ACCOUNT FROM_ACCOUNT
+!transfer slp QUANTITY FROM_ACCOUNT FROM_ACCOUNT
 ```
 
 - Update user field in Users DB table

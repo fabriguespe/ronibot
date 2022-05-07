@@ -63,7 +63,7 @@ module.exports = new Command({
 
             await utils.transfer(from_acc,to_acc,qty,message)
         }else{
-            utils.log("El comando tiene un error (espacios, mal escrito, etc)",message);       
+            utils.log("Command is incorrect, check spelling, parameters, etc",message);       
         }
 	}
 });

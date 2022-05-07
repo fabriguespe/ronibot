@@ -17,7 +17,7 @@ module.exports = new Command({
 			let db = await DbConnection.Get();
 			let data=''
 			let eluser = await db.collection('users').findOne({num:args[1]})
-			if(!eluser)return utils.log('usuario no encontrado',message)
+			if(!eluser)return utils.log('User not found',message)
 			
 			let axie_count=0
 			if(args.length==2 || args.length==3){
