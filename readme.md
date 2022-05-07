@@ -19,8 +19,8 @@ This is an example of how to list things you need to use the software and how to
 
 1) Install mongo db
 
-* Create a discord bot application
-* Create a config.json file like this into Data folder
+- Create a discord bot application
+- Create a config.json file like this into Data folder
 
   ```
 {
