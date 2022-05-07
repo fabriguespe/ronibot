@@ -63,10 +63,16 @@ For this to work you have to create a file containing all wallets and their priv
 - Transfer tokens or usd (converts usd to slp) from one wallet to another. If only one wallet specified the source will come from main wallet.
 
 ```
-!transfer slp/axs/ron/usd QUANTITY FROM_ACCOUNT FROM_ACCOUNT
+!transfer slp/axs/ron QUANTITY FROM_ACCOUNT FROM_ACCOUNT
 ```
 
-- Update user field in DB
+- You can even transfer USD doing a behind the scenes usd/slp conversion. So you can pay someone in USD terms and system will the slp that it needs
+
+```
+!transfer slp/axs/ron QUANTITY FROM_ACCOUNT FROM_ACCOUNT
+```
+
+- Update user field in Users DB table
 ```
 !update ACCOUNT_NUMBER FIELD VALUE 
 ```
@@ -76,14 +82,10 @@ For this to work you have to create a file containing all wallets and their priv
 !roni ACCOUNT
 ```
 
-Review all accounts for missing SLP
+- Review all accounts for missing SLP
 
 ```
 !cron flushall \n\n"
-```
-
-```
-!pay SLP /plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
 ```
 
 
