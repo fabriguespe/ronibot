@@ -1,6 +1,4 @@
-/** @format */
 const path = require('path');
-
 const Command = require("../Structures/Command.js");
 const fetch = require( "node-fetch")
 const { MessageEmbed} = require('discord.js');
