@@ -13,6 +13,7 @@ module.exports = new Command({
 	name: "ranking"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send("You don't have the propper rights to run this command.")
+		
 		try{
 			let db = await DbConnection.Get();
 			let limit_prom=args[1]?parseInt(args[1]):3
