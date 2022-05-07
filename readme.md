@@ -27,15 +27,26 @@ This is an example of how to list things you need to use the software and how to
       "prefix": "!"
    }
   ```
-* Unzip db
+- Unzip db
   ```
   gunzip ronibot-db.gz -k    
   ```
-* Import db
+- Import db
   ```
   mongorestore --archive=ronibot-db
   ```
 
+### Private keys
+For this to work you have to create a file containing all wallets and their private keys. Create a file secrets.json and copy into a structure like this one
+  ```
+{
+    
+    "ronin:ADDRES1": "privatekey",
+    "ronin:ADDRES2": "privatekey",
+    "ronin:ADDRES3": "privatekey",
+    "ronin:ADDRES4": "privatekey"
+}
+  ```
 
 
 ## Usage
