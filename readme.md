@@ -17,8 +17,8 @@ I have put a mongo db for you to use it as a clean slate. I recommend using a mo
 
 This is an example of how to list things you need to use the software and how to install them.
 
-- Install mongo db
-- Create a discord bot application
+- Install MongoDB
+- Create a Discord Bot Application
 - Create a config.json file like this into Data folder
   ```
    {
