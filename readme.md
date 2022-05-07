@@ -19,7 +19,8 @@ This is an example of how to list things you need to use the software and how to
 
 1) Install mongo db
 
-2) Create a discord bot application
+* Create a discord bot application
+* Create a config.json file like this into Data folder
 
   ```
 {
@@ -30,11 +31,11 @@ This is an example of how to list things you need to use the software and how to
 }
   ```
 
-2) Gunzip db
+* Unzip db
   ```
   gunzip ronibot-db.gz -k    
   ```
-3) Import db
+* Import db
   ```
   mongorestore --archive=ronibot-db
   ```
