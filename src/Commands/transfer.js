@@ -7,10 +7,12 @@ module.exports = new Command({
 	name: "transfer"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send("You don't have the propper rights to run this command.")
-        
-        if(args[1]=='axie' && args.length==4){
-            let user_from=await utils.getUserByNum(args[3])
-            let user_to=await utils.getUserByNum(args[4])
+        let from=args.length==5?args[3]:'main'
+        let to=args.length==5?args[4]:args[3]
+
+        if(args[1]=='axie' && (args.length==5 || args.length==4)){
+            let user_from=await utils.getUserByNum(from)
+            let user_to=await utils.getUserByNum(to)
             
             let from_acc=(user_from && user_from.accountAddress?user_from.accountAddress:user_from)
             let to_acc=(user_to && user_to.accountAddress?user_to.accountAddress:user_to)
@@ -31,7 +33,7 @@ module.exports = new Command({
             }catch{
                 utils.log("Error",message);     
             }
-        }else if(args[1]=='slp' ){
+        }else if(args[1]=='slp' && (args.length==5 || args.length==4)){
 
             let qty=args[2]
             if(qty.includes('usd')){
@@ -40,14 +42,26 @@ module.exports = new Command({
                 usd=qty.replace('usd','')
                 qty=Math.round(usd/slp_price)
             }
-            let from_acc=await utils.getPaymentWalletByNum("BREED")
-            let to_acc=await utils.getPaymentWalletByNum(args[2])
+            let from_acc=await utils.getPaymentWalletByNum(from)
+            let to_acc=await utils.getPaymentWalletByNum(to)
             console.log(to_acc)
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
 
             await utils.transfer(from_acc,to_acc,qty,message)
 
+        }else if(args[1]=='usd' && (args.length==5 || args.length==4)){
+
+            let qty=args[2]
+            let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
+            let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
+            qty=Math.round(usd/slp_price)
+            let from_acc=await utils.getPaymentWalletByNum(from)
+            let to_acc=await utils.getPaymentWalletByNum(to)
+            from_acc=from_acc.replace('ronin:','0x')
+            to_acc=to_acc.replace('ronin:','0x')
+
+            await utils.transfer(from_acc,to_acc,qty,message)
         }else{
             utils.log("El comando tiene un error (espacios, mal escrito, etc)",message);       
         }
