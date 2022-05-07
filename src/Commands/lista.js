@@ -9,7 +9,7 @@ var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 TABULADORES={uno:60,dos:45,tres:35,cuatro:1}
 
 module.exports = new Command({
-	name: "list"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
+	name: "lista"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send("You don't have the propper rights to run this command.")
 		if(!utils.esFabri(message) && args[1]=='pro')return message.channel.send("You don't have the propper rights to run this command.")
