@@ -8,7 +8,7 @@ module.exports = new Command({
 		let help='You can see comands here\n'
 		help+='https://github.com/fguespe/ronibot#mongodb\n\n'
 
-		let embed = new MessageEmbed().setTitle('Comandos').setDescription(help).setColor('GREEN').setTimestamp()
+		let embed = new MessageEmbed().setTitle('HELP').setDescription(help).setColor('GREEN').setTimestamp()
 		return message.channel.send({content: ` `,embeds: [embed]})
 		
 	}
