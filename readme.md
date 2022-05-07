@@ -55,25 +55,36 @@ For this to work you have to create a file containing all wallets and their priv
 
 ## Usage
 
-Transfer axies from one wallet to another
+- Transfer axies from one wallet to another
 ```
-!transfer_axie AXIE_ID,AXIE_ID FROM_ACCOUNT FROM_ACCOUNT
+!transfer axie AXIE_ID,AXIE_ID FROM_ACCOUNT FROM_ACCOUNT
 ```
-Update user field in DB
+
+- Transfer tokens or usd (converts usd to slp) from one wallet to another. If only one wallet specified the source will come from main wallet.
+
+```
+!transfer slp/axs/ron/usd QUANTITY FROM_ACCOUNT FROM_ACCOUNT
+```
+
+- Update user field in DB
 ```
 !update ACCOUNT_NUMBER FIELD VALUE 
 ```
-Payment receipt for user
+
+- Payment receipt for user
 ```
 !roni ACCOUNT
 ```
+
 Review all accounts for missing SLP
 
 ```
 !cron flushall \n\n"
 ```
 
+```
 !pay SLP /plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
+```
 
 
 ## Contact

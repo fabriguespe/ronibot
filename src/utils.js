@@ -100,7 +100,7 @@ module.exports = {
         let rCanal = message.guild.channels.cache.find(c => c.id == 909165024642203658);//canal ingresos
         rCanal.send({content: ` `,embeds: [embed]})
     },
-    claim:async function (data,message,forcefee=false){
+    claim:async function (data,message){
         try{
             let db = await DbConnection.Get();
             let from_acc=data.accountAddress
@@ -239,7 +239,7 @@ module.exports = {
             rCanal.send({content: ` `,embeds: [new MessageEmbed().setTitle('Retiro').setDescription(help).setColor('GREEN').setTimestamp()]})
         }
     },
-    transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message,forcefee=false){
+    transferAxie:async function(from_acc,to_acc,num_from,num_to,axie_id,message){
         if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
         try{
             
@@ -277,7 +277,7 @@ module.exports = {
             this.log(e,message)
         }
     },
-    transfer:async function(from_acc,to_acc,balance,message,forcefee=false){
+    transfer:async function(from_acc,to_acc,balance,message){
         //if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
         try{
             from_acc=from_acc.replace('ronin:','0x')
