@@ -21,6 +21,15 @@ This is an example of how to list things you need to use the software and how to
 
 2) Create a discord bot application
 
+  ```
+{
+	
+   "token": "OTA4NzM5Mzc5MDU5NjI2MDk0.YY6Hfw.wKBvWqtl0phUKvkK0nUh-wuhIro",
+	"mongo":"mongodb+srv://manager:db@password@cluster0.bkdr2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+	"prefix": "!"
+}
+  ```
+
 2) Gunzip db
   ```
   gunzip ronibot-db.gz -k    
