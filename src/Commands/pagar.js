@@ -66,7 +66,7 @@ module.exports = new Command({
 
             await utils.transfer(from_acc,to_acc,slp,message)
         }else{
-            return message.channel.send(`Cantidad de argumentos invalida!`);
+            return message.channel.send(`El comando tiene un error (espacios, mal escrito, etc)`);
         }
 
 	}
