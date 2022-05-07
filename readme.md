@@ -22,10 +22,9 @@ This is an example of how to list things you need to use the software and how to
 - Create a config.json file like this into Data folder
   ```
    {
-	
-   "token": "DISCORD_BOT_TOKEN",
-	"mongo":"mongodb+srv://manager:db@password@cluster0.bkdr2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-	"prefix": "!"
+      "token": "DISCORD_BOT_TOKEN",
+      "mongo":"mongodb+srv://manager:db@password@cluster0.bkdr2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+      "prefix": "!"
    }
   ```
 
