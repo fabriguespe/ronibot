@@ -72,11 +72,11 @@ Review all accounts for missing SLP
 !pay SLP /plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
 
 
-## Twitter
+## Contact
+
+Fabrizio Guespe
 
 [@fabriguespe](https://twitter.com/fabriguespe)
-
-## Twitter
 
 [fguespe@gmail.com](mailto:fguespe@gmail.com)
 
