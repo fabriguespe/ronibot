@@ -76,7 +76,7 @@ Review all accounts for missing SLP
 
 Fabrizio Guespe
 
-[@fabriguespe](https://twitter.com/fabriguespe)
+Twitter [@fabriguespe](https://twitter.com/fabriguespe)
 
 [fguespe@gmail.com](mailto:fguespe@gmail.com)
 
