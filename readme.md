@@ -17,18 +17,16 @@ I have put a mongo db for you to use it as a clean slate. I recommend using a mo
 
 This is an example of how to list things you need to use the software and how to install them.
 
-1) Install mongo db
-
+- Install mongo db
 - Create a discord bot application
 - Create a config.json file like this into Data folder
-
   ```
-{
+   {
 	
    "token": "DISCORD_BOT_TOKEN",
 	"mongo":"mongodb+srv://manager:db@password@cluster0.bkdr2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
 	"prefix": "!"
-}
+   }
   ```
 
 * Unzip db
