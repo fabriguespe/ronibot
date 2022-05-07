@@ -85,7 +85,7 @@ For this to work you have to create a file containing all wallets and their priv
 - Reviews all wallets for missing or forgoten SLP and claims it or sends it back to main account
 
 ```
-!cron flushall"
+!cron flushall
 ```
 
 
