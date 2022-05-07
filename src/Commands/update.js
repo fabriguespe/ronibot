@@ -7,7 +7,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 module.exports = new Command({
 	name: "update"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.channel.send('No tienes permisos para correr este comando')
+		if(!(utils.esJeissonPagos(message) || utils.esFabri(message)))return message.channel.send("You don't have the propper rights to run this command.")
 		if(args.length>2){
 			let db = await DbConnection.Get();
 			let ids=args[1].split(",");

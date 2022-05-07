@@ -13,7 +13,7 @@ TABULADORES={uno:48,dos:45,tres:35,cuatro:1}
 module.exports = new Command({
 	name: "stat"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
+		if(!utils.esManager(message))return message.channel.send("You don't have the propper rights to run this command.")
 		
 		try{
 			message.channel.send('Aguarde un momento...') 

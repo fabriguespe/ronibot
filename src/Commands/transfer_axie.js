@@ -7,9 +7,9 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 
 
 module.exports = new Command({
-	name: "transfer"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
+	name: "transfer_axie"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
+		if(!utils.esManager(message))return message.channel.send("You don't have the propper rights to run this command.")
    
         if(args.length==4 || args.length==5){
             let user_from=await utils.getUserByNum(args[2])

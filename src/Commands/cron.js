@@ -11,7 +11,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 module.exports = new Command({
 	name: "cron"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		if(!utils.esFabri(message))return message.channel.send('No tienes permisos para correr este comando')
+		if(!utils.esFabri(message))return message.channel.send("You don't have the propper rights to run this command.")
 		
 		if(args[1]=='bk'){
 			// mongorestore --archive=archive

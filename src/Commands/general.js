@@ -13,7 +13,7 @@ TABULADORES={uno:60,dos:45,tres:35,cuatro:25}
 module.exports = new Command({
 	name: "general"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
+		if(!utils.esManager(message))return message.channel.send("You don't have the propper rights to run this command.")
 		try{
 			let db = await DbConnection.Get();
 			let query={$or:[{nota:'aprobado'},{nota:'pro'},{nota:'fijo'}]}

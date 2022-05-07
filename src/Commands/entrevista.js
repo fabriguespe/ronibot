@@ -13,7 +13,7 @@ DISCORD_FABRI=533994454391062529
 module.exports = new Command({
 	name: "entrevista"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
-		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
+		if(!utils.esManager(message))return message.channel.send("You don't have the propper rights to run this command.")
 		try{
 			let db = await DbConnection.Get();
 			let users = await db.collection('users').find({nota:'entrevista'}).toArray()
