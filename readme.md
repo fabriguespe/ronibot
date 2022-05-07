@@ -58,6 +58,7 @@ For this to work you have to create a file containing all wallets and their priv
 
 I have attached a sample of the users table. You can create a table of all your schollars and their addresses. Then relate it to others
 
+sample.xls
 
 ## Usage
 
