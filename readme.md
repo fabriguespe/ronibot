@@ -82,7 +82,7 @@ For this to work you have to create a file containing all wallets and their priv
 !roni ACCOUNT
 ```
 
-- Reviews all accounts for missing or forgoten SLP
+- Reviews all wallets for missing or forgoten SLP and claims it or sends it back to main account
 
 ```
 !cron flushall"
