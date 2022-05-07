@@ -1,0 +1,6 @@
+{
+	
+	"token": "TOKEN",
+	"mongo":"mongodb+srv://manager:db@password@mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+	"prefix": "!"
+}

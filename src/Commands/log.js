@@ -5,8 +5,6 @@ const Command = require("../Structures/Command.js");
 const fetch = require( "node-fetch")
 const { MessageEmbed} = require('discord.js');
 const QuickChart = require('quickchart-js');
-const { stat } = require('fs');
-const { type } = require('os');
 var utils = require(path.resolve(__dirname, "../utils.js"));
 var DbConnection = require(path.resolve(__dirname, "../Data/db.js"));
 
