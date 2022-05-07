@@ -263,7 +263,7 @@ module.exports = {
             }
             console.log(trans)
                  
-            message.channel.send("Listo para transferir el Axie: "+axie_id+"\nAguarde un momento...");
+            message.channel.send("Success para transferir el Axie: "+axie_id+"\nAguarde un momento...");
             let signed  = await web3.eth.accounts.signTransaction(trans, from_private)
             let tr_raw=await web3.eth.sendSignedTransaction(signed.rawTransaction)
             

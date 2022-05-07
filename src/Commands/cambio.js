@@ -31,7 +31,7 @@ module.exports = new Command({
                     let axie_id=axies_ids[i]
                     await utils.transferAxie(from_acc,to_acc,num_from,num_to,axie_id,message,args[4]=='--gas'?true:false)
                 }
-                utils.log("Listo!",message);     
+                utils.log("Success!",message);     
             }catch{
                 utils.log("Error",message);     
             }

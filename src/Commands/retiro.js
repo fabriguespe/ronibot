@@ -54,7 +54,7 @@ module.exports = new Command({
                     }
                     await utils.cambiarEstado(user_from.num,user_from.nota,'retiro',message)
                     await utils.cambiarEstado(user_to.num,user_to.nota,'libre',message)
-                    utils.log("Listo!",message);
+                    utils.log("Success!",message);
                 }
         
         }catch(e){

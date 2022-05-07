@@ -20,7 +20,7 @@ module.exports = new Command({
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
             console.log(from_acc,to_acc,slp)
-            let t1=await utils.transfer(from_acc,to_acc,slp,message)
+            await utils.transfer(from_acc,to_acc,slp,message)
 
         }else if(args.length==2 && args[1]=='todos'){//sale de breed
 			let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
@@ -54,7 +54,7 @@ module.exports = new Command({
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
 
-            let t1=await utils.transfer(from_acc,to_acc,slp,message)
+            await utils.transfer(from_acc,to_acc,slp,message)
 
         }else if(args.length==3){//sale de breed
             
@@ -64,7 +64,7 @@ module.exports = new Command({
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
 
-            let t1=await utils.transfer(from_acc,to_acc,slp,message)
+            await utils.transfer(from_acc,to_acc,slp,message)
         }else{
             return message.channel.send(`Cantidad de argumentos invalida!`);
         }

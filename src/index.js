@@ -26,7 +26,7 @@ fs.readdirSync(__dirname+"/Commands")
 https://askubuntu.com/questions/919108/error-unit-mongodb-service-is-masked-when-starting-mongodb
 */
 client.on("ready", message => {
-	utils.log('Listo!')
+	utils.log('Success!')
 	let scheduledMessage=''
 	
 	scheduledMessage = new cron.CronJob('10 0 * * *', () => {
