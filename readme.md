@@ -53,12 +53,11 @@ For this to work you have to create a file containing all wallets and their priv
 }
   ```
 
-
 ## Usage
 
 Transfer axies from one wallet to another
 ```
-!transfer AXIE_ID,AXIE_ID FROM_ACCOUNT FROM_ACCOUNT
+!transfer_axie AXIE_ID,AXIE_ID FROM_ACCOUNT FROM_ACCOUNT
 ```
 Update user field in DB
 ```

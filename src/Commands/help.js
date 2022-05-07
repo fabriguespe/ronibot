@@ -1,4 +1,3 @@
-/** @format */
 const path = require('path');
 
 const Command = require("../Structures/Command.js");
@@ -13,7 +12,7 @@ module.exports = new Command({
 	name: "help"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		let help='!reporte XX para ver info del jugador\n\n
-			!cambio AXIE_ID,AXIE_ID DESDE_XX HASTA_XX para transferir axies\n\n
+			!transfer AXIE_ID,AXIE_ID FROM_ACCOUNT FROM_ACCOUNTs\n\n
 			!update XX FIELD VALUE para actualizar (nota,wallet,name)\n\n
 			!ranking para traer los 10 mejores\n\n
 			!lista para traer los 10 mejores\n\n
