@@ -7,7 +7,7 @@ var utils = require(path.resolve(__dirname, "../utils.js"));
 
 
 module.exports = new Command({
-	name: "cambio"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
+	name: "transfer"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send('No tienes permisos para correr este comando')
    

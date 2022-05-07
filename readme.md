@@ -13,7 +13,7 @@ Hi! This is a discord bot i built using NodeJS for operating an Axie Infinity gu
 
 I have put a mongo db for you to use it as a clean slate. I recommend using a mongoide so to import data from an excel or so. I use mingo.
 
-### Prerequisites
+### Installation
 
 This is an example of how to list things you need to use the software and how to install them.
 
@@ -27,7 +27,6 @@ This is an example of how to list things you need to use the software and how to
       "prefix": "!"
    }
   ```
-
 * Unzip db
   ```
   gunzip ronibot-db.gz -k    
@@ -37,41 +36,27 @@ This is an example of how to list things you need to use the software and how to
   mongorestore --archive=ronibot-db
   ```
 
-### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
 
 ## Usage
 
 Transfer axies from one wallet to another
-
+```
 !transfer AXIE_ID,AXIE_ID FROM_ACCOUNT FROM_ACCOUNT
-
+```
 Update user field in DB
-
+```
 !update ACCOUNT_NUMBER FIELD VALUE 
-
+```
 Payment receipt for user
-
+```
 !roni ACCOUNT
-
+```
 Review all accounts for missing SLP
-!cron flushall \n\n"
 
+```
+!cron flushall \n\n"
+```
 
 !pay SLP /plata_usd DE_ID/BREED HASTA_ID para hacer un pago normal\n\n"
 
