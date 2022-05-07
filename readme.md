@@ -13,12 +13,10 @@ Hi! This is a discord bot i built using NodeJS for operating an Axie Infinity gu
 
 I have put a mongo db for you to use it as a clean slate. I recommend using a mongoide so to import data from an excel or so. I use mingo.
 
-### Installation
-
-This is an example of how to list things you need to use the software and how to install them.
-
-- Install MongoDB
+### Discord Bot
+You have to create a Discord Bot with enouth rights for the bot to operate.
 - Create a Discord Bot Application
+- Copy the Token
 - Create a config.json file like this into Data folder
   ```
    {
@@ -27,6 +25,13 @@ This is an example of how to list things you need to use the software and how to
       "prefix": "!"
    }
   ```
+
+
+### MongoDB
+
+MongoDB you will use it to track players names, wallets, payout addresses, etc.
+
+- Install MongoDB
 - Unzip db
   ```
   gunzip ronibot-db.gz -k    
