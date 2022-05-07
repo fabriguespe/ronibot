@@ -49,14 +49,13 @@ module.exports = new Command({
 					}
 				}
 			}
+			
 			embed = new MessageEmbed().setTitle('Managment').setDescription(texto).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
 
 			texto='!pagar '+Math.round(80/slp_price)+' jeisson\n'
 			embed = new MessageEmbed().setTitle('Jeisson').setDescription(texto).setColor('GREEN').setTimestamp()
 			message.channel.send({content: ` `,embeds: [embed]})
-			
-			
 
 		}else if(args[1]=='estados'){
 			let query={type:'status_change'}
