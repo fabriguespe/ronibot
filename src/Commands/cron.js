@@ -214,7 +214,7 @@ module.exports = new Command({
 		}else if(args[1]=='forcecobrar'){
 			
 			let db = await DbConnection.Get();
-			let query={$or:[{nota:'aprobado'},{nota:'pro'},{nota:'pro'}]}
+			let query={$or:[{nota:'aprobado'},{nota:'pro'},{nota:'fijo'}]}
 			let users=await db.collection('users').find(query).toArray()
 
 			for(let i in users){
