@@ -277,7 +277,6 @@ module.exports = {
         }
     },
     transfer:async function(from_acc,to_acc,balance,message){
-        if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
         try{
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')

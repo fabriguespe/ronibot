@@ -212,6 +212,7 @@ module.exports = new Command({
 			message.channel.send('Total '+slp+' , aprox $'+usd*0.5+'.') 
 
 		}else if(args[1]=='forcecobrar'){
+			utils.log('Se empezara a procesar',message)
 			
 			let db = await DbConnection.Get();
 			let query={$or:[{nota:'aprobado'},{nota:'pro'},{nota:'fijo'}]}
@@ -220,7 +221,7 @@ module.exports = new Command({
 			for(let i in users){
 				let currentUser=await utils.getUserByNum(users[i].num)
 				let data=await utils.claimData(currentUser,message,false)
-				if(!(data.hours>0 && !data.has_to_claim)){
+				if(!(data.hours>0 && !data.has_to_claim) && data.jugador_slp>0){
 					message.channel.send('Cuenta #'+users[i].num)
 					let fallo=await utils.cobro(data,message)
 					if(!fallo)message.channel.send('Exito!')
