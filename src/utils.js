@@ -277,7 +277,7 @@ module.exports = {
         }
     },
     transfer:async function(from_acc,to_acc,balance,message){
-        //if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
+        if(!this.isSafe(from_acc) || !this.isSafe(to_acc))return message.channel.send(`Una de las wallets esta mal!`);
         try{
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
@@ -679,14 +679,14 @@ module.exports = {
                !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
     },
     getUserByNum:async function(num){
-        if(!isNumeric(num))return getAliasWallet(num)
+        if(!this.isNumeric(num))return this.getAliasWallet(num)
         let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({num:num.toString()})
         if(user)return user
         else return null
     },
     getWalletByNum:async function(num){
-        if(!isNumeric(num))return getAliasWallet(num)
+        if(!this.isNumeric(num))return this.getAliasWallet(num)
         let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({num:num.toString()})
         if(user)return user.accountAddress
