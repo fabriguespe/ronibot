@@ -7,7 +7,7 @@ module.exports = new Command({
 	name: "transfer"+(process.env.LOGNAME=='fabrizioguespe'?'t':''),
 	async run(message, args, client) {
 		if(!utils.esManager(message))return message.channel.send("You don't have the propper rights to run this command.")
-        let from=args.length==5?args[3]:'main'
+        let from=args.length==5?args[3]:'breed'
         let to=args.length==5?args[4]:args[3]
 
         if(args[1]=='axie' && (args.length==5 || args.length==4)){
@@ -36,15 +36,8 @@ module.exports = new Command({
         }else if(args[1]=='slp' && (args.length==5 || args.length==4)){
 
             let qty=args[2]
-            if(qty.includes('usd')){
-                let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
-                let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
-                usd=qty.replace('usd','')
-                qty=Math.round(usd/slp_price)
-            }
             let from_acc=await utils.getPaymentWalletByNum(from)
             let to_acc=await utils.getPaymentWalletByNum(to)
-            console.log(to_acc)
             from_acc=from_acc.replace('ronin:','0x')
             to_acc=to_acc.replace('ronin:','0x')
 
@@ -55,7 +48,8 @@ module.exports = new Command({
             let qty=args[2]
             let url = "https://api.coingecko.com/api/v3/simple/price?ids=smooth-love-potion&vs_currencies=usd";
             let slp_price= await fetch(url, { method: "Get" }).then(res => res.json()).then((json) => { return (Object.values(json)[0].usd)});
-            qty=Math.round(usd/slp_price)
+            qty=Math.round(qty/slp_price)
+            console.log(from,to)
             let from_acc=await utils.getPaymentWalletByNum(from)
             let to_acc=await utils.getPaymentWalletByNum(to)
             from_acc=from_acc.replace('ronin:','0x')

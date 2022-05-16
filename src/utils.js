@@ -692,6 +692,7 @@ module.exports = {
         else return null
     },
     getPaymentWalletByNum:async function(num){
+        if(!this.isNumeric(num))return this.getAliasWallet(num)
         let db = await DbConnection.Get();
 		let user = await db.collection('users').findOne({num:num.toString()})
         if(user && user.scholarPayoutAddress)return user.scholarPayoutAddress
