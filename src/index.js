@@ -12,6 +12,7 @@ const client = new Client();
 const Command = require(path.resolve(__dirname, "./Structures/Command.js"));
 const { MessageActionRow, MessageButton ,MessageEmbed} = require('discord.js');
 const fs = require("fs");
+const { strict } = require('assert');
 fs.readdirSync(__dirname+"/Commands")
 .filter(file => file.endsWith(".js"))
 .forEach(file => {
@@ -28,6 +29,7 @@ https://askubuntu.com/questions/919108/error-unit-mongodb-service-is-masked-when
 client.on("ready", message => {
 	utils.log('Success!')
 	let scheduledMessage=''
+	
 	
 	scheduledMessage = new cron.CronJob('10 0 * * *', () => {
 		let admin = message.channels.cache.find(c => c.id == 930958850713079838);//ranking en admin

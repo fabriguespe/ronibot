@@ -18,7 +18,6 @@ module.exports = new Command({
 			else users=await db.collection('users').find({}).toArray()
 
 
-
 			users=users.sort(function(a, b) {return parseInt(a.num) - parseInt(b.num)});
 
 			if(typeof message !== 'undefined' && message.channel)message.channel.send('Se empezara a procesar')
